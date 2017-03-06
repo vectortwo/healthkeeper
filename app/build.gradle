@@ -13,8 +13,15 @@ android {
     }
     buildTypes {
         release {
+            // включить при релиз-сборке
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
         }
     }
 }
