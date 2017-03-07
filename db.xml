@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="10" y="10" name="user">
+</datatypes><table x="78" y="242" name="user">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -66,7 +66,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="116" y="10" name="drug">
+<table x="184" y="242" name="drug">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -92,7 +92,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="218" y="10" name="calorie">
+<table x="286" y="242" name="calorie">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -109,7 +109,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="333" y="10" name="sleep">
+<table x="401" y="242" name="sleep">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -126,7 +126,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="439" y="10" name="fluid">
+<table x="574" y="382" name="fluid">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -140,7 +140,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="540" y="10" name="weight">
+<table x="505" y="244" name="weight">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -154,7 +154,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="656" y="10" name="blood_pressure">
+<table x="631" y="238" name="blood_pressure">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -171,7 +171,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="829" y="10" name="pulse">
+<table x="818" y="242" name="pulse">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -185,7 +185,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="936" y="10" name="blood_sugar">
+<table x="938" y="241" name="blood_sugar">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -199,6 +199,21 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><comment>0 = before eating; 1 = after eating</comment>
 </row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="674" y="391" name="steps">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="count" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><comment>per day</comment>
+</row>
+<row name="date" null="0" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>'NULL'</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
