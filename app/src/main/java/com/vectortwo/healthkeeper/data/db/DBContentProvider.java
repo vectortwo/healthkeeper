@@ -84,82 +84,16 @@ public class DBContentProvider extends ContentProvider {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         switch (URI_MATCHER.match(uri)) {
-            case USER:
-                queryBuilder.setTables(DBContract.User.TABLE_NAME);
-                break;
-            case USER_ROW:
-                queryBuilder.setTables(DBContract.User.TABLE_NAME);
+            case USER_ROW: case PULSE_ROW: case BLOOD_PRESSURE_ROW: case BLOOD_SUGAR_ROW: case WEIGHT_ROW:
+            case FLUID_ROW: case SLEEP_ROW: case CALORIE_ROW: case STEPS_ROW: case DRUG_ROW:
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case PULSE:
-                queryBuilder.setTables(DBContract.Pulse.TABLE_NAME);
-                break;
-            case PULSE_ROW:
-                queryBuilder.setTables(DBContract.Pulse.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case BLOOD_PRESSURE:
-                queryBuilder.setTables(DBContract.BloodPressure.TABLE_NAME);
-                break;
-            case BLOOD_PRESSURE_ROW:
-                queryBuilder.setTables(DBContract.BloodPressure.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case BLOOD_SUGAR:
-                queryBuilder.setTables(DBContract.BloodSugar.TABLE_NAME);
-                break;
-            case BLOOD_SUGAR_ROW:
-                queryBuilder.setTables(DBContract.BloodSugar.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case WEIGHT:
-                queryBuilder.setTables(DBContract.Weight.TABLE_NAME);
-                break;
-            case WEIGHT_ROW:
-                queryBuilder.setTables(DBContract.Weight.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case FLUID:
-                queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
-                break;
-            case FLUID_ROW:
-                queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case SLEEP:
-                queryBuilder.setTables(DBContract.Sleep.TABLE_NAME);
-                break;
-            case SLEEP_ROW:
-                queryBuilder.setTables(DBContract.Sleep.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case CALORIE:
-                queryBuilder.setTables(DBContract.Calorie.TABLE_NAME);
-                break;
-            case CALORIE_ROW:
-                queryBuilder.setTables(DBContract.Calorie.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case STEPS:
-                queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
-                break;
-            case STEPS_ROW:
-                queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                break;
-            case DRUG:
-                queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
-                break;
-            case DRUG_ROW:
-                queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
-                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                queryBuilder.setTables(getTableName(uri));
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
-
         db = dbOpenHelper.getReadableDatabase();
-        
+
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
@@ -237,43 +171,8 @@ public class DBContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        String table;
-        switch (URI_MATCHER.match(uri)) {
-            case USER:
-                table = DBContract.User.TABLE_NAME;
-                break;
-            case PULSE:
-                table = DBContract.Pulse.TABLE_NAME;
-                break;
-            case BLOOD_PRESSURE:
-                table = DBContract.BloodPressure.TABLE_NAME;
-                break;
-            case BLOOD_SUGAR:
-                table = DBContract.BloodSugar.TABLE_NAME;
-                break;
-            case WEIGHT:
-                table = DBContract.Weight.TABLE_NAME;
-                break;
-            case FLUID:
-                table = DBContract.Fluid.TABLE_NAME;
-                break;
-            case SLEEP:
-                table = DBContract.Sleep.TABLE_NAME;
-                break;
-            case CALORIE:
-                table = DBContract.Calorie.TABLE_NAME;
-                break;
-            case STEPS:
-                table = DBContract.Steps.TABLE_NAME;
-                break;
-            case DRUG:
-                table = DBContract.Drug.TABLE_NAME;
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri.toString());
-        }
         db = dbOpenHelper.getWritableDatabase();
-        long id = db.insert(table, null, values);
+        long id = db.insert(getTableName(uri), null, values);
 
         getContext().getContentResolver().notifyChange(uri, null);
 
@@ -282,43 +181,8 @@ public class DBContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        String table;
-        switch (URI_MATCHER.match(uri)) {
-            case USER:
-                table = DBContract.User.TABLE_NAME;
-                break;
-            case PULSE:
-                table = DBContract.Pulse.TABLE_NAME;
-                break;
-            case BLOOD_PRESSURE:
-                table = DBContract.BloodPressure.TABLE_NAME;
-                break;
-            case BLOOD_SUGAR:
-                table = DBContract.BloodSugar.TABLE_NAME;
-                break;
-            case WEIGHT:
-                table = DBContract.Weight.TABLE_NAME;
-                break;
-            case FLUID:
-                table = DBContract.Fluid.TABLE_NAME;
-                break;
-            case SLEEP:
-                table = DBContract.Sleep.TABLE_NAME;
-                break;
-            case CALORIE:
-                table = DBContract.Calorie.TABLE_NAME;
-                break;
-            case STEPS:
-                table = DBContract.Steps.TABLE_NAME;
-                break;
-            case DRUG:
-                table = DBContract.Drug.TABLE_NAME;
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri.toString());
-        }
         db = dbOpenHelper.getWritableDatabase();
-        int rowsDeleted = db.delete(table, selection, selectionArgs);
+        int rowsDeleted = db.delete(getTableName(uri), selection, selectionArgs);
 
         getContext().getContentResolver().notifyChange(uri, null);
 
@@ -327,6 +191,15 @@ public class DBContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        db = dbOpenHelper.getWritableDatabase();
+        int rowsUpdated = db.update(getTableName(uri), values, selection, selectionArgs);
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return rowsUpdated;
+    }
+
+    private String getTableName(Uri uri) {
         String table;
         switch (URI_MATCHER.match(uri)) {
             case USER:
@@ -362,11 +235,6 @@ public class DBContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
-        db = dbOpenHelper.getWritableDatabase();
-        int rowsUpdated = db.update(table, values, selection, selectionArgs);
-
-        getContext().getContentResolver().notifyChange(uri, null);
-
-        return rowsUpdated;
+        return table;
     }
 }
