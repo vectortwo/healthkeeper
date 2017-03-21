@@ -1,9 +1,7 @@
 package com.vectortwo.healthkeeper.data.db;
 
-import android.content.ContentProvider;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.UriMatcher;
+import android.app.SearchManager;
+import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -19,58 +17,62 @@ public class DBContentProvider extends ContentProvider {
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
-    private static final int USER                   = 0;
-    private static final int USER_ROW               = 1;
-    private static final int PULSE                  = 2;
-    private static final int PULSE_ROW              = 3;
-    private static final int BLOOD_PRESSURE         = 4;
-    private static final int BLOOD_PRESSURE_ROW     = 5;
-    private static final int BLOOD_SUGAR            = 6;
-    private static final int BLOOD_SUGAR_ROW        = 7;
-    private static final int WEIGHT                 = 8;
-    private static final int WEIGHT_ROW             = 9;
-    private static final int FLUID                  = 10;
-    private static final int FLUID_ROW              = 11;
-    private static final int SLEEP                  = 12;
-    private static final int SLEEP_ROW              = 13;
-    private static final int CALORIE                = 14;
-    private static final int CALORIE_ROW            = 15;
-    private static final int STEPS                  = 16;
-    private static final int STEPS_ROW              = 17;
-    private static final int DRUG                   = 18;
-    private static final int DRUG_ROW               = 19;
+    private static final int TABLE_USER                 = 0;
+    private static final int ITEM_USER                  = 1;
+    private static final int TABLE_PULSE                = 2;
+    private static final int ITEM_PULSE                 = 3;
+    private static final int TABLE_BLOOD_PRESSURE       = 4;
+    private static final int ITEM_BLOOD_PRESSURE        = 5;
+    private static final int TABLE_BLOOD_SUGAR          = 6;
+    private static final int ITEM_BLOOD_SUGAR           = 7;
+    private static final int TABLE_WEIGHT               = 8;
+    private static final int ITEM_WEIGHT                = 9;
+    private static final int TABLE_FLUID                = 10;
+    private static final int ITEM_FLUID                 = 11;
+    private static final int TABLE_SLEEP                = 12;
+    private static final int ITEM_SLEEP                 = 13;
+    private static final int TABLE_CALORIE              = 14;
+    private static final int ITEM_CALORIE               = 15;
+    private static final int TABLE_STEPS                = 16;
+    private static final int ITEM_STEPS                 = 17;
+    private static final int TABLE_DRUG                 = 18;
+    private static final int ITEM_DRUG                  = 19;
 
+    //private static final int SEARCH_SUGGESTIONS         = 20;
 
     static {
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, USER);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME + "/#", USER_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME + "/#", ITEM_USER);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Pulse.TABLE_NAME, PULSE);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Pulse.TABLE_NAME + "/#", PULSE_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Pulse.TABLE_NAME, TABLE_PULSE);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Pulse.TABLE_NAME + "/#", ITEM_PULSE);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodPressure.TABLE_NAME, BLOOD_PRESSURE);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodPressure.TABLE_NAME + "/#", BLOOD_PRESSURE_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodPressure.TABLE_NAME, TABLE_BLOOD_PRESSURE);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodPressure.TABLE_NAME + "/#", ITEM_BLOOD_PRESSURE);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodSugar.TABLE_NAME, BLOOD_SUGAR);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodSugar.TABLE_NAME + "/#", BLOOD_SUGAR_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodSugar.TABLE_NAME, TABLE_BLOOD_SUGAR);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.BloodSugar.TABLE_NAME + "/#", ITEM_BLOOD_SUGAR);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Weight.TABLE_NAME, WEIGHT);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Weight.TABLE_NAME + "/#", WEIGHT_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Weight.TABLE_NAME, TABLE_WEIGHT);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Weight.TABLE_NAME + "/#", ITEM_WEIGHT);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Fluid.TABLE_NAME, FLUID);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Fluid.TABLE_NAME + "/#", FLUID_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Fluid.TABLE_NAME, TABLE_FLUID);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Fluid.TABLE_NAME + "/#", ITEM_FLUID);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Sleep.TABLE_NAME, SLEEP);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Sleep.TABLE_NAME + "/#", SLEEP_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Sleep.TABLE_NAME, TABLE_SLEEP);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Sleep.TABLE_NAME + "/#", ITEM_SLEEP);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Calorie.TABLE_NAME, CALORIE);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Calorie.TABLE_NAME + "/#", CALORIE_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Calorie.TABLE_NAME, TABLE_CALORIE);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Calorie.TABLE_NAME + "/#", ITEM_CALORIE);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Steps.TABLE_NAME, STEPS);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Steps.TABLE_NAME + "/#", STEPS_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Steps.TABLE_NAME, TABLE_STEPS);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Steps.TABLE_NAME + "/#", ITEM_STEPS);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME, DRUG);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME + "/#", DRUG_ROW);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME, TABLE_DRUG);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME + "/#", ITEM_DRUG);
+
+      //  URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGESTIONS);
+      //  URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY + "/*", SEARCH_SUGGESTIONS);
     }
 
     @Override
@@ -79,19 +81,97 @@ public class DBContentProvider extends ContentProvider {
         return true;
     }
 
+    /*
+    private Cursor getSuggestions(String from) {
+        return null;
+    }
+    */
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         switch (URI_MATCHER.match(uri)) {
-            case USER_ROW: case PULSE_ROW: case BLOOD_PRESSURE_ROW: case BLOOD_SUGAR_ROW: case WEIGHT_ROW:
-            case FLUID_ROW: case SLEEP_ROW: case CALORIE_ROW: case STEPS_ROW: case DRUG_ROW:
+          /*  case SEARCH_SUGGESTIONS:
+                if (selectionArgs == null) {
+                    throw new IllegalArgumentException("selectionArgs cannot be null for Url: " + uri);
+                }
+                return getSuggestions(selectionArgs[0]);
+                */
+            case TABLE_USER:
+                queryBuilder.setTables(DBContract.User.TABLE_NAME);
+                break;
+            case ITEM_USER:
+                queryBuilder.setTables(DBContract.User.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
-                queryBuilder.setTables(getTableName(uri));
+                break;
+            case TABLE_PULSE:
+                queryBuilder.setTables(DBContract.Pulse.TABLE_NAME);
+                break;
+            case ITEM_PULSE:
+                queryBuilder.setTables(DBContract.Pulse.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_BLOOD_PRESSURE:
+                queryBuilder.setTables(DBContract.BloodPressure.TABLE_NAME);
+                break;
+            case ITEM_BLOOD_PRESSURE:
+                queryBuilder.setTables(DBContract.BloodPressure.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_BLOOD_SUGAR:
+                queryBuilder.setTables(DBContract.BloodSugar.TABLE_NAME);
+                break;
+            case ITEM_BLOOD_SUGAR:
+                queryBuilder.setTables(DBContract.BloodSugar.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_WEIGHT:
+                queryBuilder.setTables(DBContract.Weight.TABLE_NAME);
+                break;
+            case ITEM_WEIGHT:
+                queryBuilder.setTables(DBContract.Weight.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_FLUID:
+                queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
+                break;
+            case ITEM_FLUID:
+                queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_SLEEP:
+                queryBuilder.setTables(DBContract.Sleep.TABLE_NAME);
+                break;
+            case ITEM_SLEEP:
+                queryBuilder.setTables(DBContract.Sleep.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_CALORIE:
+                queryBuilder.setTables(DBContract.Calorie.TABLE_NAME);
+                break;
+            case ITEM_CALORIE:
+                queryBuilder.setTables(DBContract.Calorie.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_STEPS:
+                queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
+                break;
+            case ITEM_STEPS:
+                queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+            case TABLE_DRUG:
+                queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
+                break;
+            case ITEM_DRUG:
+                queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
+
         db = dbOpenHelper.getReadableDatabase();
 
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
@@ -103,65 +183,65 @@ public class DBContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         String mime;
         switch (URI_MATCHER.match(uri)) {
-            case USER:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.User.TABLE_NAME;
+            case TABLE_USER:
+                mime = DBContract.User.MIME_DIR_TYPE;
                 break;
-            case USER_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.User.TABLE_NAME;
+            case ITEM_USER:
+                mime = DBContract.User.MIME_ITEM_TYPE;
                 break;
-            case PULSE:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Pulse.TABLE_NAME;
+            case TABLE_PULSE:
+                mime = DBContract.Pulse.MIME_DIR_TYPE;
                 break;
-            case PULSE_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Pulse.TABLE_NAME;
+            case ITEM_PULSE:
+                mime = DBContract.Pulse.MIME_ITEM_TYPE;
                 break;
-            case BLOOD_PRESSURE:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.BloodPressure.TABLE_NAME;
+            case TABLE_BLOOD_PRESSURE:
+                mime = DBContract.BloodPressure.MIME_DIR_TYPE;
                 break;
-            case BLOOD_PRESSURE_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.BloodPressure.TABLE_NAME;
+            case ITEM_BLOOD_PRESSURE:
+                mime = DBContract.BloodPressure.MIME_ITEM_TYPE;
                 break;
-            case BLOOD_SUGAR:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.BloodSugar.TABLE_NAME;
+            case TABLE_BLOOD_SUGAR:
+                mime = DBContract.BloodSugar.MIME_DIR_TYPE;
                 break;
-            case BLOOD_SUGAR_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.BloodSugar.TABLE_NAME;
+            case ITEM_BLOOD_SUGAR:
+                mime = DBContract.BloodSugar.MIME_ITEM_TYPE;
                 break;
-            case WEIGHT:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Weight.TABLE_NAME;
+            case TABLE_WEIGHT:
+                mime = DBContract.Weight.MIME_DIR_TYPE;
                 break;
-            case WEIGHT_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Weight.TABLE_NAME;
+            case ITEM_WEIGHT:
+                mime = DBContract.Weight.MIME_ITEM_TYPE;
                 break;
-            case FLUID:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Fluid.TABLE_NAME;
+            case TABLE_FLUID:
+                mime = DBContract.Fluid.MIME_DIR_TYPE;
                 break;
-            case FLUID_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Fluid.TABLE_NAME;
+            case ITEM_FLUID:
+                mime = DBContract.Fluid.MIME_ITEM_TYPE;
                 break;
-            case SLEEP:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Sleep.TABLE_NAME;
+            case TABLE_SLEEP:
+                mime = DBContract.Sleep.MIME_DIR_TYPE;
                 break;
-            case SLEEP_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Sleep.TABLE_NAME;
+            case ITEM_SLEEP:
+                mime = DBContract.Sleep.MIME_ITEM_TYPE;
                 break;
-            case CALORIE:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Calorie.TABLE_NAME;
+            case TABLE_CALORIE:
+                mime = DBContract.Calorie.MIME_DIR_TYPE;
                 break;
-            case CALORIE_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Calorie.TABLE_NAME;
+            case ITEM_CALORIE:
+                mime = DBContract.Calorie.MIME_ITEM_TYPE;
                 break;
-            case STEPS:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Steps.TABLE_NAME;
+            case TABLE_STEPS:
+                mime = DBContract.Steps.MIME_DIR_TYPE;
                 break;
-            case STEPS_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Steps.TABLE_NAME;
+            case ITEM_STEPS:
+                mime = DBContract.Steps.MIME_ITEM_TYPE;
                 break;
-            case DRUG:
-                mime = "vnd.android.cursor.dir/vnd.com.vectortwo.provider." + DBContract.Drug.TABLE_NAME;
+            case TABLE_DRUG:
+                mime = DBContract.Drug.MIME_DIR_TYPE;
                 break;
-            case DRUG_ROW:
-                mime = "vnd.android.cursor.item/vnd.com.vectortwo.provider." + DBContract.Drug.TABLE_NAME;
+            case ITEM_DRUG:
+                mime = DBContract.Drug.MIME_ITEM_TYPE;
                 break;
            default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
@@ -202,34 +282,34 @@ public class DBContentProvider extends ContentProvider {
     private String getTableName(Uri uri) {
         String table;
         switch (URI_MATCHER.match(uri)) {
-            case USER:
+            case TABLE_USER: case ITEM_USER:
                 table = DBContract.User.TABLE_NAME;
                 break;
-            case PULSE:
+            case TABLE_PULSE: case ITEM_PULSE:
                 table = DBContract.Pulse.TABLE_NAME;
                 break;
-            case BLOOD_PRESSURE:
+            case TABLE_BLOOD_PRESSURE: case ITEM_BLOOD_PRESSURE:
                 table = DBContract.BloodPressure.TABLE_NAME;
                 break;
-            case BLOOD_SUGAR:
+            case TABLE_BLOOD_SUGAR: case ITEM_BLOOD_SUGAR:
                 table = DBContract.BloodSugar.TABLE_NAME;
                 break;
-            case WEIGHT:
+            case TABLE_WEIGHT: case ITEM_WEIGHT:
                 table = DBContract.Weight.TABLE_NAME;
                 break;
-            case FLUID:
+            case TABLE_FLUID: case ITEM_FLUID:
                 table = DBContract.Fluid.TABLE_NAME;
                 break;
-            case SLEEP:
+            case TABLE_SLEEP: case ITEM_SLEEP:
                 table = DBContract.Sleep.TABLE_NAME;
                 break;
-            case CALORIE:
+            case TABLE_CALORIE: case ITEM_CALORIE:
                 table = DBContract.Calorie.TABLE_NAME;
                 break;
-            case STEPS:
+            case TABLE_STEPS: case ITEM_STEPS:
                 table = DBContract.Steps.TABLE_NAME;
                 break;
-            case DRUG:
+            case TABLE_DRUG: case ITEM_DRUG:
                 table = DBContract.Drug.TABLE_NAME;
                 break;
             default:
