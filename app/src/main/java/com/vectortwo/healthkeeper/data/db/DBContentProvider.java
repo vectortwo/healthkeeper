@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 /**
  * Created by ilya on 09/03/2017.
@@ -38,7 +39,7 @@ public class DBContentProvider extends ContentProvider {
     private static final int TABLE_DRUG                 = 18;
     private static final int ITEM_DRUG                  = 19;
 
-    //private static final int SEARCH_SUGGESTIONS         = 20;
+    private static final int SEARCH_SUGGESTIONS         = 20;
 
     static {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
@@ -71,8 +72,8 @@ public class DBContentProvider extends ContentProvider {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME, TABLE_DRUG);
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME + "/#", ITEM_DRUG);
 
-      //  URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGESTIONS);
-      //  URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY + "/*", SEARCH_SUGGESTIONS);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGESTIONS);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY + "/*", SEARCH_SUGGESTIONS);
     }
 
     @Override
@@ -81,23 +82,24 @@ public class DBContentProvider extends ContentProvider {
         return true;
     }
 
-    /*
     private Cursor getSuggestions(String from) {
-        return null;
+        String query = from + "*";
+
+        db = dbOpenHelper.getReadableDatabase();
+        return db.query("fts_known_drugs", new String[]{"rowid as " + BaseColumns._ID, "title as " + SearchManager.SUGGEST_COLUMN_TEXT_1},
+                "title MATCH ?", new String[]{query}, null, null, null);
     }
-    */
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         switch (URI_MATCHER.match(uri)) {
-          /*  case SEARCH_SUGGESTIONS:
+            case SEARCH_SUGGESTIONS:
                 if (selectionArgs == null) {
-                    throw new IllegalArgumentException("selectionArgs cannot be null for Url: " + uri);
+                    throw new IllegalArgumentException("selectionArgs cannot be null for Uri: " + uri);
                 }
                 return getSuggestions(selectionArgs[0]);
-                */
             case TABLE_USER:
                 queryBuilder.setTables(DBContract.User.TABLE_NAME);
                 break;

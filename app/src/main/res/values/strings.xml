@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">HealthKeeper</string>
-    <string name="search_hint">Search drugs</string>
+    <string name="search_hint">Find drugs</string>
 </resources>

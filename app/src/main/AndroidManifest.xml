@@ -11,7 +11,7 @@
 
         <provider
                 android:name=".data.db.DBContentProvider"
-                android:authorities="com.vectortwo.healthkeeper">
+                android:authorities="com.vectortwo.healthkeeper.HealthProvider">
         </provider>
 
         <activity android:name=".activities.MainActivity">
