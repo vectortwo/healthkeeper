@@ -13,8 +13,8 @@ public class DBContract {
     public static final String AUTHORITY = "com.vectortwo.healthkeeper.HealthProvider";
     public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
-    static final String MIME_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.vectortwo.provider.";
-    static final String MIME_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.vectortwo.provider.";
+    static final String MIME_DIR_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.vectortwo.HealthProvider.";
+    static final String MIME_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.vectortwo.HealthProvider.";
 
     static final int DB_VERSION = 1;
     static final String DB_NAME = "health_keeper.db";
