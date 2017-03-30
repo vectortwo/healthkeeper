@@ -183,7 +183,7 @@ public class PedometerService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (ACTION_STOP_PEDOMETER_SERVICE.equals(intent.getAction())) {
             stopSelf();
-            return START_STICKY;
+            return START_NOT_STICKY;
         }
         long notificationValue = 0;
 
