@@ -119,6 +119,9 @@ public class DBContract {
         public static final String TITLE = "title";
         public static final String DOSAGE = "dosage";
 
+        public static final String DESCRIPTION = "description";
+        public static final String WARNINGS = "warnings";
+
         public static final String TIMES_A_DAY = "times_a_day";
         public static final String TIMES_A_WEEK = "times_a_week";
 
@@ -135,6 +138,7 @@ public class DBContract {
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String COUNT = "count";
+        public static final String HOUR = "hour";
         public static final String DATE = "date";
     }
 
