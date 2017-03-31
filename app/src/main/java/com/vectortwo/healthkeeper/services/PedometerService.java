@@ -160,6 +160,7 @@ public class PedometerService extends Service implements SensorEventListener {
         stopForeground(true);
 
         sharedPrefs.edit()
+                .putBoolean(getString(R.string.preference_pedometer_force_stopped), false)
                 .putLong(getString(R.string.preference_pedometer_onkilled_sensordata), sensorData)
                 .putString(getString(R.string.preference_pedometer_onkilled_date), getDate())
                 .apply();
@@ -186,12 +187,14 @@ public class PedometerService extends Service implements SensorEventListener {
             return START_NOT_STICKY;
         }
         long notificationValue = 0;
+        boolean forceStopped = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_force_stopped), false);
 
         freshInstall = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_fresh_install), true);
         if (freshInstall) {
             sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_fresh_install), false).apply();
-        }
-        else {
+        } else if (forceStopped) {
+            freshInstall = true;
+        } else {
             String currentDate = getDate();
             // restore cache
             sensorData = sharedPrefs.getLong(getString(R.string.preference_pedometer_onkilled_sensordata), 0);
@@ -222,6 +225,8 @@ public class PedometerService extends Service implements SensorEventListener {
         startForeground(PedometerNotification.PEDOMETER_NOTIFICATION_ID, notification.getBuilder().build());
 
         setAlarmNextHour(alarmManager, alarmIntent);
+
+        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true);
 
         return START_NOT_STICKY;
     }
