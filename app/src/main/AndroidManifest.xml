@@ -2,19 +2,114 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.vectortwo.healthkeeper">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity">
+        <provider
+                android:name=".data.db.DBContentProvider"
+                android:authorities="com.vectortwo.healthkeeper.HealthProvider">
+        </provider>
+
+        <activity android:name=".activities.main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+                android:name=".activities.main.MainActivity"
+                android:label="@string/title_activity_welcome"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+                android:name=".activities.medicament.MedicamentActivity"
+                android:label="@string/title_activity_medicament"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.walking.WalkingActivity"
+                android:label="@string/title_activity_walking"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.pressure.PressureActivity"
+                android:label="@string/title_activity_pressure"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.weight.WeightActivity"
+                android:label="@string/title_activity_weight"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.aqua.AquaActivity"
+                android:label="@string/title_activity_aqua"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.blood.BloodSugarActivity"
+                android:label="@string/title_activity_blood_sugar"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.sleep.SleepActivity"
+                android:label="@string/title_activity_sleep"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.menu_settings.SettingsActivity"
+                android:label="@string/title_activity_settings"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.menu_settings.AboutActivity"
+                android:label="@string/title_activity_about"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.menu_settings.ElementsSettingsActivity"
+                android:label="@string/title_activity_elements_settings"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.menu_settings.NotificationSettingsActivity"
+                android:label="@string/title_activity_notification_settings"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".activities.medicament.MedicamentSearchSActivity"
+                android:label="@string/title_activity_medicament_search_s"
+                android:theme="@style/AppTheme">
+            <!-- This intent-filter identifies this activity as "searchable" -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- This metadata entry provides further configuration details for searches -->
+            <!-- that are handled by this activity. -->
+            <meta-data
+                    android:name="android.app.searchable"
+                    android:resource="@xml/searchable"
+            />
+        </activity>
+
+        <service android:name=".services.PedometerService"
+                 android:description="@string/descriptionServiceSteps"/>
+
+        <receiver android:name=".receivers.PedometerBootReceiver"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
