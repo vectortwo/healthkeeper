@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context=".activities.main.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay"
+    >
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" android:minHeight="39dp"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+            <TableLayout  android:layout_width="fill_parent"
+                          android:layout_height="fill_parent"
+                          android:stretchColumns="*">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="182dp" app:srcCompat="@mipmap/plus" android:id="@+id/imageView2"/>
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/play_again_desc" android:textAlignment="center"/>
+                </LinearLayout>
+                <TableRow
+                        android:layout_weight="1"
+                        android:gravity="center" android:id="@+id/row0">
+                    <Button
+                            android:id="@+id/btn_medicament"
+                            android:layout_width="20dp"
+                            android:text="@string/medicament" android:layout_height="100dp"/>
+                    <Button
+                            android:id="@+id/btn_walking"
+                            android:layout_width="20dp"
+                            android:layout_height="100dp"
+                            android:text="@string/walking"/>
+                    <Button
+                            android:id="@+id/btn_pressure"
+                            android:layout_width="20dp"
+                            android:layout_height="100dp"
+                            android:text="@string/pressure"/>
+                </TableRow>
+
+                <TableRow
+                        android:layout_weight="1"
+                        android:gravity="center" android:id="@+id/row1">
+                    <Button
+                            android:id="@+id/btn_weight"
+                            android:layout_width="20dp"
+                            android:text="@string/weight" android:layout_height="100dp"/>
+                    <Button
+
+                            android:id="@+id/btn_sugar"
+                            android:text="@string/blood_sugar" android:layout_height="100dp"
+                            android:layout_width="20dp"/>
+                    <Button
+                            android:id="@+id/btn_aqua"
+                            android:text="@string/aqua" android:layout_width="20dp" android:layout_height="100dp"/>
+                </TableRow>
+                <TableRow
+                        android:layout_weight="1"
+                        android:gravity="center" android:id="@+id/row2">
+                    <Button
+                            android:id="@+id/btn_7"
+                            android:layout_width="20dp"
+                            android:layout_height="100dp"
+                            android:text="@string/app_name" />
+                    <Button
+                            android:id="@+id/btn_sleep"
+                            android:text="@string/sleep" android:layout_height="100dp" android:layout_width="20dp"/>
+                    <Button
+                            android:id="@+id/btn_9"
+                            android:layout_width="20dp"
+                            android:layout_height="100dp"
+                            android:text="pedometr111"/>
+                </TableRow>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" android:weightSum="1">
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:layout_weight="2.95">
+                    </LinearLayout>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            app:srcCompat="@mipmap/ic_launcher"
+                            android:id="@+id/imageView3" android:layout_weight="2.95" android:layout_height="200dp"/>
+                    <Button
+
+                            android:id="@+id/btn_play_again"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/play_again" />
+                </LinearLayout>
+            </TableLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

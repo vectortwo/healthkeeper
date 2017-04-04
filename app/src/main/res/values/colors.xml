@@ -3,4 +3,64 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen1">#bbdefb</color>
+    <color name="bg_screen2">#90caf9</color>
+    <color name="bg_screen3">#64b5f6</color>
+    <color name="bg_screen4">#42a5f5</color>
+    <color name="bg_screen5">#2196f3</color>
+    <color name="bg_screen6">#1e88e5</color>
+    <color name="bg_screen7">#1976d2</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#1976d2</color>
+    <color name="dot_dark_screen2">#1e88e5</color>
+    <color name="dot_dark_screen3">#2196f3</color>
+    <color name="dot_dark_screen4">#42a5f5</color>
+    <color name="dot_dark_screen5">#64b5f6</color>
+    <color name="dot_dark_screen6">#90caf9</color>
+    <color name="dot_dark_screen7">#bbdefb</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#eceff1</color>
+    <color name="dot_light_screen2">#eceff1</color>
+    <color name="dot_light_screen3">#eceff1</color>
+    <color name="dot_light_screen4">#eceff1</color>
+    <color name="dot_light_screen5">#eceff1</color>
+    <color name="dot_light_screen6">#eceff1</color>
+    <color name="dot_light_screen7">#eceff1</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+
+        <item>@color/dot_light_screen5</item>
+        <item>@color/dot_light_screen6</item>
+        <item>@color/dot_light_screen7</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+
+        <item>@color/dot_light_screen5</item>
+        <item>@color/dot_light_screen6</item>
+        <item>@color/dot_light_screen7</item>
+    </array>
+
+    <color name="backgroundColor">#E8E8E0</color>
+    <color name="backgroundColorPress">#DBDBD3</color>
+    <color name="red">#FF3B00</color>
+    <color name="red_press">#990000</color>
+    <color name="dark_gray">#4C535B</color>
+    <color name="dark_gray_press">#ff7e8a97</color>
+
+    <!-- Medicament cards colors-->
+    <color name="mcard_backgraund">#bbdefb</color>
+    <color name="mcard_line">#90caf9</color>
 </resources>

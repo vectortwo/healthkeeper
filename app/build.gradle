@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.vectortwo.healthkeeper"
-        minSdkVersion 19
-        targetSdkVersion 23
+        minSdkVersion 19 // FIX from 19 to 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,13 +24,58 @@ android {
             versionNameSuffix "-debug"
         }
     }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layout/main',
+                            'src/main/res/layout/menu_layouts',
+                            'src/main/res/layout/medicament', //-
+                            'src/main/res/layout/welcome', //+
+                            'src/main/res/layout/walking', //+
+                            'src/main/res/layout/sleep', //+
+                            'src/main/res/layout/pressure',
+                            'src/main/res/layout/blood', //+
+                            'src/main/res/layout/aqua', //+
+                            'src/main/res/layout/weight', //+
+                            'src/main/res/layout',
+                            'src/main/res'
+                    ]
+        }
+    }
+
+
 }
+
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+
+    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:support-v4:23.+'
+
+    compile 'com.hannesdorfmann:swipeback:1.0.4'
+    compile 'com.android.support:cardview-v7:23.3.+'
+
+
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    //SWIPe
+    //compile 'com.daimajia.easing:library:1.0.0@aar'
+    //compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    //compile 'com.nineoldandroids:library:2.4.0'
+    // This dude gave a shoutout to you (daimajia) on his github page:
+    //compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
+    ////////////////////
+
+
+    compile "com.googlecode.json-simple:json-simple:1.1"
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+
     testCompile 'junit:junit:4.12'
 }

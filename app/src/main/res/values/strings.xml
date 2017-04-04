@@ -1,3 +1,99 @@
 <resources>
-    <string name="app_name">HealthKeeper</string>
+    <string name="app_name">Health Keeper</string>
+    <string name="title_activity_welcome">Health Keeper</string>
+    <string name="next">ДАЛЕЕ</string>
+    <string name="skip">ПРОПУСТИТЬ</string>
+    <string name="start">ПРИСТУПИМ!</string>
+
+    <string name="search_hint">Find drugs</string>
+
+    <string name="slide_1_title">Добро пожаловать!</string>
+    <string name="slide_1_desc">Укажите свои начальные пораметры.</string>
+
+    <string name="slide_2_title">Как Вас зовут?</string>
+    <string name="slide_2_desc"></string>
+    <string name="default_username">Имя</string>
+
+    <string name="slide_3_title">Какой у Вас рост?</string>
+    <string name="slide_3_desc"></string>
+
+    <string name="slide_4_title">Какой у Вас вес?</string>
+    <string name="slide_4_desc"></string>
+
+    <string name="slide_5_title">Пол</string>
+    <string name="slide_5_desc"></string>
+
+    <string name="slide_6_title">Ваш возраст?</string>
+    <string name="slide_6_desc"></string>
+
+    <string name="slide_7_title">Спасибо!</string>
+    <string name="slide_7_desc">Приступим!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear
+        data
+    </string>
+    <string name="play_again">Повторить приветсвие</string>
+    <string name="medicament">Лекарства</string>
+    <string name="blood_sugar">Сахар</string>
+    <string name="walking">Активность</string>
+    <string name="pressure">Давление</string>
+    <string name="weight">Вес</string>
+    <string name="aqua">Жидкость</string>
+    <string name="sleep">Сон</string>
+
+
+    <string name="title_activity_medicament">MedicamentActivity</string>
+    <string name="title_activity_walking">WalkingActivity</string>
+    <string name="title_activity_pressure">PressureActivity</string>
+    <string name="title_activity_weight">WeightActivity</string>
+    <string name="title_activity_aqua">AquaActivity</string>
+    <string name="title_activity_blood_sugar">BloodSugarActivity</string>
+    <string name="title_activity_sleep">SleepActivity</string>
+
+    <!-- --> <!-- Главное меню -->
+    <string name="main_menu_elements">Управление элементами</string>
+    <string name="main_menu_notification">Уведомления</string>
+    <string name="main_menu_about">О приложении</string>
+    <string name="main_menu_settings">Настройки</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_elements_settings">ElementsSettingsActivity</string>
+    <string name="title_activity_notification_settings">NotificationSettingsActivity</string>
+
+    <!-- Medicament text -->
+    <string name="medicament_default_name">Препорат</string>
+    <string name="medicament_dosage">Дозировка:</string>
+    <string name="medicament_specification">SecWifiDisplayUtil: Metadata value : SecSettings2
+        SecWifiDisplayUtil: Metadata value : SecSettings2
+        SecWifiDisplayUtil: Metadata value : SecSettings2
+        SecWifiDisplayUtil: Metadata value : SecSettings2</string>
+    <string name="medicament_data">Следующее время:</string>
+    <string name="medicament_dosage_type">мг</string>
+    <string name="title_activity_medicament_search_s">MedicamentSearchSActivity</string>
+    <string name="search_medicament_logo">Поиск лекарств</string>
+
+    <!-- weight text -->
+    <string name="weight_main_tab_text">Отслеживание</string>
+    <string name="weight_statistics_tab_text">Статистика</string>
+
+    <!-- aqua text -->
+    <string name="aqua_main_tab_text">Отслеживание</string>
+    <string name="aqua_statistics_tab_text">Статистика</string>
+
+    <!-- blood text -->
+    <string name="blood_main_tab_text">Отслеживание</string>
+    <string name="blood_statistics_tab_text">Статистика</string>
+
+    <!-- walking text -->
+    <string name="walking_main_tab_text">Отслеживание</string>
+    <string name="walking_statistics_tab_text">Статистика</string>
+
+    <!-- pressure text -->
+    <string name="pressure_main_tab_text">Отслеживание</string>
+    <string name="pressure_statistics_tab_text">Статистика</string>
+
+    <string name="descriptionServiceSteps">Pedometer</string>
+    <string name="today_steps">Today steps</string>
+    <string name="notification_turn_off">Turn off</string>
+
 </resources>
