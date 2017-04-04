@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.vectortwo.healthkeeper.R;
+import com.vectortwo.healthkeeper.services.PedometerService;
 
 /**
  * Created by ilya on 28/03/2017.
@@ -15,6 +16,12 @@ public class PedometerBootReceiver extends BroadcastReceiver {
         if (intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(context.getString(R.string.preference_file_pedometer), context.MODE_PRIVATE);
             sharedPrefs.edit().clear().apply();
+
+            if (!sharedPrefs.getBoolean(context.getString(R.string.preference_pedometer_was_killed), true)) {
+                Intent intentStartPedometer = new Intent(context, PedometerService.class);
+                context.stopService(intentStartPedometer);
+                context.startService(intentStartPedometer);
+            }
         }
     }
 }

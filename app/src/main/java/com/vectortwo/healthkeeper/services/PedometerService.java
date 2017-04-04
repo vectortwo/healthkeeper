@@ -163,6 +163,7 @@ public class PedometerService extends Service implements SensorEventListener {
                 .putBoolean(getString(R.string.preference_pedometer_force_stopped), false)
                 .putLong(getString(R.string.preference_pedometer_onkilled_sensordata), sensorData)
                 .putString(getString(R.string.preference_pedometer_onkilled_date), getDate())
+                .putBoolean(getString(R.string.preference_pedometer_was_killed), true)
                 .apply();
     }
 
@@ -186,16 +187,19 @@ public class PedometerService extends Service implements SensorEventListener {
             stopSelf();
             return START_NOT_STICKY;
         }
+        String currentDate = getDate();
         long notificationValue = 0;
         boolean forceStopped = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_force_stopped), false);
 
         freshInstall = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_fresh_install), true);
+
+        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_was_killed), false).apply();
+
         if (freshInstall) {
             sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_fresh_install), false).apply();
         } else if (forceStopped) {
             freshInstall = true;
         } else {
-            String currentDate = getDate();
             // restore cache
             sensorData = sharedPrefs.getLong(getString(R.string.preference_pedometer_onkilled_sensordata), 0);
             String onkilledDate = sharedPrefs.getString(getString(R.string.preference_pedometer_onkilled_date), currentDate);
@@ -220,6 +224,7 @@ public class PedometerService extends Service implements SensorEventListener {
                 sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData).apply();
             }
         }
+        sharedPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
 
         notification.getBuilder().setContentTitle(String.valueOf(notificationValue));
         startForeground(PedometerNotification.PEDOMETER_NOTIFICATION_ID, notification.getBuilder().build());

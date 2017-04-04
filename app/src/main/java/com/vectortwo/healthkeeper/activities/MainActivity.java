@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         registerBt = (Button) findViewById(R.id.bt_register);
         unregisterBt = (Button) findViewById(R.id.bt_unregister);
+
         registerBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

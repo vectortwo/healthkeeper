@@ -14,11 +14,6 @@ public class DrugColumns extends DBColumns {
 
     public void putTimesADay(int times_a_day) {
         contentValues.put(DBContract.Drug.TIMES_A_DAY, times_a_day);
-
-    }
-
-    public void putTimesAWeek(int times_a_week) {
-        contentValues.put(DBContract.Drug.TIMES_A_WEEK, times_a_week);
     }
 
     public void putStartDate(String date) {
@@ -35,5 +30,9 @@ public class DrugColumns extends DBColumns {
 
     public void putWarnings(String warnings) {
         contentValues.put(DBContract.Drug.WARNINGS, warnings);
+    }
+
+    public void putArchived(int archived) {
+        contentValues.put(DBContract.Drug.ARCHIVED, archived);
     }
 }

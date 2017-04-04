@@ -123,7 +123,7 @@ public class DBContract {
         public static final String WARNINGS = "warnings";
 
         public static final String TIMES_A_DAY = "times_a_day";
-        public static final String TIMES_A_WEEK = "times_a_week";
+        public static final String ARCHIVED = "archived";
 
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
