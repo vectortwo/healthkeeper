@@ -13,15 +13,16 @@ import com.vectortwo.healthkeeper.services.PedometerService;
 public class PedometerBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences(context.getString(R.string.preference_file_pedometer), context.MODE_PRIVATE);
-            sharedPrefs.edit().clear().apply();
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(context.getString(R.string.preference_file_pedometer), Context.MODE_PRIVATE);
 
             if (!sharedPrefs.getBoolean(context.getString(R.string.preference_pedometer_was_killed), true)) {
                 Intent intentStartPedometer = new Intent(context, PedometerService.class);
                 context.stopService(intentStartPedometer);
                 context.startService(intentStartPedometer);
             }
+
+            sharedPrefs.edit().clear().apply();
         }
     }
 }
