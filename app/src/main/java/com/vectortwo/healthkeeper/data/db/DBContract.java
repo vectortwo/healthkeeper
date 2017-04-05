@@ -31,6 +31,13 @@ public class DBContract {
         public static final String DATE = "date";
     }
 
+    public static final class FtsKnownDrugs {
+        static final String TABLE_NAME = "fts_known_drugs";
+
+        public static final String TITLE = "title";
+        public static final String ROWID = "rowid";
+    }
+
     public static final class BloodSugar implements BaseColumns {
         static final String TABLE_NAME = "blood_sugar";
 
