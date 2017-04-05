@@ -27,7 +27,6 @@ public class PedometerService extends Service implements SensorEventListener {
     private boolean freshInstall;
 
     private SensorManager sensorManager;
-    private Sensor stepSensor;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
@@ -36,9 +35,9 @@ public class PedometerService extends Service implements SensorEventListener {
 
     private PedometerNotification notification;
 
-    private static final String ACTION_BROADCAST_ALARM = "com.vectortwo.healthkeeper.intent.action.PEDOMETER_BROADCAST";
+    private static final String ACTION_BROADCAST_ALARM = "com.vectortwo.healthkeeper.broadcast.PEDOMETER_BROADCAST";
 
-    public static final String ACTION_STOP_PEDOMETER_SERVICE = "com.vectortwo.healthkeeper.intent.action.STOP_PEDOMETER_SERVICE";
+    public static final String ACTION_STOP_PEDOMETER_SERVICE = "com.vectortwo.healthkeeper.intent.STOP_PEDOMETER_SERVICE";
 
     private String getDate() {
         Calendar cal = Calendar.getInstance();
@@ -168,8 +167,10 @@ public class PedometerService extends Service implements SensorEventListener {
     public void onCreate() {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sharedPrefs = getSharedPreferences(getString(R.string.preference_file_pedometer), Context.MODE_PRIVATE);
+
+        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
         notification = new PedometerNotification(this);
 
         alarmIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_BROADCAST_ALARM), 0);
