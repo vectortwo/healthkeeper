@@ -27,7 +27,6 @@ public class PedometerService extends Service implements SensorEventListener {
     private boolean freshInstall;
 
     private SensorManager sensorManager;
-    private Sensor stepSensor;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
@@ -46,11 +45,8 @@ public class PedometerService extends Service implements SensorEventListener {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
-        return new StringBuilder().
-                append(year).append('-').
-                append(month).append('-').
-                append(day).append('-').
-                append(hour).toString();
+
+        return year + "-" + month + "-" + day + "-" + hour;
     }
 
     private boolean sameDay(String dateA, String dateB) {
@@ -66,7 +62,7 @@ public class PedometerService extends Service implements SensorEventListener {
     }
 
     private int getHour(String date) {
-       return Integer.parseInt(date.substring(date.lastIndexOf("-") + 1));
+        return Integer.parseInt(date.substring(date.lastIndexOf("-") + 1));
     }
 
     private String getDateWithoutHour(String dateWithHour) {
@@ -111,7 +107,7 @@ public class PedometerService extends Service implements SensorEventListener {
             sharedPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
 
             setAlarmNextHour(alarmManager, alarmIntent);
-       }
+        }
     };
 
     void setAlarmNextHour(AlarmManager manager, PendingIntent intent) {
@@ -171,8 +167,10 @@ public class PedometerService extends Service implements SensorEventListener {
     public void onCreate() {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sharedPrefs = getSharedPreferences(getString(R.string.preference_file_pedometer), Context.MODE_PRIVATE);
+
+        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
         notification = new PedometerNotification(this);
 
         alarmIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_BROADCAST_ALARM), 0);
@@ -231,7 +229,7 @@ public class PedometerService extends Service implements SensorEventListener {
 
         setAlarmNextHour(alarmManager, alarmIntent);
 
-        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true);
+        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true).apply();
 
         return START_NOT_STICKY;
     }
