@@ -7,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.util.Log;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.StepColumns;
@@ -47,11 +46,8 @@ public class PedometerService extends Service implements SensorEventListener {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
-        return new StringBuilder().
-                append(year).append('-').
-                append(month).append('-').
-                append(day).append('-').
-                append(hour).toString();
+
+        return year + "-" + month + "-" + day + "-" + hour;
     }
 
     private boolean sameDay(String dateA, String dateB) {
@@ -232,7 +228,7 @@ public class PedometerService extends Service implements SensorEventListener {
 
         setAlarmNextHour(alarmManager, alarmIntent);
 
-        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true);
+        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true).apply();
 
         return START_NOT_STICKY;
     }
