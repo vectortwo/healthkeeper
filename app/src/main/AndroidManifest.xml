@@ -6,6 +6,7 @@
                   android:required="false"/>
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
             android:allowBackup="true"
@@ -13,10 +14,6 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <provider
-                android:name=".data.db.DBContentProvider"
-                android:authorities="com.vectortwo.healthkeeper.HealthProvider">
-        </provider>
 
         <activity android:name=".activities.MainActivity">
             <intent-filter>
@@ -26,13 +23,35 @@
             </intent-filter>
         </activity>
 
+        <provider
+                android:name=".data.db.DBContentProvider"
+                android:exported="false"
+                android:authorities="com.vectortwo.healthkeeper.HealthProvider">
+        </provider>
+
         <service android:name=".services.PedometerService"
                  android:description="@string/descriptionServiceSteps"/>
 
-        <receiver android:name=".receivers.PedometerBootReceiver"
+        <service android:name=".receivers.DrugNotifyReceiver$DrugNotifyService"/>
+
+        <service android:name=".services.CheckArchiveService"/>
+
+        <service android:name=".services.RestoreDrugNotifyService"/>
+
+        <receiver android:name=".receivers.BootCompletedReceiver"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- set android:exported="false" -->
+        <receiver android:name=".receivers.DrugNotifyReceiver"
+                  android:description="@string/descriptionReceiverDrugNotify">
+            <intent-filter>
+                <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_SCHEDULE"/>
+                <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_SCHEDULE_NOTIFY"/>
+                <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_CANCEL"/>
             </intent-filter>
         </receiver>
 

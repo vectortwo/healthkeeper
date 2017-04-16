@@ -5,37 +5,37 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.activities.MainActivity;
-import com.vectortwo.healthkeeper.services.PedometerService;
 
 /**
- * Created by ilya on 30/03/2017.
+ * Created by ilya on 10/04/2017.
  */
-public class PedometerNotification {
+public class DrugNotifyNotification {
 
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
 
-    // TODO: uniqify?
-    private static final int PEDOMETER_NOTIFICATION_ID = 2017;
+    private int notificationID;
 
-    public PedometerNotification(Context context) {
+    public DrugNotifyNotification(Context context, int notificationID) {
+        this.notificationID = notificationID;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent stopServiceIntent = new Intent(context, PedometerService.class);
         Intent contentIntent = new Intent(context, MainActivity.class);
 
-        stopServiceIntent.setAction(PedometerService.ACTION_STOP);
+        Uri defaultRingtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(String.valueOf(0))
-                .setPriority(Notification.PRIORITY_MIN)
+                .setContentTitle("")
+                .setPriority(Notification.PRIORITY_MAX)
+                .setSound(defaultRingtone)
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-                .addAction(R.mipmap.ic_launcher, context.getString(R.string.notification_turn_off),
-                        PendingIntent.getService(context, 0, stopServiceIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, 0));
     }
 
@@ -48,10 +48,6 @@ public class PedometerNotification {
     }
 
     public void update() {
-        notificationManager.notify(PEDOMETER_NOTIFICATION_ID, builder.build());
-    }
-
-    public int getNotificationID() {
-        return PEDOMETER_NOTIFICATION_ID;
+        notificationManager.notify(notificationID, builder.build());
     }
 }

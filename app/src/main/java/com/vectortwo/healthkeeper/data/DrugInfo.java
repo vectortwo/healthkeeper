@@ -146,7 +146,6 @@ public class DrugInfo {
         }
 
         desc = desc.substring(start, end);
-        // TODO: check
         desc = desc.replaceAll("•", " ");
 
         return desc;
