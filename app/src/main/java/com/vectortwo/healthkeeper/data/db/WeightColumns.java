@@ -4,11 +4,13 @@ package com.vectortwo.healthkeeper.data.db;
  * Created by ilya on 29/03/2017.
  */
 public class WeightColumns extends DBColumns {
-    public void putValue(int value) {
+    public WeightColumns putValue(int value) {
         contentValues.put(DBContract.Weight.VALUE, value);
+        return this;
     }
 
-    public void putDate(String date) {
+    public WeightColumns putDate(String date) {
         contentValues.put(DBContract.Weight.DATE, date);
+        return this;
     }
 }

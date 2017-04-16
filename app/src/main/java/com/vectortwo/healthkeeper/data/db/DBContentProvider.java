@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 /**
  * Created by ilya on 09/03/2017.
@@ -39,8 +38,10 @@ public class DBContentProvider extends ContentProvider {
     private static final int ITEM_STEPS                 = 17;
     private static final int TABLE_DRUG                 = 18;
     private static final int ITEM_DRUG                  = 19;
+    private static final int TABLE_NOTIFY               = 20;
+    private static final int ITEM_NOTIFY                = 21;
 
-    private static final int DRUG_SUGGESTIONS           = 20;
+    private static final int DRUG_SUGGESTIONS           = 22;
 
     static {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
@@ -73,7 +74,10 @@ public class DBContentProvider extends ContentProvider {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME, TABLE_DRUG);
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME + "/#", ITEM_DRUG);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY + "/*", DRUG_SUGGESTIONS);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME, TABLE_NOTIFY);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME + "/#", ITEM_NOTIFY);
+
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
     }
 
     @Override
@@ -82,17 +86,18 @@ public class DBContentProvider extends ContentProvider {
         return true;
     }
 
-    public static Uri getSuggestionUri(String from) {
-        return Uri.parse("content://" + DBContract.AUTHORITY + "/" + SearchManager.SUGGEST_URI_PATH_QUERY + "/" + from);
-    }
-
     private Cursor getSuggestions(String from) {
-        String query = from + "*";
+        String query = "%" + from + "%";
 
         db = dbOpenHelper.getReadableDatabase();
-        return db.query(DBContract.FtsKnownDrugs.TABLE_NAME,
-                new String[] {DBContract.FtsKnownDrugs.ROWID + " as " + BaseColumns._ID, DBContract.FtsKnownDrugs.TITLE},
-                DBContract.FtsKnownDrugs.TITLE + " MATCH ?", new String[]{query}, null, null, null);
+        return db.query(
+                DBContract.KnownDrugs.TABLE_NAME,
+                new String[] {DBContract.KnownDrugs._ID, DBContract.KnownDrugs.TITLE},
+                DBContract.KnownDrugs.TITLE + " like ?",
+                new String[]{query},
+                null,
+                null,
+                "length(" + DBContract.KnownDrugs.TITLE + ") limit 10");
     }
 
     @Override
@@ -173,6 +178,13 @@ public class DBContentProvider extends ContentProvider {
                 queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+            case TABLE_NOTIFY:
+                queryBuilder.setTables(DBContract.Notify.TABLE_NAME);
+                break;
+            case ITEM_NOTIFY:
+                queryBuilder.setTables(DBContract.Notify.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -248,6 +260,12 @@ public class DBContentProvider extends ContentProvider {
             case ITEM_DRUG:
                 mime = DBContract.Drug.MIME_ITEM_TYPE;
                 break;
+            case TABLE_NOTIFY:
+                mime = DBContract.Notify.MIME_DIR_TYPE;
+                break;
+            case ITEM_NOTIFY:
+                mime = DBContract.Notify.MIME_ITEM_TYPE;
+                break;
            default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -316,6 +334,9 @@ public class DBContentProvider extends ContentProvider {
                 break;
             case TABLE_DRUG: case ITEM_DRUG:
                 table = DBContract.Drug.TABLE_NAME;
+                break;
+            case TABLE_NOTIFY: case ITEM_NOTIFY:
+                table = DBContract.Notify.TABLE_NAME;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());

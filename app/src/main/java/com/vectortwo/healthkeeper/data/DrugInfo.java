@@ -107,10 +107,10 @@ public class DrugInfo {
             }
 
             JSONArray suggestions = (JSONArray) suggestionJSON.get("suggestion");
-
-            Iterator<String> it = suggestions.iterator();
-            while (it.hasNext()) {
-                res.add(it.next());
+            if (suggestions != null) {
+                for (Object obj : suggestions) {
+                    res.add((String) obj);
+                }
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -145,7 +145,11 @@ public class DrugInfo {
             end = matcher.start() + 1;
         }
 
-        return desc.substring(start, end);
+        desc = desc.substring(start, end);
+        // TODO: check
+        desc = desc.replaceAll("•", " ");
+
+        return desc;
     }
 
     private static String getWarnings(String drugName) {
@@ -187,9 +191,7 @@ public class DrugInfo {
                 return null;
             }
             resultsJSON = (JSONObject) results.get(0);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (MalformedURLException | ParseException e) {
             e.printStackTrace();
         }
         return resultsJSON;
@@ -205,7 +207,9 @@ public class DrugInfo {
             while ((line = in.readLine()) != null) {
                 res.append(line);
             }
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return (res == null ? null : res.toString());
     }

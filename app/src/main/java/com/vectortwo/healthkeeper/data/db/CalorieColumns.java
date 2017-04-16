@@ -4,15 +4,18 @@ package com.vectortwo.healthkeeper.data.db;
  * Created by ilya on 29/03/2017.
  */
 public class CalorieColumns extends DBColumns {
-    public void putGained(int gained) {
+    public CalorieColumns putGained(int gained) {
         contentValues.put(DBContract.Calorie.GAINED, gained);
+        return this;
     }
 
-    public void putLost(int lost) {
+    public CalorieColumns putLost(int lost) {
         contentValues.put(DBContract.Calorie.LOST, lost);
+        return this;
     }
 
-    public void putDate(int date) {
+    public CalorieColumns putDate(int date) {
         contentValues.put(DBContract.Calorie.DATE, date);
+        return this;
     }
 }

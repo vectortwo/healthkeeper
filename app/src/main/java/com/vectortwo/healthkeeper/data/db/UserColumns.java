@@ -5,35 +5,43 @@ package com.vectortwo.healthkeeper.data.db;
  */
 public class UserColumns extends DBColumns {
 
-    public void putFirstName(String name) {
+    public UserColumns putFirstName(String name) {
         contentValues.put(DBContract.User.FIRSTNAME, name);
+        return this;
     }
 
-    public void putSecondName(String name) {
+    public UserColumns putSecondName(String name) {
         contentValues.put(DBContract.User.SECONDNAME, name);
+        return this;
     }
 
-    public void putSex(String sex) {
+    public UserColumns putSex(String sex) {
         contentValues.put(DBContract.User.SEX, sex);
+        return this;
     }
 
-    public void putAge(int age) {
+    public UserColumns putAge(int age) {
         contentValues.put(DBContract.User.AGE, age);
+        return this;
     }
 
-    public void putHeight(int height) {
+    public UserColumns putHeight(int height) {
         contentValues.put(DBContract.User.HEIGHT, height);
+        return this;
     }
 
-    public void putWeight(int weight) {
+    public UserColumns putWeight(int weight) {
         contentValues.put(DBContract.User.WEIGHT, weight);
+        return this;
     }
 
-    public void putCity(String city) {
+    public UserColumns putCity(String city) {
         contentValues.put(DBContract.User.CITY, city);
+        return this;
     }
 
-    public void putBirthday(String birthday) {
+    public UserColumns putBirthday(String birthday) {
         contentValues.put(DBContract.User.BIRTHDAY, birthday);
+        return this;
     }
 }

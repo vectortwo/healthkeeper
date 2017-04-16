@@ -31,11 +31,12 @@ public class DBContract {
         public static final String DATE = "date";
     }
 
-    public static final class FtsKnownDrugs {
-        static final String TABLE_NAME = "fts_known_drugs";
+    public static final class KnownDrugs implements BaseColumns {
+        static final String TABLE_NAME = "known_drugs";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
         public static final String TITLE = "title";
-        public static final String ROWID = "rowid";
     }
 
     public static final class BloodSugar implements BaseColumns {
@@ -134,6 +135,22 @@ public class DBContract {
 
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
+
+        public static final String WEEKDAYS = "weekdays";
+        public static final String NOTIFY_ME = "notify_me";
+    }
+
+    public static final class Notify implements BaseColumns {
+        static final String TABLE_NAME = "notify";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
+        public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
+
+        public static final String DRUG_ID = "drug_id";
+        public static final String WEEKDAY = "weekday";
+        public static final String TIME = "time";
     }
 
     public static final class Steps implements BaseColumns {

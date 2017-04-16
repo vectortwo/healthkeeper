@@ -17,24 +17,22 @@ public class PedometerNotification {
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
 
-    private Context context;
-
-    public static final int PEDOMETER_NOTIFICATION_ID = 2017;
+    // TODO: uniqify?
+    private static final int PEDOMETER_NOTIFICATION_ID = 2017;
 
     public PedometerNotification(Context context) {
-        this.context = context; // TODO: check for memory leaks
-
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent stopServiceIntent = new Intent(context, PedometerService.class);
         Intent contentIntent = new Intent(context, MainActivity.class);
 
-        stopServiceIntent.setAction(PedometerService.ACTION_STOP_PEDOMETER_SERVICE);
+        stopServiceIntent.setAction(PedometerService.ACTION_PEDOMETER_STOP);
 
-        builder = new NotificationCompat.Builder(this.context)
+        builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(String.valueOf(0))
                 .setPriority(Notification.PRIORITY_MIN)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .addAction(R.mipmap.ic_launcher, context.getString(R.string.notification_turn_off),
                         PendingIntent.getService(context, 0, stopServiceIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, 0));
@@ -50,5 +48,9 @@ public class PedometerNotification {
 
     public void update() {
         notificationManager.notify(PEDOMETER_NOTIFICATION_ID, builder.build());
+    }
+
+    public int getNotificationID() {
+        return PEDOMETER_NOTIFICATION_ID;
     }
 }

@@ -4,35 +4,53 @@ package com.vectortwo.healthkeeper.data.db;
  * Created by ilya on 29/03/2017.
  */
 public class DrugColumns extends DBColumns {
-    public void putTitle(String title) {
+    public DrugColumns putTitle(String title) {
         contentValues.put(DBContract.Drug.TITLE, title);
+        return this;
     }
 
-    public void putDosage(float dosage) {
+    public DrugColumns putDosage(float dosage) {
         contentValues.put(DBContract.Drug.DOSAGE, dosage);
+        return this;
     }
 
-    public void putTimesADay(int times_a_day) {
-        contentValues.put(DBContract.Drug.TIMES_A_DAY, times_a_day);
+    public DrugColumns putTimesADay(int timesADay) {
+        contentValues.put(DBContract.Drug.TIMES_A_DAY, timesADay);
+        return this;
     }
 
-    public void putStartDate(String date) {
+    public DrugColumns putStartDate(String date) {
         contentValues.put(DBContract.Drug.START_DATE, date);
+        return this;
     }
 
-    public void putEndDate(String date) {
+    public DrugColumns putEndDate(String date) {
         contentValues.put(DBContract.Drug.END_DATE, date);
+        return this;
     }
 
-    public void putDescription(String desc) {
+    public DrugColumns putDescription(String desc) {
         contentValues.put(DBContract.Drug.DESCRIPTION, desc);
+        return this;
     }
 
-    public void putWarnings(String warnings) {
+    public DrugColumns putWarnings(String warnings) {
         contentValues.put(DBContract.Drug.WARNINGS, warnings);
+        return this;
     }
 
-    public void putArchived(int archived) {
+    public DrugColumns putArchived(int archived) {
         contentValues.put(DBContract.Drug.ARCHIVED, archived);
+        return this;
+    }
+
+    public DrugColumns putWeekdays(String weekdays) {
+        contentValues.put(DBContract.Drug.WEEKDAYS, weekdays);
+        return this;
+    }
+
+    public DrugColumns putNotifyMe(int notifyMe) {
+        contentValues.put(DBContract.Drug.NOTIFY_ME, notifyMe);
+        return this;
     }
 }
