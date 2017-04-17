@@ -13,6 +13,7 @@ import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
 import com.vectortwo.healthkeeper.services.CheckArchiveService;
+import com.vectortwo.healthkeeper.services.DrugNotifyService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int drugID = Integer.parseInt(text.getText().toString());
 
-                Intent intent = new Intent(DrugNotifyReceiver.ACTION_SCHEDULE);
+                Intent intent = new Intent(DrugNotifyService.ACTION_SCHEDULE);
                 intent.putExtra(DBContract.Notify.DRUG_ID, drugID);
 
                 sendBroadcast(intent);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int drugID = Integer.parseInt(text.getText().toString());
 
-                Intent intent = new Intent(DrugNotifyReceiver.ACTION_SCHEDULE);
+                Intent intent = new Intent(DrugNotifyService.ACTION_SCHEDULE);
                 intent.putExtra(DBContract.Notify.DRUG_ID, drugID);
 
                 sendBroadcast(intent);

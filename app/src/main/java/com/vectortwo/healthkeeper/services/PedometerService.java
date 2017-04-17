@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
+import com.vectortwo.healthkeeper.PedometerDateFormat;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.StepColumns;
@@ -19,6 +20,8 @@ import java.util.Calendar;
  * Created by ilya on 24/03/2017.
  */
 public class PedometerService extends Service implements SensorEventListener {
+
+    public static final String ACTION_STOP = "com.vectortwo.healthkeeper.intent.PEDOMETER_STOP";
 
     private long sensorData;
 
@@ -39,20 +42,20 @@ public class PedometerService extends Service implements SensorEventListener {
 
     private PedometerNotification notification;
 
-    private static final String ACTION_UPDATE = "com.vectortwo.healthkeeper.broadcast.PEDOMETER_UPDATE";
+    private final IBinder binder = new PedometerBinder();
 
-    public static final String ACTION_STOP = "com.vectortwo.healthkeeper.intent.PEDOMETER_STOP";
+    private static final String ACTION_UPDATE = "com.vectortwo.healthkeeper.broadcast.PEDOMETER_UPDATE";
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String currentDate = getDate();
+            String currentDate = PedometerDateFormat.getCurrentDate();
 
             StepColumns values = new StepColumns();
             values.putCount((int) stepsLastHour);
-            values.putDate(getDateWithoutHour(currentDate));
-            values.putHour(getOnReceivedHour(currentDate));
+            values.putDate(PedometerDateFormat.getDateWithoutHour(currentDate));
+            values.putHour(PedometerDateFormat.getOnReceivedHour(currentDate));
             getContentResolver().insert(DBContract.Steps.CONTENT_URI, values.getContentValues());
 
             // deal with hourly update
@@ -62,7 +65,7 @@ public class PedometerService extends Service implements SensorEventListener {
 
             // deal with daily update
             String lastReceivedDate = sharedPrefs.getString(getString(R.string.preference_pedometer_onreceive_date), currentDate);
-            if (!sameDay(currentDate, lastReceivedDate)) {
+            if (!PedometerDateFormat.sameDay(currentDate, lastReceivedDate)) {
                 stepsToday = 0;
                 daily_offset_cached = sensorData;
 
@@ -73,12 +76,9 @@ public class PedometerService extends Service implements SensorEventListener {
             }
             sharedPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
 
-
             setAlarmNextHour(alarmManager, alarmIntent);
         }
     };
-
-    private final IBinder binder = new PedometerBinder();
 
     public class PedometerBinder extends Binder {
         public PedometerService getService() {
@@ -92,61 +92,6 @@ public class PedometerService extends Service implements SensorEventListener {
 
     public long getStepsLastHour() {
         return stepsLastHour;
-    }
-
-    // TODO: abstract away date helper methods
-    private String getDate() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-
-        return year + "-" + month + "-" + day + "-" + hour;
-    }
-
-    private boolean sameDay(String dateA, String dateB) {
-        String[] xs = dateA.split("-");
-        String[] ys = dateB.split("-");
-        return xs[0].equals(ys[0]) && xs[1].equals(ys[1]) && xs[2].equals(ys[2]);
-    }
-
-    private boolean sameHour(String dateA, String dateB) {
-        String[] xs = dateA.split("-");
-        String[] ys = dateB.split("-");
-        return xs[0].equals(ys[0]) && xs[1].equals(ys[1]) && xs[2].equals(ys[2]) && xs[3].equals(ys[3]);
-    }
-
-    private int getHour(String date) {
-       return Integer.parseInt(date.substring(date.lastIndexOf("-") + 1));
-    }
-
-    private String getDateWithoutHour(String dateWithHour) {
-        return dateWithHour.substring(0, dateWithHour.lastIndexOf("-"));
-    }
-
-    private int getOnReceivedHour(String date) {
-        int hour = getHour(date);
-        return (hour == 0) ? 23 : hour - 1;
-    }
-
-    private int getOnKilledHour(String date) {
-        int hour = getHour(date);
-        return (hour == 0) ? 23 : hour;
-    }
-
-    void setAlarmNextHour(AlarmManager manager, PendingIntent intent) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, 0);
-        cal.add(Calendar.HOUR_OF_DAY, 1);
-
-        manager.cancel(intent);
-        manager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), intent);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
     }
 
     // Main Thread
@@ -172,6 +117,11 @@ public class PedometerService extends Service implements SensorEventListener {
     }
 
     @Override
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
+    @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     @Override
@@ -184,7 +134,7 @@ public class PedometerService extends Service implements SensorEventListener {
         sharedPrefs.edit()
                 .putBoolean(getString(R.string.preference_pedometer_force_stopped), false)
                 .putLong(getString(R.string.preference_pedometer_onkilled_sensordata), sensorData)
-                .putString(getString(R.string.preference_pedometer_onkilled_date), getDate())
+                .putString(getString(R.string.preference_pedometer_onkilled_date), PedometerDateFormat.getCurrentDate())
                 .putBoolean(getString(R.string.preference_pedometer_was_killed), true)
                 .apply();
     }
@@ -211,7 +161,7 @@ public class PedometerService extends Service implements SensorEventListener {
             stopSelf();
             return START_NOT_STICKY;
         }
-        String currentDate = getDate();
+        String currentDate = PedometerDateFormat.getCurrentDate();
         long notificationValue = 0;
         boolean forceStopped = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_force_stopped), false);
 
@@ -228,7 +178,7 @@ public class PedometerService extends Service implements SensorEventListener {
             sensorData = sharedPrefs.getLong(getString(R.string.preference_pedometer_onkilled_sensordata), 0);
             String onkilledDate = sharedPrefs.getString(getString(R.string.preference_pedometer_onkilled_date), currentDate);
 
-            if (sameDay(onkilledDate, currentDate)) {
+            if (PedometerDateFormat.sameDay(onkilledDate, currentDate)) {
                 daily_offset_cached = sharedPrefs.getLong(getString(R.string.preference_pedometer_daily_offset), 0);
                 notificationValue = sensorData - daily_offset_cached;
             } else {
@@ -237,11 +187,11 @@ public class PedometerService extends Service implements SensorEventListener {
             }
 
             hourly_offset_cached = sharedPrefs.getLong(getString(R.string.preference_pedometer_hourly_offset), 0);
-            if (!sameHour(onkilledDate, currentDate)) {
+            if (!PedometerDateFormat.sameHour(onkilledDate, currentDate)) {
                 StepColumns values = new StepColumns();
                 values.putCount((int) (sensorData - hourly_offset_cached));
-                values.putDate(getDateWithoutHour(onkilledDate));
-                values.putHour(getOnKilledHour(onkilledDate));
+                values.putDate(PedometerDateFormat.getDateWithoutHour(onkilledDate));
+                values.putHour(PedometerDateFormat.getOnKilledHour(onkilledDate));
                 getContentResolver().insert(DBContract.Steps.CONTENT_URI, values.getContentValues());
 
                 hourly_offset_cached = sensorData;
@@ -261,5 +211,14 @@ public class PedometerService extends Service implements SensorEventListener {
         stepsLastHour = sensorData - hourly_offset_cached;
 
         return START_NOT_STICKY;
+    }
+
+    private void setAlarmNextHour(AlarmManager manager, PendingIntent intent) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MINUTE, 0);
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+
+        manager.cancel(intent);
+        manager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), intent);
     }
 }

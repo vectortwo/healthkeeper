@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import java.util.Calendar;
+
+import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
 
@@ -38,11 +40,12 @@ public class RestoreDrugNotifyService extends IntentService {
             endDate.set(year, month, day);
 
             if (currentDate.compareTo(endDate) <= 0) {
-                Intent i = DrugNotifyReceiver.intentForBroadcast(DrugNotifyReceiver.ACTION_SCHEDULE_NOTIFY, drugID);
-                sendBroadcast(i);
+                Intent i = new Intent(this, DrugNotifyService.class);
+                i.setAction(DrugNotifyService.ACTION_SCHEDULE);
+                i.putExtra(DrugNotifyService.KEY_DRUG_ID, drugID);
+                startService(i);
             }
         }
-
         drugCursor.close();
     }
 }

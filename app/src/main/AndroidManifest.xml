@@ -23,18 +23,18 @@
             </intent-filter>
         </activity>
 
-        <provider
-                android:name=".data.db.DBContentProvider"
-                android:exported="false"
-                android:authorities="com.vectortwo.healthkeeper.HealthProvider">
+        <provider android:name=".data.db.DBContentProvider"
+                  android:exported="false"
+                  android:authorities="com.vectortwo.healthkeeper.HealthProvider">
         </provider>
 
         <service android:name=".services.PedometerService"
                  android:description="@string/descriptionServiceSteps"/>
 
-        <service android:name=".receivers.DrugNotifyReceiver$DrugNotifyService"/>
+        <service android:name=".services.CheckArchiveService"
+                 android:description="@string/descriptionServiceArchiver"/>
 
-        <service android:name=".services.CheckArchiveService"/>
+        <service android:name=".services.DrugNotifyService"/>
 
         <service android:name=".services.RestoreDrugNotifyService"/>
 
@@ -45,9 +45,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- set android:exported="false" -->
-        <receiver android:name=".receivers.DrugNotifyReceiver"
-                  android:description="@string/descriptionReceiverDrugNotify">
+        <receiver android:name=".receivers.DrugNotifyReceiver">
             <intent-filter>
                 <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_SCHEDULE"/>
                 <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_SCHEDULE_NOTIFY"/>

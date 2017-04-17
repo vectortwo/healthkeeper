@@ -30,7 +30,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         Intent checkArchiveService = new Intent(context, CheckArchiveService.class);
         context.startService(checkArchiveService);
 
-        // Restore drug notifications (only after checkService is done!?)
+        // Restore drug notifications
         Intent restoreNotifications = new Intent(context, RestoreDrugNotifyService.class);
         context.startService(restoreNotifications);
     }

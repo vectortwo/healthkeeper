@@ -4,7 +4,8 @@
     <string name="today_steps">Today steps</string>
     <string name="notification_turn_off">Turn off</string>
     <string name="descriptionServiceSteps">Pedometer</string>
-    <string name="descriptionReceiverDrugNotify">Drug Notification Scheduler</string>
+    <string name="descriptionReceiverDrugNotify">Medications notification scheduler</string>
+    <string name="descriptionServiceArchiver">Medication archiver</string>
 
     <string name="prefs_first_launch">com.vectortwo.healthkeeper.prefs.FIRST_LAUNCH</string>
 </resources>

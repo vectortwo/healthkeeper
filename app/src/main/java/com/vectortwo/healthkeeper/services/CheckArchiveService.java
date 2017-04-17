@@ -59,7 +59,6 @@ public class CheckArchiveService extends IntentService {
         currentDate.set(Calendar.MINUTE, 0);
 
         Intent alarmIntent = new Intent(this, CheckArchiveService.class);
-        // TODO: profile getappcontext
         PendingIntent scheduleIntent = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
         alarmManager.setExact(AlarmManager.RTC, currentDate.getTimeInMillis(), scheduleIntent);
     }
