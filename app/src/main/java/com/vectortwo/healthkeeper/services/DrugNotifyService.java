@@ -17,15 +17,18 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Drug notification scheduler.
+ *  Drug notification scheduler service.
+ *  Accepts an {@link Intent} with {@link #ACTION_SCHEDULE} to schedule a notification, {@link #ACTION_CANCEL} to cancel it
+ *  operating on a drug with id found in {@link #KEY_DRUG_ID} extra data of the passed Intent.
  */
 public class DrugNotifyService extends IntentService {
 
     public static final String ACTION_SCHEDULE = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_SCHEDULE";
-    public static final String ACTION_SCHEDULE_NOTIFY = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_SCHEDULE_NOTIFY";
     public static final String ACTION_CANCEL = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_CANCEL";
 
     public static final String KEY_DRUG_ID = DBContract.Notify.DRUG_ID;
+
+    private static final String ACTION_SCHEDULE_NOTIFY = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_SCHEDULE_NOTIFY";
 
     public DrugNotifyService() {
         super("DrugNotifyService");
