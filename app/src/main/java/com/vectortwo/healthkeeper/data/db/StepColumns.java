@@ -1,7 +1,8 @@
 package com.vectortwo.healthkeeper.data.db;
 
 /**
- * Created by ilya on 29/03/2017.
+ *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
+ *  for {@link com.vectortwo.healthkeeper.data.db.DBContract.Steps} table. Ensures type-safety.
  */
 public class StepColumns extends DBColumns {
     public StepColumns putCount(int count) {

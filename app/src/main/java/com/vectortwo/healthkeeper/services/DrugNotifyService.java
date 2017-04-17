@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Created by ilya on 17/04/2017.
+ * Drug notification scheduler.
  */
 public class DrugNotifyService extends IntentService {
 

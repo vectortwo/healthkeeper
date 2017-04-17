@@ -3,7 +3,7 @@ package com.vectortwo.healthkeeper;
 import java.util.Calendar;
 
 /**
- * Created by ilya on 17/04/2017.
+ * Helper class for manipulating Pedometer-formatted dates.
  */
 public final class PedometerDateFormat {
 

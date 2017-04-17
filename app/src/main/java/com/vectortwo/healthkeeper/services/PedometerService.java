@@ -17,7 +17,7 @@ import com.vectortwo.healthkeeper.notifications.PedometerNotification;
 import java.util.Calendar;
 
 /**
- * Created by ilya on 24/03/2017.
+ * Pedometer implementation as a foreground service.
  */
 public class PedometerService extends Service implements SensorEventListener {
 

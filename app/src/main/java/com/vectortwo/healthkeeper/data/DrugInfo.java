@@ -11,26 +11,43 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by ilya on 17/03/2017.
+ * Downloads information about a specific drug from the Internet.
  */
-
 public class DrugInfo {
 
+    /**
+     * Return string indicating an unsuccessful request.
+     */
     public static final String NO_INFO = "";
 
+    /**
+     * An interface for handling the results of events initiated by {@link EventInitiator}
+     *
+     * @param <T> should match the output {@param <OUT>} type of the event that's being handled.
+     */
     public interface EventHandler<T> {
-        void onPostExecute(T t);
+        /**
+         * Callback-method for handling the results of executed task.
+         * @param r downloaded results
+         */
+        void onPostExecute(T r);
     }
 
     private interface EventInitiator {
         void addHandler(EventHandler e);
     }
 
+    /**
+     * Base class for building asynchronous requests for getting drug related information.
+     * Implements observer pattern.
+     *
+     * @param <IN> input type of a request
+     * @param <OUT> result type of a request
+     */
     private abstract class BaseInfo<IN, OUT> extends AsyncTask<IN, Integer, OUT> implements EventInitiator {
         ArrayList<EventHandler<OUT>> handlers;
 
@@ -56,6 +73,18 @@ public class DrugInfo {
         }
     }
 
+    /**
+     * Downloads spelling suggestion for a drug.
+     * Example usage:
+     *      DrugInfo info = new DrugInfo();
+     *      DrugInfo.SpellingSuggestions op = info.new SpellingSuggestions();
+     *      op.addHandler(new DrugInfo.EventHandler<ArrayList<String>>() {
+     *      @Override
+     *      public void onPostExecute(ArrayList<String> r) {
+     *          // manipulate results here
+     *      }
+     *      });
+     */
     public class SpellingSuggestions extends BaseInfo<String, ArrayList<String>> {
         @Override
         protected ArrayList<String> doInBackground(String... params) {
@@ -66,6 +95,18 @@ public class DrugInfo {
         }
     }
 
+    /**
+     * Downloads description for a drug.
+     * Example usage:
+     *      DrugInfo info = new DrugInfo();
+     *      DrugInfo.Description op = info.new Description();
+     *      op.addHandler(new DrugInfo.EventHandler<String>() {
+     *      @Override
+     *      public void onPostExecute(String r) {
+     *          // manipulate results here
+     *      }
+     *      });
+     */
     public class Description extends BaseInfo<String, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -76,6 +117,18 @@ public class DrugInfo {
         }
     }
 
+    /**
+     * Downloads warnings for a drug.
+     * Example usage:
+     *      DrugInfo info = new DrugInfo();
+     *      DrugInfo.Warnings op = info.new Warnings();
+     *      op.addHandler(new DrugInfo.EventHandler<String>() {
+     *      @Override
+     *      public void onPostExecute(String r) {
+     *          // manipulate results here
+     *      }
+     *      });
+     */
     public class Warnings extends BaseInfo<String, String> {
         @Override
         protected String doInBackground(String... params) {

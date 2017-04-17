@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.vectortwo.healthkeeper.*;
+import com.vectortwo.healthkeeper.data.DrugInfo;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
 import com.vectortwo.healthkeeper.services.CheckArchiveService;
 import com.vectortwo.healthkeeper.services.DrugNotifyService;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 

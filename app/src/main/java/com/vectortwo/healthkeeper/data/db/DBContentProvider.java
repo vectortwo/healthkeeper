@@ -1,12 +1,10 @@
 package com.vectortwo.healthkeeper.data.db;
 
-import android.app.SearchManager;
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.provider.BaseColumns;
 
 /**
  * Created by ilya on 09/03/2017.
@@ -84,20 +82,6 @@ public class DBContentProvider extends ContentProvider {
     public boolean onCreate() {
         dbOpenHelper = new DBOpenHelper(getContext());
         return true;
-    }
-
-    private Cursor getSuggestions(String from) {
-        String query = "%" + from + "%";
-
-        db = dbOpenHelper.getReadableDatabase();
-        return db.query(
-                DBContract.KnownDrugs.TABLE_NAME,
-                new String[] {DBContract.KnownDrugs._ID, DBContract.KnownDrugs.TITLE},
-                DBContract.KnownDrugs.TITLE + " like ?",
-                new String[]{query},
-                null,
-                null,
-                "length(" + DBContract.KnownDrugs.TITLE + ") limit 10");
     }
 
     @Override
@@ -342,5 +326,25 @@ public class DBContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
         return table;
+    }
+
+    /**
+     * Query suggestion table for drug titles that contain substring {@param from}
+     *
+     * @param from a substring to look for
+     * @return a cursor containing suggestions
+     */
+    private Cursor getSuggestions(String from) {
+        String query = "%" + from + "%";
+
+        db = dbOpenHelper.getReadableDatabase();
+        return db.query(
+                DBContract.KnownDrugs.TABLE_NAME,
+                new String[] {DBContract.KnownDrugs._ID, DBContract.KnownDrugs.TITLE},
+                DBContract.KnownDrugs.TITLE + " like ?",
+                new String[]{query},
+                null,
+                null,
+                "length(" + DBContract.KnownDrugs.TITLE + ") limit 10");
     }
 }

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 /**
- * Created by ilya on 06/04/2017.
+ * Receive alarms scheduled by {@link com.vectortwo.healthkeeper.services.DrugNotifyService} to
+ * start it.
+ * DO NOT send broadcast to this receiver manually! Directly start {@link com.vectortwo.healthkeeper.services.DrugNotifyService}
  */
 public class DrugNotifyReceiver extends WakefulBroadcastReceiver {
 

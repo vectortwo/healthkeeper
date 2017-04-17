@@ -10,7 +10,7 @@ import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
 
 /**
- * Created by ilya on 16/04/2017.
+ * Restores drug notifications that were discarded on system shutdown.
  */
 public class RestoreDrugNotifyService extends IntentService {
     public RestoreDrugNotifyService() {

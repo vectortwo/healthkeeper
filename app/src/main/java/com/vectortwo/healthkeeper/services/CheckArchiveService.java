@@ -10,6 +10,10 @@ import java.util.Calendar;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
 
+/**
+ * Checks and moves overdue drugs to archive. Runs every day at 12:00 AM.
+ * Should be started only once either on app first launch or system reboot.
+ */
 public class CheckArchiveService extends IntentService {
     public CheckArchiveService() {
         super("CheckArchiveService");
