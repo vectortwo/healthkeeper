@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">HealthKeeper</string>
-    <string name="search_hint">Find drugs</string>
     <string name="today_steps">Today steps</string>
     <string name="notification_turn_off">Turn off</string>
     <string name="descriptionServiceSteps">Pedometer</string>

@@ -147,12 +147,27 @@ public class PedometerService extends Service implements SensorEventListener {
 
         Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
-        notification = new PedometerNotification(this);
+        if (stepSensor != null) {
+            notification = new PedometerNotification(this);
 
-        alarmIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_UPDATE), 0);
+            alarmIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_UPDATE), 0);
 
-        registerReceiver(receiver, new IntentFilter(ACTION_UPDATE));
-        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            registerReceiver(receiver, new IntentFilter(ACTION_UPDATE));
+            sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            stopSelf();
+        }
+    }
+
+    /**
+     * Helper function to check for a presence of step sensor on a device
+     *
+     * @return true if present, false otherwise
+     */
+    public static boolean hasSensor(Context context) {
+        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        return (stepSensor != null);
     }
 
     @Override

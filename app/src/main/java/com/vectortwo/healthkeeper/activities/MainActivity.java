@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.vectortwo.healthkeeper.*;
+import com.vectortwo.healthkeeper.data.AsyncTaskHandler;
 import com.vectortwo.healthkeeper.data.DrugInfo;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
