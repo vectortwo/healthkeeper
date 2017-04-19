@@ -9,8 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.vectortwo.healthkeeper.*;
-import com.vectortwo.healthkeeper.data.AsyncTaskHandler;
+import com.vectortwo.healthkeeper.data.TaskHandler;
 import com.vectortwo.healthkeeper.data.DrugInfo;
+import com.vectortwo.healthkeeper.data.LocationInfo;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
@@ -75,5 +76,26 @@ public class MainActivity extends AppCompatActivity {
                 sendBroadcast(intent);
             }
         });
+
+        DrugInfo drugInfo = new DrugInfo("aspirin");
+        DrugInfo.Details det = drugInfo.new Details();
+        det.addHandler(new TaskHandler<DrugInfo.Details>() {
+            @Override
+            public void onPostExecute(DrugInfo.Details r) {
+                Log.d("vectortwo", r.getDescription());
+            }
+        });
+        det.execute();
+
+        LocationInfo location = new LocationInfo();
+        LocationInfo.Details loc = location.new Details();
+        loc.addHandler(new TaskHandler<LocationInfo.Details>() {
+            @Override
+            public void onPostExecute(LocationInfo.Details r) {
+                Log.d("vectortwo", r.getCountry());
+                Log.d("vectortwo", r.getCity());
+            }
+        });
+        loc.execute();
     }
 }

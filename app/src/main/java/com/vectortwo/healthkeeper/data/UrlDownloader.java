@@ -6,15 +6,21 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
- * Created by ilya on 18/04/2017.
+ * Base class for dealing with HTTP requests
  */
 public class UrlDownloader {
+
+    /**
+     * Downloads content located at {@param url}.
+     * Runs on current thread.
+     *
+     * @param url to download from
+     * @return downloaded content in String
+     */
     protected static String downloadFrom(URL url) {
-        StringBuilder res = null;
+        StringBuilder res = new StringBuilder("");
 
         try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
-            res = new StringBuilder();
-
             String line;
             while ((line = in.readLine()) != null) {
                 res.append(line);
@@ -23,6 +29,6 @@ public class UrlDownloader {
             e.printStackTrace();
         }
 
-        return (res == null ? null : res.toString());
+        return res.toString();
     }
 }

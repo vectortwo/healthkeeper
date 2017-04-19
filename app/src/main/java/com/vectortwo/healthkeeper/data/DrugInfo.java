@@ -83,7 +83,7 @@ public class DrugInfo extends UrlDownloader {
     }
 
     /**
-     * Downloads spelling suggestion for a drug.
+     * Downloads detail information about a drug (e.g. description, contradictions)
      * Example usage:
      *      DrugInfo info = new DrugInfo(drugTitle);
      *      DrugInfo.Details op = info.new Details();
