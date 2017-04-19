@@ -1,5 +1,6 @@
 package com.vectortwo.healthkeeper.data;
 
+import android.util.Log;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,6 +20,7 @@ public class DrugInfo extends UrlDownloader {
 
     public DrugInfo(String drugTitle) {
         this.drugTitle = drugTitle;
+        Log.d("vectortwo", drugTitle);
     }
 
     public String getDrugTitle() {
@@ -87,7 +89,7 @@ public class DrugInfo extends UrlDownloader {
      * Example usage:
      *      DrugInfo info = new DrugInfo(drugTitle);
      *      DrugInfo.Details op = info.new Details();
-     *      op.addHandler(new DrugInfo.EventHandler<Details>() {
+     *      op.addHandler(new DrugInfo.TaskHandler<Details>() {
      *      @Override
      *      public void onPostExecute(Details r) {
      *           description = r.getDescription();
@@ -126,22 +128,22 @@ public class DrugInfo extends UrlDownloader {
             }
             String desc = (String) descJSON.get(0);
 
-            int start = 0, end = desc.length();
             Matcher matcher;
 
             Pattern extraneousPattern = Pattern.compile("USAGE");
             matcher = extraneousPattern.matcher(desc);
             if (matcher.find()) {
-                start = matcher.end();
+                desc = desc.substring(matcher.end());
             }
 
             Pattern sentencePattern = Pattern.compile("\\.\\s");
             matcher = sentencePattern.matcher(desc);
             if (matcher.find()) {
-                end = matcher.start() + 1;
+                int matchID = matcher.start();
+                if (matchID > 15) {
+                    desc = desc.substring(0, matchID + 1);
+                }
             }
-
-            desc = desc.substring(start, end);
             desc = desc.replaceAll("•", " ");
 
             return desc;

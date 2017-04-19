@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 /**
  * Created by ilya on 07/03/2017.
  */
-public class DBContract {
+public final class DBContract {
     private DBContract() {}
 
     public static final String AUTHORITY = "com.vectortwo.healthkeeper.HealthProvider";
@@ -50,6 +50,18 @@ public class DBContract {
         public static final String VALUE = "value";
         public static final String DATE = "date";
         public static final String AFTER_FOOD = "after_food";
+    }
+
+    public static final class WellBeing implements BaseColumns {
+        static final String TABLE_NAME = "well_being";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
+        public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
+
+        public static final String VALUE = "value";
+        public static final String DATE = "date";
     }
 
     public static final class BloodPressure implements BaseColumns {

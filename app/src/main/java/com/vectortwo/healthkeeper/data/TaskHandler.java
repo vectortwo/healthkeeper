@@ -1,7 +1,8 @@
 package com.vectortwo.healthkeeper.data;
 
 /**
- * An interface for handling the results of events initiated by {@link TaskInitiator}
+ * An interface for handling the results of events initiated by {@link TaskInitiator}.
+ * Client side of the Observer Pattern.
  *
  * @param <T> should match the output {@param <OUT>} type of the event that's being handled.
  */

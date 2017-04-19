@@ -38,8 +38,11 @@ public class DBContentProvider extends ContentProvider {
     private static final int ITEM_DRUG                  = 19;
     private static final int TABLE_NOTIFY               = 20;
     private static final int ITEM_NOTIFY                = 21;
+    private static final int TABLE_WELLBEING            = 22;
+    private static final int ITEM_WELLBEING             = 23;
 
-    private static final int DRUG_SUGGESTIONS           = 22;
+
+    private static final int DRUG_SUGGESTIONS           = 24;
 
     static {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
@@ -74,6 +77,9 @@ public class DBContentProvider extends ContentProvider {
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME, TABLE_NOTIFY);
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME + "/#", ITEM_NOTIFY);
+
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME, TABLE_WELLBEING);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME + "/#", ITEM_WELLBEING);
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
     }
@@ -169,6 +175,14 @@ public class DBContentProvider extends ContentProvider {
                 queryBuilder.setTables(DBContract.Notify.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+            case TABLE_WELLBEING:
+                queryBuilder.setTables(DBContract.WellBeing.TABLE_NAME);
+                break;
+            case ITEM_WELLBEING:
+                queryBuilder.setTables(DBContract.WellBeing.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -250,6 +264,12 @@ public class DBContentProvider extends ContentProvider {
             case ITEM_NOTIFY:
                 mime = DBContract.Notify.MIME_ITEM_TYPE;
                 break;
+            case TABLE_WELLBEING:
+                mime = DBContract.WellBeing.MIME_DIR_TYPE;
+                break;
+            case ITEM_WELLBEING:
+                mime = DBContract.WellBeing.MIME_ITEM_TYPE;
+                break;
            default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -322,6 +342,9 @@ public class DBContentProvider extends ContentProvider {
             case TABLE_NOTIFY: case ITEM_NOTIFY:
                 table = DBContract.Notify.TABLE_NAME;
                 break;
+            case TABLE_WELLBEING: case ITEM_WELLBEING:
+                table = DBContract.WellBeing.TABLE_NAME;
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -329,10 +352,10 @@ public class DBContentProvider extends ContentProvider {
     }
 
     /**
-     * Query suggestion table for drug titles that contain substring {@param from}
+     * Query suggestion table {@link DBContract.KnownDrugs} for drug titles that contain substring {@param from}
      *
      * @param from a substring to look for
-     * @return a cursor containing suggestions
+     * @return a cursor containing 10 suggestions
      */
     private Cursor getSuggestions(String from) {
         String query = "%" + from + "%";

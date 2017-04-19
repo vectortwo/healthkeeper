@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: add to MainActivity in master!
         sharedPrefs = getPreferences(MODE_PRIVATE);
         if (sharedPrefs.getBoolean(getString(R.string.prefs_first_launch), true)) {
             sharedPrefs
@@ -77,25 +76,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DrugInfo drugInfo = new DrugInfo("aspirin");
-        DrugInfo.Details det = drugInfo.new Details();
-        det.addHandler(new TaskHandler<DrugInfo.Details>() {
-            @Override
-            public void onPostExecute(DrugInfo.Details r) {
-                Log.d("vectortwo", r.getDescription());
-            }
-        });
-        det.execute();
-
-        LocationInfo location = new LocationInfo();
-        LocationInfo.Details loc = location.new Details();
-        loc.addHandler(new TaskHandler<LocationInfo.Details>() {
-            @Override
-            public void onPostExecute(LocationInfo.Details r) {
-                Log.d("vectortwo", r.getCountry());
-                Log.d("vectortwo", r.getCity());
-            }
-        });
-        loc.execute();
     }
 }
