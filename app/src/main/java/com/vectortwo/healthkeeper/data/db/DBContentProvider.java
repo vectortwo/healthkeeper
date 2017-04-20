@@ -78,8 +78,8 @@ public class DBContentProvider extends ContentProvider {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME, TABLE_INTAKE);
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME + "/#", ITEM_INTAKE);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME, TABLE_WELLBEING);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME + "/#", ITEM_WELLBEING);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.WellBeing.TABLE_NAME, TABLE_WELLBEING);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.WellBeing.TABLE_NAME + "/#", ITEM_WELLBEING);
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
     }

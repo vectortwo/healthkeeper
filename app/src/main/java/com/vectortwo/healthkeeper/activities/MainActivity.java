@@ -1,5 +1,6 @@
 package com.vectortwo.healthkeeper.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -10,17 +11,15 @@ import android.widget.EditText;
 import com.vectortwo.healthkeeper.*;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
+import com.vectortwo.healthkeeper.services.DrugArchiveExpiredService;
 import com.vectortwo.healthkeeper.services.DrugArchiveService;
 import com.vectortwo.healthkeeper.services.DrugNotifyService;
 
-
-// function to check whether end date - currentdate > year, and drop drugs and intakes matching this criteria.
-
-// snooze drug notifications
+// snooze drug notifications (snooze queue?)
 
 public class MainActivity extends AppCompatActivity {
 
-    Button bt_schedule, bt_unschedule;
+    Button bt_schedule, bt_unschedule, bt_overdue;
     EditText text;
 
     SharedPreferences sharedPrefs;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         bt_schedule = (Button) findViewById(R.id.bt_schedule);
         bt_unschedule = (Button) findViewById(R.id.bt_unschedule);
+        bt_overdue = (Button) findViewById(R.id.bt_overdue);
         text = (EditText) findViewById(R.id.inDrugID);
 
         bt_schedule.setOnClickListener(new View.OnClickListener() {
@@ -74,5 +74,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Context cntx = this;
+        bt_overdue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(cntx, DrugArchiveExpiredService.class));
+            }
+        });
     }
 }

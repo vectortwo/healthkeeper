@@ -154,7 +154,7 @@ public final class DBContract {
     }
 
     public static final class Intake implements BaseColumns {
-        static final String TABLE_NAME = "intakes";
+        static final String TABLE_NAME = "intake";
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
