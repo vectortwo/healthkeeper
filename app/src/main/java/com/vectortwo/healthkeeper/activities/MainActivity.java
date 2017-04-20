@@ -4,21 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.vectortwo.healthkeeper.*;
-import com.vectortwo.healthkeeper.data.TaskHandler;
-import com.vectortwo.healthkeeper.data.DrugInfo;
-import com.vectortwo.healthkeeper.data.LocationInfo;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
-import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
-import com.vectortwo.healthkeeper.services.CheckArchiveService;
+import com.vectortwo.healthkeeper.services.DrugArchiveService;
 import com.vectortwo.healthkeeper.services.DrugNotifyService;
 
-import java.util.ArrayList;
+
+// function to check whether end date - currentdate > year, and drop drugs and intakes matching this criteria.
+
+// snooze drug notifications
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     .edit()
                     .putBoolean(getString(R.string.prefs_first_launch), false)
                     .apply();
-            Intent intent = new Intent(this, CheckArchiveService.class);
+            Intent intent = new Intent(this, DrugArchiveService.class);
             startService(intent);
         }
 
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 int drugID = Integer.parseInt(text.getText().toString());
 
                 Intent intent = new Intent(DrugNotifyService.ACTION_SCHEDULE);
-                intent.putExtra(DBContract.Notify.DRUG_ID, drugID);
+                intent.putExtra(DBContract.Intake.DRUG_ID, drugID);
 
                 sendBroadcast(intent);
             }
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 int drugID = Integer.parseInt(text.getText().toString());
 
                 Intent intent = new Intent(DrugNotifyService.ACTION_SCHEDULE);
-                intent.putExtra(DBContract.Notify.DRUG_ID, drugID);
+                intent.putExtra(DBContract.Intake.DRUG_ID, drugID);
 
                 sendBroadcast(intent);
             }

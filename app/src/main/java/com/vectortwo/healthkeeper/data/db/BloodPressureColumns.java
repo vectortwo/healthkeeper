@@ -15,6 +15,11 @@ public class BloodPressureColumns extends DBColumns {
         return this;
     }
 
+    /**
+     * A date when the blood pressure was measured
+     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK-Calendar.HOUR_OF_DAY-Calendar.MINUTE"
+     * @return this
+     */
     public BloodPressureColumns putDate(String date) {
         contentValues.put(DBContract.BloodPressure.DATE, date);
         return this;

@@ -32,7 +32,7 @@
         <service android:name=".services.PedometerService"
                  android:description="@string/descriptionServiceSteps"/>
 
-        <service android:name=".services.CheckArchiveService"
+        <service android:name=".services.DrugArchiveService"
                  android:description="@string/descriptionServiceArchiver"/>
 
         <service android:name=".services.DrugNotifyService"/>

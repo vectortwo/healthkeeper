@@ -14,14 +14,14 @@ import com.vectortwo.healthkeeper.activities.MainActivity;
 /**
  * Created by ilya on 10/04/2017.
  */
-public class DrugNotifyNotification {
+public class DrugIntakeNotification {
 
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
 
     private int notificationID;
 
-    public DrugNotifyNotification(Context context, int notificationID) {
+    public DrugIntakeNotification(Context context, int notificationID) {
         this.notificationID = notificationID;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 

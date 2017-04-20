@@ -10,6 +10,11 @@ public class PulseColumns extends DBColumns {
         return this;
     }
 
+    /**
+     * A date when the pulse was measured
+     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK"
+     * @return this
+     */
     public PulseColumns putDate(String date) {
         contentValues.put(DBContract.Pulse.DATE, date);
         return this;

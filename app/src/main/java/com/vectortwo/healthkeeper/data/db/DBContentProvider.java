@@ -36,8 +36,8 @@ public class DBContentProvider extends ContentProvider {
     private static final int ITEM_STEPS                 = 17;
     private static final int TABLE_DRUG                 = 18;
     private static final int ITEM_DRUG                  = 19;
-    private static final int TABLE_NOTIFY               = 20;
-    private static final int ITEM_NOTIFY                = 21;
+    private static final int TABLE_INTAKE               = 20;
+    private static final int ITEM_INTAKE                = 21;
     private static final int TABLE_WELLBEING            = 22;
     private static final int ITEM_WELLBEING             = 23;
 
@@ -75,11 +75,11 @@ public class DBContentProvider extends ContentProvider {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME, TABLE_DRUG);
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Drug.TABLE_NAME + "/#", ITEM_DRUG);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME, TABLE_NOTIFY);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME + "/#", ITEM_NOTIFY);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME, TABLE_INTAKE);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME + "/#", ITEM_INTAKE);
 
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME, TABLE_WELLBEING);
-        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Notify.TABLE_NAME + "/#", ITEM_WELLBEING);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME, TABLE_WELLBEING);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Intake.TABLE_NAME + "/#", ITEM_WELLBEING);
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
     }
@@ -168,11 +168,11 @@ public class DBContentProvider extends ContentProvider {
                 queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
-            case TABLE_NOTIFY:
-                queryBuilder.setTables(DBContract.Notify.TABLE_NAME);
+            case TABLE_INTAKE:
+                queryBuilder.setTables(DBContract.Intake.TABLE_NAME);
                 break;
-            case ITEM_NOTIFY:
-                queryBuilder.setTables(DBContract.Notify.TABLE_NAME);
+            case ITEM_INTAKE:
+                queryBuilder.setTables(DBContract.Intake.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
             case TABLE_WELLBEING:
@@ -258,11 +258,11 @@ public class DBContentProvider extends ContentProvider {
             case ITEM_DRUG:
                 mime = DBContract.Drug.MIME_ITEM_TYPE;
                 break;
-            case TABLE_NOTIFY:
-                mime = DBContract.Notify.MIME_DIR_TYPE;
+            case TABLE_INTAKE:
+                mime = DBContract.Intake.MIME_DIR_TYPE;
                 break;
-            case ITEM_NOTIFY:
-                mime = DBContract.Notify.MIME_ITEM_TYPE;
+            case ITEM_INTAKE:
+                mime = DBContract.Intake.MIME_ITEM_TYPE;
                 break;
             case TABLE_WELLBEING:
                 mime = DBContract.WellBeing.MIME_DIR_TYPE;
@@ -339,8 +339,8 @@ public class DBContentProvider extends ContentProvider {
             case TABLE_DRUG: case ITEM_DRUG:
                 table = DBContract.Drug.TABLE_NAME;
                 break;
-            case TABLE_NOTIFY: case ITEM_NOTIFY:
-                table = DBContract.Notify.TABLE_NAME;
+            case TABLE_INTAKE: case ITEM_INTAKE:
+                table = DBContract.Intake.TABLE_NAME;
                 break;
             case TABLE_WELLBEING: case ITEM_WELLBEING:
                 table = DBContract.WellBeing.TABLE_NAME;

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.vectortwo.healthkeeper.R;
-import com.vectortwo.healthkeeper.services.CheckArchiveService;
+import com.vectortwo.healthkeeper.services.DrugArchiveService;
 import com.vectortwo.healthkeeper.services.PedometerService;
 import com.vectortwo.healthkeeper.services.RestoreDrugNotifyService;
 
@@ -27,9 +27,9 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         }
         sharedPrefs.edit().clear().apply();
 
-        // Initiate drug archive check
-        Intent checkArchiveService = new Intent(context, CheckArchiveService.class);
-        context.startService(checkArchiveService);
+        // Initiate drug archive check every day
+        Intent drugArchiveService = new Intent(context, DrugArchiveService.class);
+        context.startService(drugArchiveService);
 
         // Restore drug notifications
         Intent restoreNotifications = new Intent(context, RestoreDrugNotifyService.class);

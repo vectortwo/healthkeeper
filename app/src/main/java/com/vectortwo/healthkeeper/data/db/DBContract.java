@@ -137,7 +137,6 @@ public final class DBContract {
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String TITLE = "title";
-        public static final String DOSAGE = "dosage";
 
         public static final String DESCRIPTION = "description";
         public static final String WARNINGS = "warnings";
@@ -150,10 +149,12 @@ public final class DBContract {
 
         public static final String WEEKDAYS = "weekdays";
         public static final String NOTIFY_ME = "notify_me";
+
+        public static final String TOTAL_AMOUNT = "total_amount";
     }
 
-    public static final class Notify implements BaseColumns {
-        static final String TABLE_NAME = "notify";
+    public static final class Intake implements BaseColumns {
+        static final String TABLE_NAME = "intakes";
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
@@ -163,6 +164,8 @@ public final class DBContract {
         public static final String DRUG_ID = "drug_id";
         public static final String WEEKDAY = "weekday";
         public static final String TIME = "time";
+        public static final String FORM = "form";
+        public static final String DOSAGE = "dosage";
     }
 
     public static final class Steps implements BaseColumns {

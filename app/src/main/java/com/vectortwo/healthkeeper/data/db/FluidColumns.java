@@ -5,11 +5,17 @@ package com.vectortwo.healthkeeper.data.db;
  *  for {@link com.vectortwo.healthkeeper.data.db.DBContract.Fluid} table. Ensures type-safety.
  */
 public class FluidColumns extends DBColumns {
+
     public FluidColumns putDrank(float drank) {
         contentValues.put(DBContract.Fluid.DRANK, drank);
         return this;
     }
 
+    /**
+     * A date when the fluid intake was measured
+     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK-Calendar.HOUR_OF_DAY-Calendar.MINUTES"
+     * @return this
+     */
     public FluidColumns putDate(String date) {
         contentValues.put(DBContract.Fluid.DATE, date);
         return this;

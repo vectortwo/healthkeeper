@@ -14,8 +14,8 @@ import com.vectortwo.healthkeeper.data.db.DrugColumns;
  * Checks and moves overdue drugs to archive. Runs every day at 12:00 AM.
  * Should be started only once either on app first launch or system reboot.
  */
-public class CheckArchiveService extends IntentService {
-    public CheckArchiveService() {
+public class DrugArchiveService extends IntentService {
+    public DrugArchiveService() {
         super("CheckArchiveService");
     }
 
@@ -62,7 +62,7 @@ public class CheckArchiveService extends IntentService {
         currentDate.set(Calendar.HOUR_OF_DAY, 0);
         currentDate.set(Calendar.MINUTE, 0);
 
-        Intent alarmIntent = new Intent(this, CheckArchiveService.class);
+        Intent alarmIntent = new Intent(this, DrugArchiveService.class);
         PendingIntent scheduleIntent = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
         alarmManager.setExact(AlarmManager.RTC, currentDate.getTimeInMillis(), scheduleIntent);
     }

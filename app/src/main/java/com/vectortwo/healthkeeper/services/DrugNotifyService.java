@@ -9,7 +9,7 @@ import android.database.Cursor;
 import java.util.Calendar;
 import android.provider.BaseColumns;
 import com.vectortwo.healthkeeper.data.db.DBContract;
-import com.vectortwo.healthkeeper.notifications.DrugNotifyNotification;
+import com.vectortwo.healthkeeper.notifications.DrugIntakeNotification;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
 
 import java.util.ArrayList;
@@ -20,13 +20,14 @@ import java.util.Collections;
  *  Drug notification scheduler service.
  *  Accepts an {@link Intent} with {@link #ACTION_SCHEDULE} to schedule a notification, {@link #ACTION_CANCEL} to cancel it
  *  operating on a drug with id found in {@link #KEY_DRUG_ID} extra data of the passed Intent.
+ *  Won't schedule if the end date precedes the schedule date.
  */
 public class DrugNotifyService extends IntentService {
 
     public static final String ACTION_SCHEDULE = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_SCHEDULE";
     public static final String ACTION_CANCEL = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_CANCEL";
 
-    public static final String KEY_DRUG_ID = DBContract.Notify.DRUG_ID;
+    public static final String KEY_DRUG_ID = DBContract.Intake.DRUG_ID;
 
     private static final String ACTION_SCHEDULE_NOTIFY = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_SCHEDULE_NOTIFY";
 
@@ -47,7 +48,7 @@ public class DrugNotifyService extends IntentService {
         }
 
         Intent notifyIntent = new Intent(ACTION_SCHEDULE_NOTIFY);
-        notifyIntent.putExtra(DBContract.Notify.DRUG_ID, drugID);
+        notifyIntent.putExtra(DBContract.Intake.DRUG_ID, drugID);
 
         PendingIntent scheduleIntent = PendingIntent.getBroadcast(this, drugID, notifyIntent, 0);
 
@@ -58,11 +59,11 @@ public class DrugNotifyService extends IntentService {
                 new String[]{Integer.toString(drugID)},
                 null);
         Cursor notifyCursor = getContentResolver().query(
-                DBContract.Notify.CONTENT_URI,
-                new String[]{DBContract.Notify._ID, DBContract.Notify.TIME, DBContract.Notify.WEEKDAY},
-                DBContract.Notify.DRUG_ID + "=?",
+                DBContract.Intake.CONTENT_URI,
+                new String[]{DBContract.Intake._ID, DBContract.Intake.TIME, DBContract.Intake.WEEKDAY},
+                DBContract.Intake.DRUG_ID + "=?",
                 new String[]{Integer.toString(drugID)},
-                "substr('0' || " + DBContract.Notify.TIME + ", -5, 5)");
+                "substr('0' || " + DBContract.Intake.TIME + ", -5, 5)");
 
         drugCursor.moveToFirst();
 
@@ -79,8 +80,8 @@ public class DrugNotifyService extends IntentService {
         ArrayList<String> times = new ArrayList<>();
 
         while (notifyCursor.moveToNext()) {
-            int columnTime = notifyCursor.getColumnIndex(DBContract.Notify.TIME);
-            int columnWeekday = notifyCursor.getColumnIndex(DBContract.Notify.WEEKDAY);
+            int columnTime = notifyCursor.getColumnIndex(DBContract.Intake.TIME);
+            int columnWeekday = notifyCursor.getColumnIndex(DBContract.Intake.WEEKDAY);
             String time = notifyCursor.getString(columnTime);
             int weekday = notifyCursor.getInt(columnWeekday);
             if (!times.contains(time)) {
@@ -105,17 +106,13 @@ public class DrugNotifyService extends IntentService {
         setDate(endDateStr, endDate);
 
         Calendar scheduleDate = getScheduleDate(currentTime, currentDate, startDate, endDate, weekdays, times);
-        if (scheduleDate == null) {
-            getContentResolver().delete(
-                    DBContract.Notify.CONTENT_URI,
-                    DBContract.Notify.DRUG_ID + "=" + drugID,
-                    null);
-        } else {
+
+        if (scheduleDate != null) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, scheduleDate.getTimeInMillis(), scheduleIntent);
         }
 
         if (ACTION_SCHEDULE_NOTIFY.equals(intent.getAction())) {
-            DrugNotifyNotification notification = new DrugNotifyNotification(this, drugID);
+            DrugIntakeNotification notification = new DrugIntakeNotification(this, drugID);
             String drugTitle = drugCursor.getString(drugCursor.getColumnIndex(DBContract.Drug.TITLE));
 
             notification.getBuilder().setContentTitle(drugTitle);

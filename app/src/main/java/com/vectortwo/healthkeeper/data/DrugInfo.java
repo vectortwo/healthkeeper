@@ -36,7 +36,7 @@ public class DrugInfo extends UrlDownloader {
      * Example usage:
      *      DrugInfo info = new DrugInfo(drugTitle);
      *      DrugInfo.SpellingSuggestions op = info.new SpellingSuggestions();
-     *      op.addHandler(new DrugInfo.EventHandler<ArrayList<String>>() {
+     *      op.addHandler(new DrugInfo.TaskHandler<ArrayList<String>>() {
      *      @Override
      *      public void onPostExecute(ArrayList<String> r) {
      *          // manipulate results here
