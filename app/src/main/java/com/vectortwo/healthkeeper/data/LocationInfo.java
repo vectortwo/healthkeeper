@@ -1,5 +1,7 @@
 package com.vectortwo.healthkeeper.data;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,7 +12,7 @@ import java.net.*;
  *  Downloads location specific information from the Internet
  */
 public class LocationInfo extends UrlDownloader {
-    private String ip;
+    private String ip = "";
     private volatile int gotIP = -1;
 
     public LocationInfo() {
@@ -25,6 +27,8 @@ public class LocationInfo extends UrlDownloader {
     }
 
     private class PublicIP extends BaseInfo<Void, String> {
+
+        @NonNull
         @Override
         protected String doInBackground(Void... voids) {
             String ip = "";
@@ -50,10 +54,12 @@ public class LocationInfo extends UrlDownloader {
         private String city = NO_INFO;
         private String country = NO_INFO;
 
+        @NonNull
         public String getCity() {
             return city;
         }
 
+        @NonNull
         public String getCountry() {
             return country;
         }
@@ -75,25 +81,25 @@ public class LocationInfo extends UrlDownloader {
             return this;
         }
 
-        private String getCity(JSONObject resultsJSON) {
+        @NonNull
+        private String getCity(@NonNull JSONObject resultsJSON) {
             String res = (String) resultsJSON.get("city");
             return res == null ? NO_INFO : res;
         }
 
-        private String getCountry(JSONObject resultsJSON) {
+        @NonNull
+        private String getCountry(@NonNull JSONObject resultsJSON) {
             String res = (String) resultsJSON.get("country_name");
             return res == null ? NO_INFO : res;
         }
     }
 
-    private static JSONObject locationResultsJSON(String ip) {
+    @Nullable
+    private static JSONObject locationResultsJSON(@NonNull String ip) {
         JSONObject resultJSON = null;
         try {
             URL url = new URL("http://freegeoip.net/json/" + ip);
             String allInfoStr = downloadFrom(url);
-            if (allInfoStr == null) {
-                return null;
-            }
             resultJSON = (JSONObject) new JSONParser().parse(allInfoStr);
         } catch (MalformedURLException | ParseException e) {
             e.printStackTrace();

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import java.util.Calendar;
 import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.notifications.DrugIntakeNotification;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
@@ -232,6 +233,7 @@ public class DrugNotifyService extends IntentService {
         }
     }
 
+    @Nullable
     private static Calendar getScheduleDate(String currentTime, Calendar currentDate, Calendar startDate, Calendar endDate,
                                      ArrayList<Integer> weekdays, /*sorted*/ ArrayList<String> times) {
         // startDate is in the past

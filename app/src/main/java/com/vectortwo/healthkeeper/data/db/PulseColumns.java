@@ -5,6 +5,7 @@ package com.vectortwo.healthkeeper.data.db;
  *  for {@link DBContract.Pulse} table. Ensures type-safety.
  */
 public class PulseColumns extends DBColumns {
+
     public PulseColumns putValue(int value) {
         contentValues.put(DBContract.Pulse.VALUE, value);
         return this;

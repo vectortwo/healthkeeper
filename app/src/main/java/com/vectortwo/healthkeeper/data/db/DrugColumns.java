@@ -1,10 +1,14 @@
 package com.vectortwo.healthkeeper.data.db;
 
+import android.support.annotation.IntRange;
+import android.support.annotation.IntegerRes;
+
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
  *  for {@link DBContract.Drug} table. Ensures type-safety.
  */
 public class DrugColumns extends DBColumns {
+
     public DrugColumns putTitle(String title) {
         contentValues.put(DBContract.Drug.TITLE, title);
         return this;
@@ -50,7 +54,7 @@ public class DrugColumns extends DBColumns {
      * @param archived 0 - false, 1 - true
      * @return this
      */
-    public DrugColumns putArchived(int archived) {
+    public DrugColumns putArchived(@IntRange(from=0, to=1) int archived) {
         contentValues.put(DBContract.Drug.ARCHIVED, archived);
         return this;
     }
@@ -72,7 +76,7 @@ public class DrugColumns extends DBColumns {
      * @param notifyMe 1 - notify, 0 - don't.
      * @return this
      */
-    public DrugColumns putNotifyMe(int notifyMe) {
+    public DrugColumns putNotifyMe(@IntRange(from=0, to=1) int notifyMe) {
         contentValues.put(DBContract.Drug.NOTIFY_ME, notifyMe);
         return this;
     }

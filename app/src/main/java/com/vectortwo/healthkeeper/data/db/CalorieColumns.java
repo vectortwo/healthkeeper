@@ -5,6 +5,7 @@ package com.vectortwo.healthkeeper.data.db;
  *  for {@link DBContract.Calorie} table. Ensures type-safety.
  */
 public class CalorieColumns extends DBColumns {
+
     public CalorieColumns putGained(int gained) {
         contentValues.put(DBContract.Calorie.GAINED, gained);
         return this;

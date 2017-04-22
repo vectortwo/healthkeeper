@@ -32,7 +32,7 @@ public class DrugArchiveExpiredService extends IntentService {
                 null,
                 null);
 
-        // TODO: connect default value with preference setting.
+        // TODO: connect default overdue value with preference setting.
         long delta = intent.getLongExtra(DELTA_TIME, YEAR);
 
         Calendar currentTime = Calendar.getInstance();

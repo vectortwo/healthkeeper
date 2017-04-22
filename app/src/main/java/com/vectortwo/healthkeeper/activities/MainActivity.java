@@ -15,8 +15,6 @@ import com.vectortwo.healthkeeper.services.DrugArchiveService;
 import com.vectortwo.healthkeeper.services.DrugNotifyService;
 import com.vectortwo.healthkeeper.services.PedometerService;
 
-// todo: add annotations
-
 public class MainActivity extends AppCompatActivity {
 
     Button bt_schedule, bt_unschedule, bt_dropall;

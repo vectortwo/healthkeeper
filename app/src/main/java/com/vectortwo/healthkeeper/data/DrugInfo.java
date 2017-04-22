@@ -1,5 +1,6 @@
 package com.vectortwo.healthkeeper.data;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -10,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.support.annotation.NonNull;
 
 /**
  *  Downloads information about a specified drug from the Internet.
@@ -18,16 +20,17 @@ public class DrugInfo extends UrlDownloader {
 
     private String drugTitle;
 
-    public DrugInfo(String drugTitle) {
+    public DrugInfo(@NonNull String drugTitle) {
         this.drugTitle = drugTitle;
         Log.d("vectortwo", drugTitle);
     }
 
+    @NonNull
     public String getDrugTitle() {
         return drugTitle;
     }
 
-    public void setDrugTitle(String drugTitle) {
+    public void setDrugTitle(@NonNull String drugTitle) {
         this.drugTitle = drugTitle;
     }
 
@@ -100,10 +103,12 @@ public class DrugInfo extends UrlDownloader {
         private String description = NO_INFO;
         private String warnings = NO_INFO;
 
+        @NonNull
         public String getDescription() {
             return description;
         }
 
+        @NonNull
         public String getWarnings() {
             return warnings;
         }
@@ -118,10 +123,8 @@ public class DrugInfo extends UrlDownloader {
             return this;
         }
 
-        private String getDescription(JSONObject resultsJSON) {
-            if (resultsJSON == null) {
-                return BaseInfo.NO_INFO;
-            }
+        @NonNull
+        private String getDescription(@NonNull JSONObject resultsJSON) {
             JSONArray descJSON = (JSONArray) resultsJSON.get("indications_and_usage");
             if (descJSON == null) {
                 return BaseInfo.NO_INFO;
@@ -149,10 +152,8 @@ public class DrugInfo extends UrlDownloader {
             return desc;
         }
 
-        private String getWarnings(JSONObject resultsJSON) {
-            if (resultsJSON == null) {
-                return BaseInfo.NO_INFO;
-            }
+        @NonNull
+        private String getWarnings(@NonNull JSONObject resultsJSON) {
             JSONArray warningsJSON = (JSONArray) resultsJSON.get("contraindications");
             if (warningsJSON == null) {
                 return BaseInfo.NO_INFO;
@@ -164,11 +165,11 @@ public class DrugInfo extends UrlDownloader {
             if (matcher.find()) {
                 warnings = warnings.substring(matcher.end());
             }
-
             return warnings;
         }
 
-        private JSONObject drugResultsJSON(String drugName) {
+        @Nullable
+        private JSONObject drugResultsJSON(@NonNull String drugName) {
             drugName = drugName.trim().replaceAll("\\s", "%20");
 
             URL url;

@@ -1,5 +1,7 @@
 package com.vectortwo.healthkeeper.data.db;
 
+import android.support.annotation.IntRange;
+
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
  *  for {@link DBContract.BloodSugar} table. Ensures type-safety.
@@ -16,7 +18,7 @@ public class BloodSugarColumns extends DBColumns {
      * @param bool 0 - before, 1 - after
      * @return this
      */
-    public BloodSugarColumns putAfterFood(int bool) {
+    public BloodSugarColumns putAfterFood(@IntRange(from=0, to=1) int bool) {
         contentValues.put(DBContract.BloodSugar.AFTER_FOOD, bool);
         return this;
     }

@@ -10,7 +10,7 @@ import com.vectortwo.healthkeeper.services.PedometerService;
 import com.vectortwo.healthkeeper.services.RestoreDrugNotifyService;
 
 /**
- * A receiver triggered at {@link android.content.Intent.ACTION_BOOT_COMPLETED} to perform
+ * A receiver triggered at {@link Intent.ACTION_BOOT_COMPLETED} to perform
  * any tasks that are required at device startup.
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
