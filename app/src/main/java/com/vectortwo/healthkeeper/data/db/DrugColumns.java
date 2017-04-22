@@ -2,7 +2,7 @@ package com.vectortwo.healthkeeper.data.db;
 
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
- *  for {@link com.vectortwo.healthkeeper.data.db.DBContract.Drug} table. Ensures type-safety.
+ *  for {@link DBContract.Drug} table. Ensures type-safety.
  */
 public class DrugColumns extends DBColumns {
     public DrugColumns putTitle(String title) {

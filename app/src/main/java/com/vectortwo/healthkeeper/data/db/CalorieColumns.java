@@ -2,7 +2,7 @@ package com.vectortwo.healthkeeper.data.db;
 
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
- *  for {@link com.vectortwo.healthkeeper.data.db.DBContract.Calorie} table. Ensures type-safety.
+ *  for {@link DBContract.Calorie} table. Ensures type-safety.
  */
 public class CalorieColumns extends DBColumns {
     public CalorieColumns putGained(int gained) {
@@ -15,6 +15,11 @@ public class CalorieColumns extends DBColumns {
         return this;
     }
 
+    /**
+     * Indicates a date when calories were recorded
+     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK-Calendar.HOUR_OF_DAY-Calendar.MINUTE"
+     * @return this
+     */
     public CalorieColumns putDate(int date) {
         contentValues.put(DBContract.Calorie.DATE, date);
         return this;

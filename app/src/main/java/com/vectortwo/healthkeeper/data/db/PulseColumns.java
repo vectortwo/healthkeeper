@@ -2,7 +2,7 @@ package com.vectortwo.healthkeeper.data.db;
 
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
- *  for {@link com.vectortwo.healthkeeper.data.db.DBContract.Pulse} table. Ensures type-safety.
+ *  for {@link DBContract.Pulse} table. Ensures type-safety.
  */
 public class PulseColumns extends DBColumns {
     public PulseColumns putValue(int value) {
@@ -12,7 +12,7 @@ public class PulseColumns extends DBColumns {
 
     /**
      * A date when the pulse was measured
-     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK"
+     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK-Calendar.HOUR_OF_DAY-Calendar.MINUTE"
      * @return this
      */
     public PulseColumns putDate(String date) {

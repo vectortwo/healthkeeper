@@ -48,13 +48,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receivers.DrugNotifyReceiver">
-            <intent-filter>
-                <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_SCHEDULE"/>
-                <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_SCHEDULE_NOTIFY"/>
-                <action android:name="com.vectortwo.healthkeeper.broadcast.DRUG_NOTIFY_CANCEL"/>
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".receivers.DrugNotifyReceiver"/>
 
     </application>
 

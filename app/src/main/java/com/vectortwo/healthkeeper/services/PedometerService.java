@@ -58,19 +58,19 @@ public class PedometerService extends Service implements SensorEventListener {
             values.putHour(PedometerDateFormat.getOnReceivedHour(currentDate));
             getContentResolver().insert(DBContract.Steps.CONTENT_URI, values.getContentValues());
 
-            // deal with hourly update
+            // deal with hourly show
             stepsLastHour = 0;
             hourly_offset_cached = sensorData;
             sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData).apply();
 
-            // deal with daily update
+            // deal with daily show
             String lastReceivedDate = sharedPrefs.getString(getString(R.string.preference_pedometer_onreceive_date), currentDate);
             if (!PedometerDateFormat.sameDay(currentDate, lastReceivedDate)) {
                 stepsToday = 0;
                 daily_offset_cached = sensorData;
 
                 sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_daily_offset), sensorData).apply();
-                // update notification
+                // show notification
                 notification.getBuilder().setContentTitle(String.valueOf(0));
                 notification.update();
             }

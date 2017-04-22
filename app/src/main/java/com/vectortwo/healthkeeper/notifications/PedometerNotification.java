@@ -25,9 +25,9 @@ public class PedometerNotification {
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent stopServiceIntent = new Intent(context, PedometerService.class);
-        Intent contentIntent = new Intent(context, MainActivity.class);
-
         stopServiceIntent.setAction(PedometerService.ACTION_STOP);
+
+        Intent contentIntent = new Intent(context, MainActivity.class);
 
         builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -35,7 +35,7 @@ public class PedometerNotification {
                 .setPriority(Notification.PRIORITY_MIN)
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .addAction(R.mipmap.ic_launcher, context.getString(R.string.notification_turn_off),
-                        PendingIntent.getService(context, 0, stopServiceIntent, PendingIntent.FLAG_CANCEL_CURRENT))
+                        PendingIntent.getService(context, 0, stopServiceIntent, 0))
                 .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, 0));
     }
 

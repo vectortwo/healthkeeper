@@ -29,9 +29,9 @@
             android:layout_marginTop="34dp" android:id="@+id/bt_unschedule"/>
 
     <Button
-            android:text="Check overdue"
+            android:text="dropall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/bt_unschedule"
-            android:layout_marginTop="34dp" android:id="@+id/bt_overdue"/>
+            android:layout_marginTop="34dp" android:id="@+id/bt_dropall"/>
 </RelativeLayout>

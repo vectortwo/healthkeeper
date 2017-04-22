@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.activities.MainActivity;
+import com.vectortwo.healthkeeper.services.DrugNotifyService;
 
 /**
  * Created by ilya on 10/04/2017.
@@ -19,10 +20,16 @@ public class DrugIntakeNotification {
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
 
-    private int notificationID;
+    private int drugID;
 
-    public DrugIntakeNotification(Context context, int notificationID) {
-        this.notificationID = notificationID;
+    // TODO: integrate with prefs
+    public static final int maxPostponeCount = 1;
+    public static final int postponeTime = 1;
+
+    public DrugIntakeNotification(Context context, Intent intent) {
+        this.drugID = intent.getIntExtra(DrugNotifyService.KEY_DRUG_ID, -1);
+        int currentPostponeCount = intent.getIntExtra(DrugNotifyService.KEY_CURRENT_POSTPONE_COUNT, 0);
+
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent contentIntent = new Intent(context, MainActivity.class);
@@ -31,12 +38,23 @@ public class DrugIntakeNotification {
 
         builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("")
+                .setContentTitle("drugid " + drugID)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSound(defaultRingtone)
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
-                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, 0));
+
+        if (currentPostponeCount < maxPostponeCount) {
+            Intent postponeIntent = new Intent(context, DrugNotifyService.class);
+            postponeIntent.setAction(DrugNotifyService.ACTION_POSTPONE);
+            postponeIntent.putExtra(DrugNotifyService.KEY_POSTPONE_TIME, postponeTime);
+            postponeIntent.putExtra(DrugNotifyService.KEY_CURRENT_POSTPONE_COUNT, currentPostponeCount);
+            postponeIntent.putExtra(DrugNotifyService.KEY_DRUG_ID, drugID);
+
+            builder.addAction(R.mipmap.ic_launcher, context.getString(R.string.intake_postpone),
+                    PendingIntent.getService(context, drugID, postponeIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+        }
     }
 
     public NotificationManager getNotificationManager() {
@@ -47,7 +65,7 @@ public class DrugIntakeNotification {
         return builder;
     }
 
-    public void update() {
-        notificationManager.notify(notificationID, builder.build());
+    public void show() {
+        notificationManager.notify(drugID, builder.build());
     }
 }

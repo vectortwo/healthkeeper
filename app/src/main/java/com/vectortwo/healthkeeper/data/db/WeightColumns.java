@@ -2,7 +2,7 @@ package com.vectortwo.healthkeeper.data.db;
 
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
- *  for {@link com.vectortwo.healthkeeper.data.db.DBContract.Weight} table. Ensures type-safety.
+ *  for {@link DBContract.Weight} table. Ensures type-safety.
  */
 public class WeightColumns extends DBColumns {
 
