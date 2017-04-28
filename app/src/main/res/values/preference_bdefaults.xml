@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="postpone_time">30</integer>
+    <integer name="postpone_max_count">2</integer>
+    <integer name="drug_expired_deltatime">31536000</integer>
+</resources>

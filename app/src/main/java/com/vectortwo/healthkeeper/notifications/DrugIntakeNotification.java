@@ -5,11 +5,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.activities.MainActivity;
+import com.vectortwo.healthkeeper.data.BackendPrefManager;
 import com.vectortwo.healthkeeper.services.DrugNotifyService;
 
 /**
@@ -22,11 +24,15 @@ public class DrugIntakeNotification {
 
     private int drugID;
 
-    // TODO: integrate with prefs
-    public static final int maxPostponeCount = 1;
-    public static final int postponeTime = 1;
+    private int maxPostponeCount;
+    private int postponeTime;
 
     public DrugIntakeNotification(Context context, Intent intent) {
+        BackendPrefManager prefs = new BackendPrefManager(context);
+
+        maxPostponeCount = prefs.getPostponeMaxCount();
+        postponeTime = prefs.getPostponeTime();
+
         this.drugID = intent.getIntExtra(DrugNotifyService.KEY_DRUG_ID, -1);
         int currentPostponeCount = intent.getIntExtra(DrugNotifyService.KEY_CURRENT_POSTPONE_COUNT, 0);
 

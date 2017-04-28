@@ -124,7 +124,7 @@ public final class DBContract {
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String GAINED = "gained";
-        public static final String LOST = "lost";
+        public static final String BURNED = "burned";
         public static final String DATE = "date";
     }
 
@@ -179,6 +179,8 @@ public final class DBContract {
         public static final String COUNT = "count";
         public static final String HOUR = "hour";
         public static final String DATE = "date";
+
+        public static final String WALKING_TIME = "walking_time";
     }
 
     public static final class User implements BaseColumns {

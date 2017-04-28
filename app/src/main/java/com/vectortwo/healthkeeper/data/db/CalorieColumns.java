@@ -11,8 +11,8 @@ public class CalorieColumns extends DBColumns {
         return this;
     }
 
-    public CalorieColumns putLost(int lost) {
-        contentValues.put(DBContract.Calorie.LOST, lost);
+    public CalorieColumns putBurned(int burned) {
+        contentValues.put(DBContract.Calorie.BURNED, burned);
         return this;
     }
 

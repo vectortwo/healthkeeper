@@ -30,4 +30,14 @@ public class StepColumns extends DBColumns {
         contentValues.put(DBContract.Steps.HOUR, hour);
         return this;
     }
+
+    /**
+     * How much time the user has been walking
+     * @param minutes time in minutes
+     * @return this
+     */
+    public StepColumns putWakingTime(int minutes) {
+        contentValues.put(DBContract.Steps.WALKING_TIME, minutes);
+        return this;
+    }
 }

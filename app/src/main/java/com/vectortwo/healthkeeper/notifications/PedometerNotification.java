@@ -18,7 +18,6 @@ public class PedometerNotification {
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
 
-    // TODO: uniqify?
     private static final int PEDOMETER_NOTIFICATION_ID = 2017;
 
     public PedometerNotification(Context context) {

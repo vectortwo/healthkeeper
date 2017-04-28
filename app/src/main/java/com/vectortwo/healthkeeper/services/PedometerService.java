@@ -6,8 +6,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import com.vectortwo.healthkeeper.PedometerDateFormat;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.data.db.DBContract;
@@ -25,11 +27,16 @@ public class PedometerService extends Service implements SensorEventListener {
 
     private long sensorData;
 
-    private long stepsToday;
-    private long stepsLastHour;
-
     private long daily_offset_cached;
     private long hourly_offset_cached;
+
+    private int stepsToday;
+    private int stepsLastHour;
+
+    private long walkingTimeToday;
+    private long prevTimestamp;
+    private static final long WALKING_DELTA = 1500000000;
+    private static final double NANO_TO_MINUTE = 0.000000001 / 60;
 
     private boolean freshInstall;
 
@@ -38,7 +45,7 @@ public class PedometerService extends Service implements SensorEventListener {
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
 
-    private SharedPreferences sharedPrefs;
+    private SharedPreferences pedometerPrefs;
 
     private PedometerNotification notification;
 
@@ -53,28 +60,35 @@ public class PedometerService extends Service implements SensorEventListener {
             String currentDate = PedometerDateFormat.getCurrentDate();
 
             StepColumns values = new StepColumns();
-            values.putCount((int) stepsLastHour);
+            values.putCount(stepsLastHour);
             values.putDate(PedometerDateFormat.getDateWithoutHour(currentDate));
             values.putHour(PedometerDateFormat.getOnReceivedHour(currentDate));
-            getContentResolver().insert(DBContract.Steps.CONTENT_URI, values.getContentValues());
+            Uri uri = getContentResolver().insert(DBContract.Steps.CONTENT_URI, values.getContentValues());
 
-            // deal with hourly show
+            // deal with hourly update
             stepsLastHour = 0;
             hourly_offset_cached = sensorData;
-            sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData).apply();
+            pedometerPrefs.edit().putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData).apply();
 
-            // deal with daily show
-            String lastReceivedDate = sharedPrefs.getString(getString(R.string.preference_pedometer_onreceive_date), currentDate);
+            // deal with daily update
+            String lastReceivedDate = pedometerPrefs.getString(getString(R.string.preference_pedometer_onreceive_date), currentDate);
             if (!PedometerDateFormat.sameDay(currentDate, lastReceivedDate)) {
+                StepColumns walkingTimeUpdate = new StepColumns();
+                walkingTimeUpdate.putWakingTime(getWalkingTimeToday());
+                int id = Integer.parseInt(uri.getLastPathSegment());
+                getContentResolver().update(uri, walkingTimeUpdate.getContentValues(), DBContract.Steps._ID + "=" + id, null);
+
+                walkingTimeToday = 0;
                 stepsToday = 0;
                 daily_offset_cached = sensorData;
 
-                sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_daily_offset), sensorData).apply();
+                pedometerPrefs.edit().putLong(getString(R.string.preference_pedometer_daily_offset), sensorData).apply();
+
                 // show notification
                 notification.getBuilder().setContentTitle(String.valueOf(0));
                 notification.update();
             }
-            sharedPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
+            pedometerPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
 
             setAlarmNextHour(alarmManager, alarmIntent);
         }
@@ -94,6 +108,21 @@ public class PedometerService extends Service implements SensorEventListener {
         return stepsLastHour;
     }
 
+    public int getWalkingTimeToday() {
+        return (int) (walkingTimeToday * NANO_TO_MINUTE);
+    }
+
+    /**
+     * Helper function to check for a presence of step sensor on a device
+     *
+     * @return true if present, false otherwise
+     */
+    public static boolean hasSensor(Context context) {
+        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        return (stepSensor != null);
+    }
+
     // Main Thread
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -102,15 +131,21 @@ public class PedometerService extends Service implements SensorEventListener {
         if (freshInstall) {
             daily_offset_cached = sensorData;
             hourly_offset_cached = sensorData;
-            sharedPrefs.edit()
+            pedometerPrefs.edit()
                     .putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData)
                     .putLong(getString(R.string.preference_pedometer_daily_offset), sensorData)
                     .apply();
             freshInstall = false;
         }
+        stepsLastHour = (int) (sensorData - hourly_offset_cached);
+        stepsToday = (int) (sensorData - daily_offset_cached);
 
-        stepsLastHour = sensorData - hourly_offset_cached;
-        stepsToday = sensorData - daily_offset_cached;
+        int currentDelta = (int) (event.timestamp - prevTimestamp);
+        prevTimestamp = event.timestamp;
+
+        if (currentDelta < WALKING_DELTA) {
+            walkingTimeToday += currentDelta;
+        }
 
         notification.getBuilder().setContentTitle(String.valueOf(stepsToday));
         notification.update();
@@ -131,11 +166,12 @@ public class PedometerService extends Service implements SensorEventListener {
         unregisterReceiver(receiver);
         stopForeground(true);
 
-        sharedPrefs.edit()
+        pedometerPrefs.edit()
                 .putBoolean(getString(R.string.preference_pedometer_force_stopped), false)
                 .putLong(getString(R.string.preference_pedometer_onkilled_sensordata), sensorData)
                 .putString(getString(R.string.preference_pedometer_onkilled_date), PedometerDateFormat.getCurrentDate())
                 .putBoolean(getString(R.string.preference_pedometer_was_killed), true)
+                .putLong(getString(R.string.preference_pedometer_onkilled_walkingtime), walkingTimeToday)
                 .apply();
     }
 
@@ -143,7 +179,7 @@ public class PedometerService extends Service implements SensorEventListener {
     public void onCreate() {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        sharedPrefs = getSharedPreferences(getString(R.string.preference_file_pedometer), Context.MODE_PRIVATE);
+        pedometerPrefs = getSharedPreferences(getString(R.string.preference_file_pedometer), Context.MODE_PRIVATE);
 
         Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
@@ -159,17 +195,6 @@ public class PedometerService extends Service implements SensorEventListener {
         }
     }
 
-    /**
-     * Helper function to check for a presence of step sensor on a device
-     *
-     * @return true if present, false otherwise
-     */
-    public static boolean hasSensor(Context context) {
-        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        return (stepSensor != null);
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (ACTION_STOP.equals(intent.getAction())) {
@@ -178,30 +203,32 @@ public class PedometerService extends Service implements SensorEventListener {
         }
         String currentDate = PedometerDateFormat.getCurrentDate();
         long notificationValue = 0;
-        boolean forceStopped = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_force_stopped), false);
+        boolean forceStopped = pedometerPrefs.getBoolean(getString(R.string.preference_pedometer_force_stopped), false);
 
-        freshInstall = sharedPrefs.getBoolean(getString(R.string.preference_pedometer_fresh_install), true);
+        freshInstall = pedometerPrefs.getBoolean(getString(R.string.preference_pedometer_fresh_install), true);
 
-        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_was_killed), false).apply();
+        pedometerPrefs.edit().putBoolean(getString(R.string.preference_pedometer_was_killed), false).apply();
 
         if (freshInstall) {
-            sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_fresh_install), false).apply();
+            pedometerPrefs.edit().putBoolean(getString(R.string.preference_pedometer_fresh_install), false).apply();
         } else if (forceStopped) {
             freshInstall = true;
         } else {
             // restore cache
-            sensorData = sharedPrefs.getLong(getString(R.string.preference_pedometer_onkilled_sensordata), 0);
-            String onkilledDate = sharedPrefs.getString(getString(R.string.preference_pedometer_onkilled_date), currentDate);
+            sensorData = pedometerPrefs.getLong(getString(R.string.preference_pedometer_onkilled_sensordata), 0);
+            String onkilledDate = pedometerPrefs.getString(getString(R.string.preference_pedometer_onkilled_date), currentDate);
 
             if (PedometerDateFormat.sameDay(onkilledDate, currentDate)) {
-                daily_offset_cached = sharedPrefs.getLong(getString(R.string.preference_pedometer_daily_offset), 0);
+                walkingTimeToday = pedometerPrefs.getLong(getString(R.string.preference_pedometer_onkilled_walkingtime), 0);
+
+                daily_offset_cached = pedometerPrefs.getLong(getString(R.string.preference_pedometer_daily_offset), 0);
                 notificationValue = sensorData - daily_offset_cached;
             } else {
                 daily_offset_cached = sensorData;
-                sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_daily_offset), sensorData).apply();
+                pedometerPrefs.edit().putLong(getString(R.string.preference_pedometer_daily_offset), sensorData).apply();
             }
 
-            hourly_offset_cached = sharedPrefs.getLong(getString(R.string.preference_pedometer_hourly_offset), 0);
+            hourly_offset_cached = pedometerPrefs.getLong(getString(R.string.preference_pedometer_hourly_offset), 0);
             if (!PedometerDateFormat.sameHour(onkilledDate, currentDate)) {
                 StepColumns values = new StepColumns();
                 values.putCount((int) (sensorData - hourly_offset_cached));
@@ -210,20 +237,20 @@ public class PedometerService extends Service implements SensorEventListener {
                 getContentResolver().insert(DBContract.Steps.CONTENT_URI, values.getContentValues());
 
                 hourly_offset_cached = sensorData;
-                sharedPrefs.edit().putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData).apply();
+                pedometerPrefs.edit().putLong(getString(R.string.preference_pedometer_hourly_offset), sensorData).apply();
             }
         }
-        sharedPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
+        pedometerPrefs.edit().putString(getString(R.string.preference_pedometer_onreceive_date), currentDate).apply();
 
         notification.getBuilder().setContentTitle(String.valueOf(notificationValue));
         startForeground(notification.getNotificationID(), notification.getBuilder().build());
 
         setAlarmNextHour(alarmManager, alarmIntent);
 
-        sharedPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true).apply();
+        pedometerPrefs.edit().putBoolean(getString(R.string.preference_pedometer_force_stopped), true).apply();
 
-        stepsToday = sensorData - daily_offset_cached;
-        stepsLastHour = sensorData - hourly_offset_cached;
+        stepsToday = (int) (sensorData - daily_offset_cached);
+        stepsLastHour = (int) (sensorData - hourly_offset_cached);
 
         return START_NOT_STICKY;
     }

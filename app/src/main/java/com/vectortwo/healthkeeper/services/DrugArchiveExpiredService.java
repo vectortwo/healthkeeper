@@ -4,20 +4,16 @@ import java.util.Calendar;
 import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
+import com.vectortwo.healthkeeper.data.BackendPrefManager;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 
 /**
- * Checks whether the end date of any drug is {@link #DELTA_TIME} overdue.
- * Overdue time may be provided in Intent.
- * If {@link #DELTA_TIME} extra is not present, one year will be set by default.
+ * Checks whether the end date of any drug is {@link #delta} overdue.
+ * Default overdue time is provided in preference_bdefaults.xml
  * If overdue, deletes all info about such drug from the database.
  */
 public class DrugArchiveExpiredService extends IntentService {
-    public static final long YEAR = 365*24*60*60;
-    public static final long HALF_YEAR = 183*24*60*60;
-    public static final long MONTH = 28*24*60*60;
-
-    public static final String DELTA_TIME = "delta_time";
+    private int delta;
 
     public DrugArchiveExpiredService() {
         super("DrugArchiveExpiredService");
@@ -32,8 +28,8 @@ public class DrugArchiveExpiredService extends IntentService {
                 null,
                 null);
 
-        // TODO: connect default overdue value with preference setting.
-        long delta = intent.getLongExtra(DELTA_TIME, YEAR);
+        BackendPrefManager prefs = new BackendPrefManager(this);
+        delta = prefs.getDrugExpiredDelta();
 
         Calendar currentTime = Calendar.getInstance();
         Calendar endDate = (Calendar) currentTime.clone();

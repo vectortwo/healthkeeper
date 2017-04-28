@@ -9,4 +9,5 @@
     <string name="preference_pedometer_bootcompleted">com.vectortwo.healthkeeper.PREFERENCE_PEDOMETER_BOOTCOMPLETED</string>
     <string name="preference_pedometer_force_stopped">com.vectortwo.healthkeeper.PREFERENCE_PEDOMETER_FORCE_STOPPED</string>
     <string name="preference_pedometer_was_killed">com.vectortwo.healthkeeper.PREFERENCE_PEDOMETER_WAS_KILLED</string>
+    <string name="preference_pedometer_onkilled_walkingtime">com.vectortwo.healthkeeper.PREFERENCE_PEDOMETER_ONKILLED_WALKING_TIME</string>
 </resources>

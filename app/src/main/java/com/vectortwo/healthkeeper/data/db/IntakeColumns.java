@@ -18,7 +18,7 @@ public class IntakeColumns extends DBColumns {
 
     /**
      * Time of day this drug should be taken in
-     * @param time corresponds to "Calendar.HOUR_OF_DAY:Calendar.MINUTES"
+     * @param time corresponds to "Calendar.HOUR_OF_DAY-Calendar.MINUTES"
      * @return this
      */
     public IntakeColumns putTime(String time) {

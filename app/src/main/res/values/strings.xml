@@ -7,6 +7,4 @@
     <string name="descriptionServiceSteps">Pedometer</string>
     <string name="descriptionReceiverDrugNotify">Medications notification scheduler</string>
     <string name="descriptionServiceArchiver">Medication archiver</string>
-
-    <string name="prefs_first_launch">com.vectortwo.healthkeeper.prefs.FIRST_LAUNCH</string>
 </resources>
