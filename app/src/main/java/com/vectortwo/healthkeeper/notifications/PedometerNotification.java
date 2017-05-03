@@ -26,6 +26,7 @@ public class PedometerNotification {
         Intent stopServiceIntent = new Intent(context, PedometerService.class);
         stopServiceIntent.setAction(PedometerService.ACTION_STOP);
 
+        // todo: add navigation to contentintent's activity (back button support)
         Intent contentIntent = new Intent(context, MainActivity.class);
 
         builder = new NotificationCompat.Builder(context)

@@ -63,7 +63,7 @@ public class DrugArchiveService extends IntentService {
         currentDate.set(Calendar.MINUTE, 0);
 
         Intent alarmIntent = new Intent(this, DrugArchiveService.class);
-        PendingIntent scheduleIntent = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
+        PendingIntent scheduleIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
         alarmManager.setExact(AlarmManager.RTC, currentDate.getTimeInMillis(), scheduleIntent);
     }
 }

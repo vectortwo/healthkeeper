@@ -41,6 +41,16 @@ public class UserColumns extends DBColumns {
         return this;
     }
 
+    public UserColumns putCountry(String country) {
+        contentValues.put(DBContract.User.COUNTRY, country);
+        return this;
+    }
+
+    /**
+     * The date user was born
+     * @param birthday in "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_MONTH" format
+     * @return this
+     */
     public UserColumns putBirthday(String birthday) {
         contentValues.put(DBContract.User.BIRTHDAY, birthday);
         return this;

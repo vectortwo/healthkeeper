@@ -8,7 +8,10 @@ import com.vectortwo.healthkeeper.services.DrugNotifyService;
 /**
  * Receive alarms scheduled by {@link DrugNotifyService} to start it.
  * This receiver simply forwards received Intent to {@link DrugNotifyService}
- * DO NOT send broadcast to it manually! Directly start {@link DrugNotifyService}
+ * The purpose of this receiver is to ensure that the device won't go to sleep immediately
+ * after onReceive() before starting {@link DrugNotifyService}
+ * DO NOT send broadcast to it manually! Directly start {@link DrugNotifyService} to schedule
+ * notifications for a drug.
  */
 public class DrugNotifyReceiver extends WakefulBroadcastReceiver {
 

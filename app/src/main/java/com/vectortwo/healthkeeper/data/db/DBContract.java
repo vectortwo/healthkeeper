@@ -171,7 +171,11 @@ public final class DBContract {
     public static final class Steps implements BaseColumns {
         static final String TABLE_NAME = "steps";
 
+        static final String PDF_QUERY = "PDF" + TABLE_NAME;
+
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final Uri PDF_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PDF_QUERY);
 
         public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
@@ -197,6 +201,7 @@ public final class DBContract {
         public static final String SEX = "sex";
         public static final String AGE = "age";
         public static final String CITY = "city";
+        public static final String COUNTRY = "country";
 
         public static final String HEIGHT = "height";
         public static final String WEIGHT = "weight";

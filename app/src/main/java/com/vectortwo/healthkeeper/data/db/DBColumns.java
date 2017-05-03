@@ -7,7 +7,7 @@ import android.content.ContentValues;
  *  for specific table. Ensures type-safety.
  */
 public abstract class DBColumns {
-    ContentValues contentValues;
+    protected ContentValues contentValues;
 
     public DBColumns() {
         contentValues = new ContentValues();

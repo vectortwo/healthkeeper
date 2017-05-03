@@ -38,6 +38,7 @@ public class DrugIntakeNotification {
 
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // todo: add navigation to contentintent's activity (back button support)
         Intent contentIntent = new Intent(context, MainActivity.class);
 
         Uri defaultRingtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

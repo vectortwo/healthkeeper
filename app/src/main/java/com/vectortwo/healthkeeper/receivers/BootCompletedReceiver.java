@@ -23,11 +23,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         // Handle pedometer
         SharedPreferences pedometerPrefs = context.getSharedPreferences(context.getString(R.string.preference_file_pedometer), Context.MODE_PRIVATE);
         if (!pedometerPrefs.getBoolean(context.getString(R.string.preference_pedometer_was_killed), true)) {
-            Intent intentStartPedometer = new Intent(context, PedometerService.class);
-            context.stopService(intentStartPedometer);
-            context.startService(intentStartPedometer);
+            pedometerPrefs.edit().clear().apply();
+
+            Intent pedometerService = new Intent(context, PedometerService.class);
+            context.stopService(pedometerService);
+            context.startService(pedometerService);
         }
-        pedometerPrefs.edit().clear().apply();
 
         // Initiate drug archive check every day
         if (!prefs.getDrugArchiveStarted()) {

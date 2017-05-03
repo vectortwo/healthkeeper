@@ -6,7 +6,12 @@ package com.vectortwo.healthkeeper.data.db;
  */
 public class SleepColumns extends DBColumns {
 
-    public SleepColumns putSleepTime(String sleepTime) {
+    /**
+     * How long the user has been sleeping
+     * @param sleepTime in minutes
+     * @return this
+     */
+    public SleepColumns putSleepTime(int sleepTime) {
         contentValues.put(DBContract.Sleep.SLEEP_TIME, sleepTime);
         return this;
     }

@@ -5,6 +5,7 @@ package com.vectortwo.healthkeeper.data.db;
  *  for {@link DBContract.BloodPressure} table. Ensures type-safety.
  */
 public class BloodPressureColumns extends DBColumns {
+
     public BloodPressureColumns putSystolic(int systolic) {
         contentValues.put(DBContract.BloodPressure.SYSTOLIC, systolic);
         return this;

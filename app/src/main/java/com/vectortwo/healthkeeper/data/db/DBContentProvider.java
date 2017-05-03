@@ -41,8 +41,9 @@ public class DBContentProvider extends ContentProvider {
     private static final int TABLE_WELLBEING            = 22;
     private static final int ITEM_WELLBEING             = 23;
 
-
     private static final int DRUG_SUGGESTIONS           = 24;
+
+    private static final int PDF_STEPS                  = 25;
 
     static {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
@@ -82,6 +83,8 @@ public class DBContentProvider extends ContentProvider {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.WellBeing.TABLE_NAME + "/#", ITEM_WELLBEING);
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
+
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Steps.PDF_QUERY, PDF_STEPS);
     }
 
     @Override
@@ -95,6 +98,11 @@ public class DBContentProvider extends ContentProvider {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         switch (URI_MATCHER.match(uri)) {
+            case PDF_STEPS:
+                queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
+                String groupBy = DBContract.Steps.DATE;
+                db = dbOpenHelper.getReadableDatabase();
+                return queryBuilder.query(db, projection, selection, selectionArgs, groupBy, null, null);
             case DRUG_SUGGESTIONS:
                 String query = uri.getLastPathSegment();
                 return getSuggestions(query);

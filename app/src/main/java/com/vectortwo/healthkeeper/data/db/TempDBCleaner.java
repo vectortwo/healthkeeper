@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by ilya on 21/04/2017.
  */
+// todo: remove on release
 public final class TempDBCleaner {
     private DBOpenHelper dbOpenHelper;
     private SQLiteDatabase db;
