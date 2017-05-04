@@ -15,7 +15,6 @@ import java.util.Calendar;
  *  Runs every year (inexact)
  */
 
-// TODO: start after user info has been added to db
 public class BirthdayService extends IntentService {
 
     private static final String ACTION_AGE_INC = "com.vectortwo.healthkeeper.intent.ACTION_AGE_INCREMENT";

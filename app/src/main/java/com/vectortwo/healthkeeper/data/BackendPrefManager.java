@@ -61,6 +61,18 @@ public class BackendPrefManager {
         return miscPrefs.getBoolean(context.getString(R.string.preference_misc_drug_archive_started), false);
     }
 
+    public boolean getBirthdayCheckStarted() {
+        return miscPrefs.getBoolean(context.getString(R.string.preference_misc_birthday_check_started), false);
+    }
+
+    public void setBirthdayCheckStarted(boolean value) {
+        String key = context.getString(R.string.preference_misc_birthday_check_started);
+        miscPrefs.
+                edit().
+                putBoolean(key, value).
+                apply();
+    }
+
     public void setDrugArchiveStarted(boolean value) {
         String key = context.getString(R.string.preference_misc_drug_archive_started);
         miscPrefs.
