@@ -11,7 +11,8 @@ import com.vectortwo.healthkeeper.data.db.UserColumns;
 import java.util.Calendar;
 
 /**
- * Created by ilya on 29/04/2017.
+ *  Increases the user's age on his birthday.
+ *  Runs every year (inexact)
  */
 
 // TODO: start after user info has been added to db

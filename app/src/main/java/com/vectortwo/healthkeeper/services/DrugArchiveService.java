@@ -11,8 +11,8 @@ import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
 
 /**
- * Checks and moves overdue drugs to archive. Runs every day at 12:00 AM.
- * Should be started only once either on app first launch or system reboot.
+ * Checks and moves overdue drugs to archive. Runs every day after 12:00 AM on device wakeup.
+ * Should be started only once within the app lifetime.
  */
 public class DrugArchiveService extends IntentService {
     public DrugArchiveService() {
@@ -44,6 +44,7 @@ public class DrugArchiveService extends IntentService {
             if (currentDate.compareTo(endDate) > 0) {
                 int drugID = drugCursor.getInt(drugCursor.getColumnIndex(DBContract.Drug._ID));
 
+                // Update db
                 DrugColumns values = new DrugColumns();
                 values.putArchived(1).putNotifyMe(0);
 
@@ -52,6 +53,12 @@ public class DrugArchiveService extends IntentService {
                         values.getContentValues(),
                         DBContract.Drug._ID + "=" + drugID,
                         null);
+
+                // Cancel notifications
+                Intent i = new Intent(this, DrugNotifyService.class);
+                i.setAction(DrugNotifyService.ACTION_CANCEL);
+                i.putExtra(DrugNotifyService.KEY_DRUG_ID, drugID);
+                startService(i);
             }
         }
         drugCursor.close();

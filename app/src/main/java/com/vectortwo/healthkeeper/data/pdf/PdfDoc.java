@@ -110,10 +110,10 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             PdfHelper.addHeader(document, "Blood Pressure");
 
             final Cursor c = context.getContentResolver().query(DBContract.BloodPressure.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 2, 4},
                     new String[] {"#", "Systolic", "Diastolic", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -142,17 +142,17 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         if (hasFlag(PAGE_BLOODSUGAR, flags)) {
             PdfHelper.addHeader(document, "Blood Sugar");
 
             final Cursor c = context.getContentResolver().query(DBContract.BloodSugar.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 2, 4},
                     new String[] {"#", "Sugar Level", "Before-meal", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -181,7 +181,7 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         // todo: daily?
@@ -189,10 +189,10 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             PdfHelper.addHeader(document, "Calories");
 
             final Cursor c = context.getContentResolver().query(DBContract.Calorie.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 2, 4},
                     new String[] {"#", "Burned", "Gained", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -221,7 +221,7 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         // todo: daily?
@@ -229,10 +229,10 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             PdfHelper.addHeader(document, "Water intake");
 
             final Cursor c = context.getContentResolver().query(DBContract.Fluid.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 4},
                     new String[] {"#", "Drank", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -259,17 +259,17 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         if (hasFlag(PAGE_PULSE, flags)) {
             PdfHelper.addHeader(document, "Pulse");
 
             final Cursor c = context.getContentResolver().query(DBContract.Pulse.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 4},
                     new String[] {"#", "Pulse rate", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -296,17 +296,17 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         if (hasFlag(PAGE_SLEEP, flags)) {
             PdfHelper.addHeader(document, "Sleep");
 
             final Cursor c = context.getContentResolver().query(DBContract.Sleep.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 4, 4},
                     new String[] {"#", "Sleep time", "Bedtime", "Woke up"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -337,7 +337,7 @@ public class PdfDoc extends BaseInfo<Void, Void> {
 
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         if (hasFlag(PAGE_STEPS, flags)) {
@@ -350,10 +350,10 @@ public class PdfDoc extends BaseInfo<Void, Void> {
                             "sum(" + DBContract.Steps.WALKING_TIME + ")",
                             DBContract.Steps.DATE},
                     null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 2, 4},
                     new String[] {"#", "Steps walked", "Walk time", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -382,7 +382,7 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         // todo: daily?
@@ -390,10 +390,10 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             PdfHelper.addHeader(document, "Weight");
 
             final Cursor c = context.getContentResolver().query(DBContract.Weight.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 4},
                     new String[] {"#", "Weight", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -420,17 +420,17 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
         if (hasFlag(PAGE_WELLBEING, flags)) {
             PdfHelper.addHeader(document, "Well-being estimates");
 
             final Cursor c = context.getContentResolver().query(DBContract.WellBeing.CONTENT_URI, null, null, null, null);
-            AdapterTable adapter = new AdapterTable(
+            BaseTable baseTable = new BaseTable(
                     new float[] {1, 2, 4},
                     new String[] {"#", "Rate", "Date"});
-            adapter.fill(new TableFiller() {
+            baseTable.fill(new TableFiller() {
                 @Override
                 public void fill(PdfPTable table) {
                     int n = 1;
@@ -457,7 +457,7 @@ public class PdfDoc extends BaseInfo<Void, Void> {
             });
             c.close();
 
-            document.add(adapter.getTable());
+            document.add(baseTable.getTable());
             document.newPage();
         }
     }

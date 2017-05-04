@@ -8,11 +8,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 /**
  * Created by ilya on 30/04/2017.
  */
-class AdapterTable {
+class BaseTable {
 
     private PdfPTable table;
 
-    AdapterTable(float[] colWidths, String[] colNames) {
+    BaseTable(float[] colWidths, String[] colNames) {
         table = new PdfPTable(colWidths);
 
         table.setWidthPercentage(70);

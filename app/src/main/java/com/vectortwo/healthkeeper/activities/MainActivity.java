@@ -2,7 +2,6 @@ package com.vectortwo.healthkeeper.activities;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -13,11 +12,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.vectortwo.healthkeeper.*;
 import com.vectortwo.healthkeeper.data.TaskHandler;
-import com.vectortwo.healthkeeper.data.db.DBContract;
-import com.vectortwo.healthkeeper.data.db.DrugColumns;
-import com.vectortwo.healthkeeper.data.db.TempDBPopulate;
+import com.vectortwo.healthkeeper.data.db.TempDBFiller;
 import com.vectortwo.healthkeeper.data.pdf.PdfDoc;
-import com.vectortwo.healthkeeper.services.PedometerService;
 
 import java.util.Calendar;
 
@@ -55,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         startService(i);
         */
 
-        TempDBPopulate.fill(context);
+        TempDBFiller.fill(context);
     }
 
     @Override

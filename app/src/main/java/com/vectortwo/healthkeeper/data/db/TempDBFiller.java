@@ -1,14 +1,16 @@
 package com.vectortwo.healthkeeper.data.db;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 /**
  * Created by ilya on 30/04/2017.
  */
 // todo: remove on release
-public final class TempDBPopulate {
-    private TempDBPopulate() {}
+public final class TempDBFiller {
+    private TempDBFiller() {}
 
     private static final String[] DATE_WITH_HM = new String[] {
             "2016-11-30-23-59",
@@ -61,6 +63,14 @@ public final class TempDBPopulate {
                 steps = new StepColumns();
                 steps.putCount(31).putHour(9).putDate("2017-4-5");
                 cntx.getContentResolver().insert(DBContract.Steps.CONTENT_URI, steps.getContentValues());
+
+                new Handler(cntx.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(cntx, "Database filled", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         }).start();
     }

@@ -361,6 +361,7 @@ public class DBContentProvider extends ContentProvider {
 
     /**
      * Query suggestion table {@link DBContract.KnownDrugs} for drug titles that contain substring {@param from}
+     * Uses SQL 'Like' syntax for searching
      *
      * @param from a substring to look for
      * @return a cursor containing 10 suggestions
