@@ -2,7 +2,7 @@
     <string name="app_name">HealthKeeper</string>
     <string name="today_steps">Today steps</string>
     <string name="notification_turn_off">Turn off</string>
-    <string name="intake_postpone">Postpone</string>
+    <string name="intake_postpone">Remind later</string>
 
     <string name="descriptionServiceSteps">Pedometer</string>
     <string name="descriptionReceiverDrugNotify">Medications notification scheduler</string>

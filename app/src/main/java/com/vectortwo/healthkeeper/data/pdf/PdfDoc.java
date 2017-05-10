@@ -9,7 +9,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.vectortwo.healthkeeper.data.BaseInfo;
-import com.vectortwo.healthkeeper.data.db.DBContract;
+import com.vectortwo.healthkeeper.data.db.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,36 +20,86 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by ilya on 26/04/2017.
+ * Generates a PDF document from database data
  */
 public class PdfDoc extends BaseInfo<Void, Void> {
-    public static final int PAGE_STEPS          = 1 << 11;
-    public static final int PAGE_DRUG           = 1 << 10;
-    public static final int PAGE_CALORIE        = 1 << 9;
-    public static final int PAGE_SLEEP          = 1 << 8;
-    public static final int PAGE_FLUID          = 1 << 7;
-    public static final int PAGE_WEIGHT         = 1 << 6;
-    public static final int PAGE_BLOODPRESSURE  = 1 << 5;
-    public static final int PAGE_WELLBEING      = 1 << 4;
-    public static final int PAGE_BLOODSUGAR     = 1 << 3;
-    public static final int PAGE_PULSE          = 1 << 2;
+
+    /**
+     * A flag indicating to add a Steps page in PDF
+     */
+    public static final int PAGE_STEPS = 1 << 11;
+
+    /**
+     * A flag indicating to add a Medications page in PDF
+     */
+    public static final int PAGE_DRUG = 1 << 10;
+
+    /**
+     * A flag indicating to add a Calories page in PDF
+     */
+    public static final int PAGE_CALORIE = 1 << 9;
+
+    /**
+     * A flag indicating to add a Sleep page in PDF
+     */
+    public static final int PAGE_SLEEP = 1 << 8;
+
+    /**
+     * A flag indicating to add a Water intake page in PDF
+     */
+    public static final int PAGE_FLUID = 1 << 7;
+
+    /**
+     * A flag indicating to add a Weight page in PDF
+     */
+    public static final int PAGE_WEIGHT = 1 << 6;
+
+    /**
+     * A flag indicating to add a Blood Pressure page in PDF
+     */
+    public static final int PAGE_BLOODPRESSURE = 1 << 5;
+
+    /**
+     * A flag indicating to add a Well-being page in PDF
+     */
+    public static final int PAGE_WELLBEING = 1 << 4;
+
+    /**
+     * A flag indicating to add a Blood Sugar page in PDF
+     */
+    public static final int PAGE_BLOODSUGAR = 1 << 3;
+
+    /**
+     * A flag indicating to add a Pulse page in PDF
+     */
+    public static final int PAGE_PULSE = 1 << 2;
+
+    /**
+     * Name of the folder where all generated PDFs are stored
+     */
+    private static final String STORAGE_FOLDER_NAME = "HealthKeeper";
 
     private static final String FILE_BASE_NAME = "HPMedicalHistory";
 
-    private static final String STORAGE_FOLDER_NAME = "HealthKeeper";
-
     private Context context;
     private int flags;
-    private Calendar minDate, maxDate;
+    private DateInterval interval;
 
-    public PdfDoc(Context context, int flags, Calendar minDate, Calendar maxDate) {
+    /**
+     * Represents a single PDF document consisting of pages which are set using {@param flags}
+     * parameter. If the data has a date stamp, only those records which are interval.within
+     * [minDate; maxDate] interval are included in the PDF.
+     * To actually generate a PDF one must call execute() method on the {@link PdfDoc} object.
+     * The generation itself is happening in the background via {@link BaseInfo}.
+     *
+     * @param context
+     * @param flags what pages to include in PDF (e.g. {@link #PAGE_BLOODPRESSURE} | {@link #PAGE_FLUID})
+     * @param interval date interval according to which the filter should be performed
+     */
+    public PdfDoc(Context context, int flags, DateInterval interval) {
         this.context = context;
         this.flags = flags;
-        this.minDate = minDate;
-        this.maxDate = maxDate;
-
-        minDate.add(Calendar.DAY_OF_MONTH, -1);
-        maxDate.add(Calendar.DAY_OF_MONTH, 1);
+        this.interval = interval;
     }
 
     @Override
@@ -78,18 +128,18 @@ public class PdfDoc extends BaseInfo<Void, Void> {
     private void createPDF(String path) {
         try {
             Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
+            PdfWriter.getInstance(document, new FileOutputStream(path));
+
             document.open();
+
             addMetaData(document);
-            appendPages(document, writer);
+
+            appendPages(document);
+
             document.close();
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean withinDates(Date date) {
-        return date.after(minDate.getTime()) && date.before(maxDate.getTime());
     }
 
     private void addMetaData(Document document) {
@@ -100,33 +150,65 @@ public class PdfDoc extends BaseInfo<Void, Void> {
         document.addCreator("Health Keeper app");
     }
 
-    private void appendPages(Document document, PdfWriter writer) throws DocumentException, IOException {
-        new PageTitle().addPage(context, document);
+    private void appendPages(Document document) throws DocumentException, IOException {
+        new PageTitle().addPage(context, document).newPage();
 
         if (hasFlag(PAGE_DRUG, flags)) {
+            final Cursor c = context.getContentResolver().query(DBContract.Drug.CONTENT_URI, null, null, null, null);
 
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Medications");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 2, 2, 2, 4, 4},
+                        new String[]{"#", "Name", "Interval, times a day", "Start date", "End date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy");
+                        while (c.moveToNext()) {
+                            String name = c.getString(c.getColumnIndex(DBContract.Drug.TITLE));
+                            Calendar startDate = DrugColumns.getStartDate(c);
+                            Calendar endDate = DrugColumns.getEndDate(c);
+                            int timesAday = c.getInt(c.getColumnIndex(DBContract.Drug.TIMES_A_DAY));
+                            if (interval.withinDates(startDate.getTime())) {
+                                table.addCell(String.valueOf(n));
+                                table.addCell(name);
+                                table.addCell(String.valueOf(timesAday));
+                                table.addCell(out.format(startDate));
+                                table.addCell(out.format(endDate));
+
+                                n++;
+                            }
+                        }
+                    }
+                });
+                c.close();
+
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
         if (hasFlag(PAGE_BLOODPRESSURE, flags)) {
-            PdfHelper.addHeader(document, "Blood Pressure");
-
             final Cursor c = context.getContentResolver().query(DBContract.BloodPressure.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 2, 4},
-                    new String[] {"#", "Systolic", "Diastolic", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int systolic = c.getInt(c.getColumnIndex(DBContract.BloodPressure.SYSTOLIC));
-                        int diastolic = c.getInt(c.getColumnIndex(DBContract.BloodPressure.DIASTOLIC));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.BloodPressure.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Blood Pressure");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 2, 4},
+                        new String[]{"#", "Systolic", "Diastolic", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
+                        while (c.moveToNext()) {
+                            int systolic = c.getInt(c.getColumnIndex(DBContract.BloodPressure.SYSTOLIC));
+                            int diastolic = c.getInt(c.getColumnIndex(DBContract.BloodPressure.DIASTOLIC));
+                            Calendar date = BloodPressureColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(systolic));
                                 table.addCell(String.valueOf(diastolic));
@@ -134,38 +216,34 @@ public class PdfDoc extends BaseInfo<Void, Void> {
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
         if (hasFlag(PAGE_BLOODSUGAR, flags)) {
-            PdfHelper.addHeader(document, "Blood Sugar");
-
             final Cursor c = context.getContentResolver().query(DBContract.BloodSugar.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 2, 4},
-                    new String[] {"#", "Sugar Level", "Before-meal", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int value = c.getInt(c.getColumnIndex(DBContract.BloodSugar.VALUE));
-                        int afterFood = c.getInt(c.getColumnIndex(DBContract.BloodSugar.AFTER_FOOD));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.BloodSugar.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Blood Sugar");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 2, 4},
+                        new String[]{"#", "Sugar Level", "Before-meal", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
+                        while (c.moveToNext()) {
+                            int value = c.getInt(c.getColumnIndex(DBContract.BloodSugar.VALUE));
+                            int afterFood = c.getInt(c.getColumnIndex(DBContract.BloodSugar.AFTER_FOOD));
+                            Calendar date = BloodSugarColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(value));
                                 table.addCell((afterFood == 0) ? "Before" : "After");
@@ -173,176 +251,163 @@ public class PdfDoc extends BaseInfo<Void, Void> {
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
-        // todo: daily?
         if (hasFlag(PAGE_CALORIE, flags)) {
-            PdfHelper.addHeader(document, "Calories");
-
             final Cursor c = context.getContentResolver().query(DBContract.Calorie.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 2, 4},
-                    new String[] {"#", "Burned", "Gained", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int burned = c.getInt(c.getColumnIndex(DBContract.Calorie.BURNED));
-                        int gained = c.getInt(c.getColumnIndex(DBContract.Calorie.GAINED));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.Calorie.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
-                                table.addCell(String.valueOf(n));
-                                table.addCell(String.valueOf(burned));
-                                table.addCell(String.valueOf(gained));
-                                table.addCell(out.format(date));
 
-                                n++;
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Calories");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 2, 4},
+                        new String[]{"#", "Burned", "Gained", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
+                        while (c.moveToNext()) {
+                            int burned = c.getInt(c.getColumnIndex(DBContract.Calorie.BURNED));
+                            int gained = c.getInt(c.getColumnIndex(DBContract.Calorie.GAINED));
+                            String dateStr = c.getString(c.getColumnIndex(DBContract.Calorie.DATE));
+                            dateStr = fixMonth(dateStr);
+                            try {
+                                Date date = in.parse(dateStr);
+                                if (interval.withinDates(date)) {
+                                    table.addCell(String.valueOf(n));
+                                    table.addCell(String.valueOf(burned));
+                                    table.addCell(String.valueOf(gained));
+                                    table.addCell(out.format(date));
+
+                                    n++;
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
-        // todo: daily?
         if (hasFlag(PAGE_FLUID, flags)) {
-            PdfHelper.addHeader(document, "Water intake");
+            final Cursor c = context.getContentResolver().query(
+                    DBContract.Fluid.PDF_CONTENT_URI,
+                    new String[] {"sum(" + DBContract.Fluid.DRANK + ")", DBContract.Fluid.DATE},
+                    null, null, null);
 
-            final Cursor c = context.getContentResolver().query(DBContract.Fluid.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 4},
-                    new String[] {"#", "Drank", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int value = c.getInt(c.getColumnIndex(DBContract.Fluid.DRANK));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.Fluid.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Water intake");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 4},
+                        new String[]{"#", "Drank", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy");
+                        while (c.moveToNext()) {
+                            int value = c.getInt(0);
+                            Calendar date = FluidColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(value));
                                 table.addCell(out.format(date));
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
         if (hasFlag(PAGE_PULSE, flags)) {
-            PdfHelper.addHeader(document, "Pulse");
-
             final Cursor c = context.getContentResolver().query(DBContract.Pulse.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 4},
-                    new String[] {"#", "Pulse rate", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int value = c.getInt(c.getColumnIndex(DBContract.Pulse.VALUE));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.Pulse.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Pulse");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 4},
+                        new String[]{"#", "Pulse rate", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
+                        while (c.moveToNext()) {
+                            int value = c.getInt(c.getColumnIndex(DBContract.Pulse.VALUE));
+                            Calendar date = PulseColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(value));
                                 table.addCell(out.format(date));
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
         if (hasFlag(PAGE_SLEEP, flags)) {
-            PdfHelper.addHeader(document, "Sleep");
-
             final Cursor c = context.getContentResolver().query(DBContract.Sleep.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 4, 4},
-                    new String[] {"#", "Sleep time", "Bedtime", "Woke up"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int sleepTime = c.getInt(c.getColumnIndex(DBContract.Sleep.SLEEP_TIME));
-                        String startDateStr = c.getString(c.getColumnIndex(DBContract.Sleep.START_DATE));
-                        startDateStr = fixMonth(startDateStr);
-                        String endDateStr = c.getString(c.getColumnIndex(DBContract.Sleep.END_DATE));
-                        endDateStr = fixMonth(endDateStr);
-                        try {
-                            Date startDate = in.parse(startDateStr);
-                            if (withinDates(startDate)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Sleep");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 4, 4},
+                        new String[]{"#", "Sleep time", "Bedtime", "Woke up"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
+                        while (c.moveToNext()) {
+                            int sleepTime = c.getInt(c.getColumnIndex(DBContract.Sleep.SLEEP_TIME));
+                            Calendar startDate = SleepColumns.getStartDate(c);
+                            Calendar endDate = SleepColumns.getEndDate(c);
+                            if (interval.withinDates(startDate.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(sleepTime));
                                 table.addCell(out.format(startDate));
-                                table.addCell(out.format(endDateStr));
+                                table.addCell(out.format(endDate));
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
+                });
 
-            c.close();
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
         if (hasFlag(PAGE_STEPS, flags)) {
-            PdfHelper.addHeader(document, "Steps");
-
             final Cursor c = context.getContentResolver().query(
                     DBContract.Steps.PDF_CONTENT_URI,
                     new String[] {
@@ -350,23 +415,23 @@ public class PdfDoc extends BaseInfo<Void, Void> {
                             "sum(" + DBContract.Steps.WALKING_TIME + ")",
                             DBContract.Steps.DATE},
                     null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 2, 4},
-                    new String[] {"#", "Steps walked", "Walk time", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy");
-                    while (c.moveToNext()) {
-                        int stepCount = c.getInt(0);
-                        int walkTime = c.getInt(1);
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.Steps.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Steps");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 2, 4},
+                        new String[]{"#", "Steps walked", "Walk time", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy");
+                        while (c.moveToNext()) {
+                            int stepCount = c.getInt(0);
+                            int walkTime = c.getInt(1);
+                            Calendar date = StepColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(stepCount));
                                 table.addCell(out.format(walkTime));
@@ -374,94 +439,88 @@ public class PdfDoc extends BaseInfo<Void, Void> {
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
-        // todo: daily?
         if (hasFlag(PAGE_WEIGHT, flags)) {
-            PdfHelper.addHeader(document, "Weight");
-
             final Cursor c = context.getContentResolver().query(DBContract.Weight.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 4},
-                    new String[] {"#", "Weight", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d-H-m");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
-                    while (c.moveToNext()) {
-                        int value = c.getInt(c.getColumnIndex(DBContract.Weight.VALUE));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.Weight.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Weight");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 4},
+                        new String[]{"#", "Weight", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy HH-mm");
+                        while (c.moveToNext()) {
+                            int value = c.getInt(c.getColumnIndex(DBContract.Weight.VALUE));
+                            Calendar date = WeightColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(value));
                                 table.addCell(out.format(date));
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
         if (hasFlag(PAGE_WELLBEING, flags)) {
-            PdfHelper.addHeader(document, "Well-being estimates");
-
             final Cursor c = context.getContentResolver().query(DBContract.WellBeing.CONTENT_URI, null, null, null, null);
-            BaseTable baseTable = new BaseTable(
-                    new float[] {1, 2, 4},
-                    new String[] {"#", "Rate", "Date"});
-            baseTable.fill(new TableFiller() {
-                @Override
-                public void fill(PdfPTable table) {
-                    int n = 1;
-                    SimpleDateFormat in = new SimpleDateFormat("y-M-d");
-                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yy");
-                    while (c.moveToNext()) {
-                        int value = c.getInt(c.getColumnIndex(DBContract.WellBeing.VALUE));
-                        String dateStr = c.getString(c.getColumnIndex(DBContract.WellBeing.DATE));
-                        dateStr = fixMonth(dateStr);
-                        try {
-                            Date date = in.parse(dateStr);
-                            if (withinDates(date)) {
+
+            if (c.getCount() != 0) {
+                PdfHelper.addHeader(document, "Well-being estimates");
+
+                BaseTable baseTable = new BaseTable(
+                        new float[]{1, 2, 4},
+                        new String[]{"#", "Rate", "Date"});
+                baseTable.fill(new TableFiller() {
+                    @Override
+                    public void fill(PdfPTable table) {
+                        int n = 1;
+                        SimpleDateFormat out = new SimpleDateFormat("dd MMM yy");
+                        while (c.moveToNext()) {
+                            int value = c.getInt(c.getColumnIndex(DBContract.WellBeing.VALUE));
+                            Calendar date = WellBeingColumns.getDate(c);
+                            if (interval.withinDates(date.getTime())) {
                                 table.addCell(String.valueOf(n));
                                 table.addCell(String.valueOf(value));
                                 table.addCell(out.format(date));
 
                                 n++;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            });
-            c.close();
+                });
+                c.close();
 
-            document.add(baseTable.getTable());
-            document.newPage();
+                document.add(baseTable.getTable());
+                document.newPage();
+            }
         }
     }
 
+    /**
+     * Increases month by 1 for accurate SimpleDateFormat parsing
+     * @param str date corresponding to "Calendar.YEAR-Calendar.MONTH-..."
+     * @return String parsed date with increased month
+     */
     private static String fixMonth(String str) {
         String res;
         String[] comps = str.split("-");

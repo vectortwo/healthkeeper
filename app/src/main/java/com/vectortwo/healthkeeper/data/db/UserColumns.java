@@ -11,11 +11,6 @@ public class UserColumns extends DBColumns {
         return this;
     }
 
-    public UserColumns putSecondName(String name) {
-        contentValues.put(DBContract.User.SECONDNAME, name);
-        return this;
-    }
-
     public UserColumns putSex(String sex) {
         contentValues.put(DBContract.User.SEX, sex);
         return this;
@@ -26,7 +21,7 @@ public class UserColumns extends DBColumns {
         return this;
     }
 
-    public UserColumns putHeight(int height) {
+    public UserColumns putHeight(float height) {
         contentValues.put(DBContract.User.HEIGHT, height);
         return this;
     }
@@ -43,16 +38,6 @@ public class UserColumns extends DBColumns {
 
     public UserColumns putCountry(String country) {
         contentValues.put(DBContract.User.COUNTRY, country);
-        return this;
-    }
-
-    /**
-     * The date user was born
-     * @param birthday in "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_MONTH" format
-     * @return this
-     */
-    public UserColumns putBirthday(String birthday) {
-        contentValues.put(DBContract.User.BIRTHDAY, birthday);
         return this;
     }
 }

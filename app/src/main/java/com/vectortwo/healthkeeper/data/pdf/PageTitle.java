@@ -16,7 +16,7 @@ import java.util.Calendar;
  * Created by ilya on 26/04/2017.
  */
 class PageTitle {
-    void addPage(Context cntx, Document document) throws DocumentException, IOException {
+    Document addPage(Context cntx, Document document) throws DocumentException, IOException {
         Paragraph preface = new Paragraph();
 
         // signature
@@ -42,7 +42,8 @@ class PageTitle {
         addUserInfo(cntx, preface);
 
         document.add(preface);
-        document.newPage();
+
+        return document;
     }
 
     private void addUserInfo(Context cntx, Paragraph to) {
@@ -50,10 +51,8 @@ class PageTitle {
         c.moveToFirst();
 
         String firstname = c.getString(c.getColumnIndex(DBContract.User.FIRSTNAME));
-        String secondname = c.getString(c.getColumnIndex(DBContract.User.SECONDNAME));
         String sex = c.getString(c.getColumnIndex(DBContract.User.SEX));
         String country = c.getString(c.getColumnIndex(DBContract.User.COUNTRY));
-        String birthday = c.getString(c.getColumnIndex(DBContract.User.BIRTHDAY));
         String city = c.getString(c.getColumnIndex(DBContract.User.CITY));
         int age = c.getInt(c.getColumnIndex(DBContract.User.AGE));
 
@@ -63,8 +62,6 @@ class PageTitle {
         PdfHelper.addEmptyLine(to, 1);
 
         to.add(new Paragraph("Firstname: " + firstname));
-        to.add(new Paragraph("Secondname: " + secondname));
-        to.add(new Paragraph("Birthdate: " + birthday));
         to.add(new Paragraph("Age: " + age));
         to.add(new Paragraph("Sex: " + sex));
         to.add(new Paragraph("Country: " + country));

@@ -15,7 +15,7 @@ class BaseTable {
     BaseTable(float[] colWidths, String[] colNames) {
         table = new PdfPTable(colWidths);
 
-        table.setWidthPercentage(70);
+        table.setWidthPercentage(75);
         table.getDefaultCell().setUseAscender(true);
         table.getDefaultCell().setUseDescender(true);
         Font f = new Font(Font.FontFamily.HELVETICA, 13, Font.NORMAL, GrayColor.GRAYWHITE);

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import com.vectortwo.healthkeeper.R;
 import com.vectortwo.healthkeeper.data.BackendPrefManager;
-import com.vectortwo.healthkeeper.services.BirthdayService;
 import com.vectortwo.healthkeeper.services.DrugArchiveService;
 import com.vectortwo.healthkeeper.services.PedometerService;
 import com.vectortwo.healthkeeper.services.RestoreDrugNotifyService;
@@ -37,14 +36,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
             Intent drugArchiveService = new Intent(context, DrugArchiveService.class);
             context.startService(drugArchiveService);
-        }
-
-        // Initiate birthday check every year
-        if (!prefs.getBirthdayCheckStarted()) {
-            prefs.setBirthdayCheckStarted(true);
-
-            Intent birthdayService = new Intent(context, BirthdayService.class);
-            context.startService(birthdayService);
         }
 
         // Restore drug notifications

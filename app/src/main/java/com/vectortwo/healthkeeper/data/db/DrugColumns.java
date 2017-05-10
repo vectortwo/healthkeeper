@@ -1,13 +1,21 @@
 package com.vectortwo.healthkeeper.data.db;
 
+import android.database.Cursor;
 import android.support.annotation.IntRange;
 import android.support.annotation.IntegerRes;
+import com.vectortwo.healthkeeper.data.Utils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
  *  for {@link DBContract.Drug} table. Ensures type-safety.
  */
 public class DrugColumns extends DBColumns {
+
+    private static final SimpleDateFormat in = new SimpleDateFormat("y-M-d");
 
     public DrugColumns putTitle(String title) {
         contentValues.put(DBContract.Drug.TITLE, title);
@@ -21,22 +29,58 @@ public class DrugColumns extends DBColumns {
 
     /**
      * When the user should start taking the drug (inclusive)?
-     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK"
+     * @param cal Calendar with desired date
      * @return this
      */
-    public DrugColumns putStartDate(String date) {
+    public DrugColumns putStartDate(Calendar cal) {
+        String date = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)
+                + "-" + cal.get(Calendar.DAY_OF_MONTH);
+        date = Utils.fixMonth(date);
+        date = Utils.addLeadZeros(date);
+
         contentValues.put(DBContract.Drug.START_DATE, date);
         return this;
     }
 
     /**
      * When the user should stop taking the drug (inclusive)?
-     * @param date corresponds to "Calendar.YEAR-Calendar.MONTH-Calendar.DAY_OF_WEEK"
+     * @param cal Calendar with desired date
      * @return this
      */
-    public DrugColumns putEndDate(String date) {
+    public DrugColumns putEndDate(Calendar cal) {
+        String date = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)
+                + "-" + cal.get(Calendar.DAY_OF_MONTH);
+        date = Utils.fixMonth(date);
+        date = Utils.addLeadZeros(date);
+
         contentValues.put(DBContract.Drug.END_DATE, date);
         return this;
+    }
+
+    public static Calendar getStartDate(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.START_DATE);
+        String dateRaw = c.getString(colId);
+
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(in.parse(dateRaw));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal;
+    }
+
+    public static Calendar getEndDate(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.END_DATE);
+        String dateRaw = c.getString(colId);
+
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(in.parse(dateRaw));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal;
     }
 
     public DrugColumns putDescription(String desc) {

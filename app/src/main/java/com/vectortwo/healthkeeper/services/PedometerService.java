@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.vectortwo.healthkeeper.PedometerDateFormat;
@@ -54,6 +55,8 @@ public class PedometerService extends Service implements SensorEventListener {
     private final IBinder binder = new PedometerBinder();
 
     private static final String ACTION_UPDATE = "com.vectortwo.healthkeeper.broadcast.PEDOMETER_UPDATE";
+
+    private PowerManager.WakeLock wl;
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -144,7 +147,7 @@ public class PedometerService extends Service implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         sensorData = (long) event.values[0];
 
-        if (freshInstall) {
+        if (freshInstall || sensorData - daily_offset_cached < 0) {
             daily_offset_cached = sensorData;
             hourly_offset_cached = sensorData;
             pedometerPrefs.edit()
@@ -189,6 +192,8 @@ public class PedometerService extends Service implements SensorEventListener {
                 .putBoolean(getString(R.string.preference_pedometer_was_killed), true)
                 .putLong(getString(R.string.preference_pedometer_onkilled_walkingtime), walkingTimeToday)
                 .apply();
+
+        wl.release();
     }
 
     @Override
@@ -202,6 +207,9 @@ public class PedometerService extends Service implements SensorEventListener {
 
         alarmIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_UPDATE), 0);
 
+        registerReceiver(receiver, new IntentFilter(ACTION_UPDATE));
+        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         if (stepSensor == null) {
             stopSelf();
         }
@@ -214,10 +222,6 @@ public class PedometerService extends Service implements SensorEventListener {
             stopSelf();
             return START_NOT_STICKY;
         }
-        registerReceiver(receiver, new IntentFilter(ACTION_UPDATE));
-
-        sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
         String currentDate = PedometerDateFormat.getCurrentDate();
         long notificationValue = 0;
         boolean forceStopped = pedometerPrefs.getBoolean(getString(R.string.preference_pedometer_force_stopped), false);
@@ -265,6 +269,10 @@ public class PedometerService extends Service implements SensorEventListener {
 
         notification.getBuilder().setContentTitle(String.valueOf(notificationValue));
         startForeground(notification.getNotificationID(), notification.getBuilder().build());
+
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "vectortwo");
+        wl.acquire();
 
         setAlarmNextHour(alarmManager, alarmIntent);
 

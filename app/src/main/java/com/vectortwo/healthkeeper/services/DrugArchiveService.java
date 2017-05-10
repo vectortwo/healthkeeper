@@ -28,18 +28,11 @@ public class DrugArchiveService extends IntentService {
                 null,
                 null);
 
-        Calendar cal = Calendar.getInstance();
-        Calendar currentDate = (Calendar) cal.clone();
-        Calendar endDate = (Calendar) cal.clone();
+        Calendar currentDate = Calendar.getInstance();
 
         while (drugCursor.moveToNext()) {
             // Parse endDate
-            String endDateStr = drugCursor.getString(drugCursor.getColumnIndex(DBContract.Drug.END_DATE));
-            String[] endDateComps = endDateStr.split("-");
-            int year = Integer.parseInt(endDateComps[0]);
-            int month = Integer.parseInt(endDateComps[1]);
-            int day = Integer.parseInt(endDateComps[2]);
-            endDate.set(year, month, day);
+            Calendar endDate = DrugColumns.getEndDate(drugCursor);
 
             if (currentDate.compareTo(endDate) > 0) {
                 int drugID = drugCursor.getInt(drugCursor.getColumnIndex(DBContract.Drug._ID));
@@ -70,7 +63,7 @@ public class DrugArchiveService extends IntentService {
         currentDate.set(Calendar.MINUTE, 0);
 
         Intent alarmIntent = new Intent(this, DrugArchiveService.class);
-        PendingIntent scheduleIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
+        PendingIntent scheduleIntent = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
         alarmManager.setExact(AlarmManager.RTC, currentDate.getTimeInMillis(), scheduleIntent);
     }
 }

@@ -11,6 +11,7 @@ import java.util.Calendar;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import com.vectortwo.healthkeeper.data.db.DBContract;
+import com.vectortwo.healthkeeper.data.db.DrugColumns;
 import com.vectortwo.healthkeeper.notifications.DrugIntakeNotification;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
 
@@ -165,13 +166,8 @@ public class DrugNotifyService extends IntentService {
 
         String currentTime = currentDate.get(Calendar.HOUR_OF_DAY) + "-" + currentDate.get(Calendar.MINUTE);
 
-        String startDateStr = drugCursor.getString(drugCursor.getColumnIndex(DBContract.Drug.START_DATE));
-        Calendar startDate = (Calendar) currentDate.clone();
-        setDate(startDateStr, startDate);
-
-        String endDateStr = drugCursor.getString(drugCursor.getColumnIndex(DBContract.Drug.END_DATE));
-        Calendar endDate = (Calendar) currentDate.clone();
-        setDate(endDateStr, endDate);
+        Calendar startDate = DrugColumns.getStartDate(drugCursor);
+        Calendar endDate = DrugColumns.getEndDate(drugCursor);
 
         Calendar scheduleDate = getScheduleDate(currentTime, currentDate, startDate, endDate, weekdays, times);
 
@@ -208,14 +204,6 @@ public class DrugNotifyService extends IntentService {
         notifyIntent.setAction(ACTION_NOTIFY);
         cancelIntent = PendingIntent.getBroadcast(this, drugID, notifyIntent, 0);
         alarmManager.cancel(cancelIntent);
-    }
-
-    private static void setDate(String dateFormatted, Calendar out) {
-        String[] dateComponents = dateFormatted.split("-");
-        int year = Integer.parseInt(dateComponents[0]);
-        int month = Integer.parseInt(dateComponents[1]);
-        int day = Integer.parseInt(dateComponents[2]);
-        out.set(year, month, day);
     }
 
     private static int compareTimes(String x, String y) {

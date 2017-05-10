@@ -44,6 +44,7 @@ public class DBContentProvider extends ContentProvider {
     private static final int DRUG_SUGGESTIONS           = 24;
 
     private static final int PDF_STEPS                  = 25;
+    private static final int PDF_FLUID                  = 26;
 
     static {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
@@ -85,6 +86,7 @@ public class DBContentProvider extends ContentProvider {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Steps.PDF_QUERY, PDF_STEPS);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.Fluid.PDF_QUERY, PDF_FLUID);
     }
 
     @Override
@@ -97,95 +99,127 @@ public class DBContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
+        String groupBy;
         switch (URI_MATCHER.match(uri)) {
             case PDF_STEPS:
                 queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
-                String groupBy = DBContract.Steps.DATE;
+                groupBy = DBContract.Steps.DATE;
                 db = dbOpenHelper.getReadableDatabase();
                 return queryBuilder.query(db, projection, selection, selectionArgs, groupBy, null, null);
+
+            case PDF_FLUID:
+                queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
+                groupBy = DBContract.Fluid.DATE;
+                db = dbOpenHelper.getReadableDatabase();
+                return queryBuilder.query(db, projection, selection, selectionArgs, groupBy, null, null);
+
             case DRUG_SUGGESTIONS:
                 String query = uri.getLastPathSegment();
                 return getSuggestions(query);
+
             case TABLE_USER:
                 queryBuilder.setTables(DBContract.User.TABLE_NAME);
                 break;
+
             case ITEM_USER:
                 queryBuilder.setTables(DBContract.User.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_PULSE:
                 queryBuilder.setTables(DBContract.Pulse.TABLE_NAME);
                 break;
+
             case ITEM_PULSE:
                 queryBuilder.setTables(DBContract.Pulse.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_BLOOD_PRESSURE:
                 queryBuilder.setTables(DBContract.BloodPressure.TABLE_NAME);
                 break;
+
             case ITEM_BLOOD_PRESSURE:
                 queryBuilder.setTables(DBContract.BloodPressure.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_BLOOD_SUGAR:
                 queryBuilder.setTables(DBContract.BloodSugar.TABLE_NAME);
                 break;
+
             case ITEM_BLOOD_SUGAR:
                 queryBuilder.setTables(DBContract.BloodSugar.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_WEIGHT:
                 queryBuilder.setTables(DBContract.Weight.TABLE_NAME);
                 break;
+
             case ITEM_WEIGHT:
                 queryBuilder.setTables(DBContract.Weight.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_FLUID:
                 queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
                 break;
+
             case ITEM_FLUID:
                 queryBuilder.setTables(DBContract.Fluid.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_SLEEP:
                 queryBuilder.setTables(DBContract.Sleep.TABLE_NAME);
                 break;
+
             case ITEM_SLEEP:
                 queryBuilder.setTables(DBContract.Sleep.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_CALORIE:
                 queryBuilder.setTables(DBContract.Calorie.TABLE_NAME);
                 break;
+
             case ITEM_CALORIE:
                 queryBuilder.setTables(DBContract.Calorie.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_STEPS:
                 queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
                 break;
+
             case ITEM_STEPS:
                 queryBuilder.setTables(DBContract.Steps.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_DRUG:
                 queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
                 break;
+
             case ITEM_DRUG:
                 queryBuilder.setTables(DBContract.Drug.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_INTAKE:
                 queryBuilder.setTables(DBContract.Intake.TABLE_NAME);
                 break;
+
             case ITEM_INTAKE:
                 queryBuilder.setTables(DBContract.Intake.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
+
             case TABLE_WELLBEING:
                 queryBuilder.setTables(DBContract.WellBeing.TABLE_NAME);
                 break;
+
             case ITEM_WELLBEING:
                 queryBuilder.setTables(DBContract.WellBeing.TABLE_NAME);
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());

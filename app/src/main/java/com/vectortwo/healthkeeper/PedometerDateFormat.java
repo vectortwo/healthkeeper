@@ -1,5 +1,8 @@
 package com.vectortwo.healthkeeper;
 
+import com.vectortwo.healthkeeper.data.Utils;
+
+import java.text.ParseException;
 import java.util.Calendar;
 
 /**
@@ -33,8 +36,22 @@ public final class PedometerDateFormat {
         return Integer.parseInt(date.substring(date.lastIndexOf("-") + 1));
     }
 
-    public static String getDateWithoutHour(String dateWithHour) {
-        return dateWithHour.substring(0, dateWithHour.lastIndexOf("-"));
+    /**
+     * Use only when writing result to db!
+     */
+    public static Calendar getDateWithoutHour(String dateWithHour) {
+        dateWithHour = dateWithHour.substring(0, dateWithHour.lastIndexOf("-"));
+        dateWithHour = Utils.fixMonth(dateWithHour);
+        dateWithHour = Utils.addLeadZeros(dateWithHour);
+
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(Utils.sdf_yMd.parse(dateWithHour));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return cal;
     }
 
     public static int getOnReceivedHour(String date) {
