@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 /**
  * Created by ilya on 07/03/2017.
  */
-public class DBContract {
+public final class DBContract {
     private DBContract() {}
 
     public static final String AUTHORITY = "com.vectortwo.healthkeeper.HealthProvider";
@@ -31,6 +31,14 @@ public class DBContract {
         public static final String DATE = "date";
     }
 
+    public static final class KnownDrugs implements BaseColumns {
+        static final String TABLE_NAME = "known_drugs";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String TITLE = "title";
+    }
+
     public static final class BloodSugar implements BaseColumns {
         static final String TABLE_NAME = "blood_sugar";
 
@@ -42,6 +50,18 @@ public class DBContract {
         public static final String VALUE = "value";
         public static final String DATE = "date";
         public static final String AFTER_FOOD = "after_food";
+    }
+
+    public static final class WellBeing implements BaseColumns {
+        static final String TABLE_NAME = "well_being";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
+        public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
+
+        public static final String VALUE = "value";
+        public static final String DATE = "date";
     }
 
     public static final class BloodPressure implements BaseColumns {
@@ -74,11 +94,15 @@ public class DBContract {
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
+        static final String PDF_QUERY = "PDF" + TABLE_NAME;
+        public static final Uri PDF_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PDF_QUERY);
+
         public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String DRANK = "drank";
         public static final String DATE = "date";
+        public static final String TIME = "time";
     }
 
     public static final class Sleep implements BaseColumns {
@@ -104,7 +128,7 @@ public class DBContract {
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String GAINED = "gained";
-        public static final String LOST = "lost";
+        public static final String BURNED = "burned";
         public static final String DATE = "date";
     }
 
@@ -117,7 +141,6 @@ public class DBContract {
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String TITLE = "title";
-        public static final String DOSAGE = "dosage";
 
         public static final String DESCRIPTION = "description";
         public static final String WARNINGS = "warnings";
@@ -127,12 +150,36 @@ public class DBContract {
 
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
+
+        public static final String WEEKDAYS = "weekdays";
+        public static final String NOTIFY_ME = "notify_me";
+
+        public static final String TOTAL_AMOUNT = "total_amount";
+    }
+
+    public static final class Intake implements BaseColumns {
+        static final String TABLE_NAME = "intake";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
+        public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
+
+        public static final String DRUG_ID = "drug_id";
+        public static final String WEEKDAY = "weekday";
+        public static final String TIME = "time";
+        public static final String FORM = "form";
+        public static final String DOSAGE = "dosage";
     }
 
     public static final class Steps implements BaseColumns {
         static final String TABLE_NAME = "steps";
 
+
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        static final String PDF_QUERY = "PDF" + TABLE_NAME;
+        public static final Uri PDF_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PDF_QUERY);
 
         public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
@@ -140,6 +187,8 @@ public class DBContract {
         public static final String COUNT = "count";
         public static final String HOUR = "hour";
         public static final String DATE = "date";
+
+        public static final String WALKING_TIME = "walking_time";
     }
 
     public static final class User implements BaseColumns {
@@ -151,14 +200,13 @@ public class DBContract {
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
         public static final String FIRSTNAME = "firstname";
-        public static final String SECONDNAME = "secondname";
 
         public static final String SEX = "sex";
         public static final String AGE = "age";
         public static final String CITY = "city";
+        public static final String COUNTRY = "country";
 
         public static final String HEIGHT = "height";
         public static final String WEIGHT = "weight";
-        public static final String BIRTHDAY = "birthday";
     }
 }

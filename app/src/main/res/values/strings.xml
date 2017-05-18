@@ -1,45 +1,68 @@
 <resources>
     <string name="app_name">Health Keeper</string>
     <string name="title_activity_welcome">Health Keeper</string>
-    <string name="next">ДАЛЕЕ</string>
-    <string name="skip">ПРОПУСТИТЬ</string>
-    <string name="start">ПРИСТУПИМ!</string>
 
-    <string name="search_hint">Find drugs</string>
+    <string name="prefs_file_global">com.vectortwo.healthkeeper.prefs.PREFS_FILE_GLOBAL</string>
+    <string name="prefs_first_launch">com.vectortwo.healthkeeper.prefs.FIRST_LAUNCH</string>
 
-    <string name="slide_1_title">Добро пожаловать!</string>
-    <string name="slide_1_desc">Укажите свои начальные пораметры.</string>
+    <string name="prefs_element_medicament_status">com.vectortwo.healthkeeper.prefs.element.MEDICAMET</string>
+    <string name="prefs_element_blood_sugar_status">com.vectortwo.healthkeeper.prefs.element.BLOODSUGAR</string>
+    <string name="prefs_element_walking_status">com.vectortwo.healthkeeper.prefs.element.WALKING</string>
+    <string name="prefs_element_pressure_status">com.vectortwo.healthkeeper.prefs.element.PRESSURE</string>
+    <string name="prefs_element_aqua_status">com.vectortwo.healthkeeper.prefs.element.AQUA</string>
+    <string name="prefs_element_weight_status">com.vectortwo.healthkeeper.prefs.element.WEIGHT</string>
+    <string name="prefs_element_sleep_status">com.vectortwo.healthkeeper.prefs.element.SLEEP</string>
+    <string name="prefs_walking_target">com.vectortwo.healthkeeper.prefs.element.WALKING_TARGET</string>
 
-    <string name="slide_2_title">Как Вас зовут?</string>
-    <string name="slide_2_desc"></string>
-    <string name="default_username">Имя</string>
+    <string name="action_add_drug">com.vectortwo.healthkeeper.intent.ADDDRUG</string>
 
-    <string name="slide_3_title">Какой у Вас рост?</string>
-    <string name="slide_3_desc"></string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
+    <string name="minute">min</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="set">Set</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="start">GO!</string>
+    <string name="intake_postpone">Remind later</string>
 
-    <string name="slide_4_title">Какой у Вас вес?</string>
-    <string name="slide_4_desc"></string>
+    <string name="search_hint">Find medications</string>
 
-    <string name="slide_5_title">Пол</string>
-    <string name="slide_5_desc"></string>
+    <string name="slide_1_title">Welcome!</string>
+    <string name="slide_1_desc">Provide your basic information</string>
 
-    <string name="slide_6_title">Ваш возраст?</string>
-    <string name="slide_6_desc"></string>
+    <string name="slide_2_title">What\'s your name</string>
+    <string name="slide_2_desc">" "</string>
+    <string name="default_username">Name</string>
 
-    <string name="slide_7_title">Спасибо!</string>
-    <string name="slide_7_desc">Приступим!</string>
+    <string name="slide_3_title">How tall are you?</string>
+    <string name="slide_3_desc">" "</string>
 
-    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear
+    <string name="slide_4_title">What\'s your weight?</string>
+    <string name="slide_4_desc">" "</string>
+
+    <string name="slide_5_title">Sex</string>
+    <string name="slide_5_desc">" "</string>
+
+    <string name="slide_6_title">What\'s your age?</string>
+    <string name="slide_6_desc">" "</string>
+
+    <string name="slide_7_title">Thanks!</string>
+    <string name="slide_7_desc">Let\'s get started!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, go to Settings -> apps -> welcome slider -> clear
         data
     </string>
-    <string name="play_again">Повторить приветсвие</string>
-    <string name="medicament">Лекарства</string>
-    <string name="blood_sugar">Сахар</string>
-    <string name="walking">Активность</string>
-    <string name="pressure">Давление</string>
-    <string name="weight">Вес</string>
-    <string name="aqua">Жидкость</string>
-    <string name="sleep">Сон</string>
+    <string name="play_again">Reset settings</string>
+    <string name="medicament">Medications</string>
+    <string name="blood_sugar">Sugar</string>
+    <string name="walking">Fitness</string>
+    <string name="pressure">Pressure</string>
+    <string name="weight">Weight</string>
+    <string name="aqua">Fluid</string>
+    <string name="sleep">Sleep</string>
 
 
     <string name="title_activity_medicament">MedicamentActivity</string>
@@ -50,50 +73,110 @@
     <string name="title_activity_blood_sugar">BloodSugarActivity</string>
     <string name="title_activity_sleep">SleepActivity</string>
 
-    <!-- --> <!-- Главное меню -->
-    <string name="main_menu_elements">Управление элементами</string>
-    <string name="main_menu_notification">Уведомления</string>
-    <string name="main_menu_about">О приложении</string>
-    <string name="main_menu_settings">Настройки</string>
+    <!-- Main menu -->
+    <string name="main_menu_elements">Managing elements</string>
+    <string name="main_menu_notification">Notifications</string>
+    <string name="main_menu_about">About</string>
+    <string name="main_menu_settings">Settings</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_about">AboutActivity</string>
-    <string name="title_activity_elements_settings">ElementsSettingsActivity</string>
+    <string name="title_activity_elements_settings">Managing elements</string>
     <string name="title_activity_notification_settings">NotificationSettingsActivity</string>
 
     <!-- Medicament text -->
-    <string name="medicament_default_name">Препорат</string>
-    <string name="medicament_dosage">Дозировка:</string>
+    <string name="medicament_default_name">Medications</string>
+    <string name="medicament_dosage">Dosage:</string>
     <string name="medicament_specification">SecWifiDisplayUtil: Metadata value : SecSettings2
         SecWifiDisplayUtil: Metadata value : SecSettings2
         SecWifiDisplayUtil: Metadata value : SecSettings2
         SecWifiDisplayUtil: Metadata value : SecSettings2</string>
-    <string name="medicament_data">Следующее время:</string>
-    <string name="medicament_dosage_type">мг</string>
+    <string name="medicament_data">Next time:</string>
+    <string name="medicament_dosage_type">mg</string>
     <string name="title_activity_medicament_search_s">MedicamentSearchSActivity</string>
-    <string name="search_medicament_logo">Поиск лекарств</string>
+    <string name="search_medicament_logo">Search medications</string>
 
     <!-- weight text -->
-    <string name="weight_main_tab_text">Отслеживание</string>
-    <string name="weight_statistics_tab_text">Статистика</string>
+    <string name="weight_main_tab_text">Tracking</string>
+    <string name="weight_statistics_tab_text">Statistics</string>
 
     <!-- aqua text -->
-    <string name="aqua_main_tab_text">Отслеживание</string>
-    <string name="aqua_statistics_tab_text">Статистика</string>
+    <string name="aqua_main_tab_text">Tracking</string>
+    <string name="aqua_statistics_tab_text">Statistics</string>
 
     <!-- blood text -->
-    <string name="blood_main_tab_text">Отслеживание</string>
-    <string name="blood_statistics_tab_text">Статистика</string>
+    <string name="blood_main_tab_text">Tracking</string>
+    <string name="blood_statistics_tab_text">Statistics</string>
 
     <!-- walking text -->
-    <string name="walking_main_tab_text">Отслеживание</string>
-    <string name="walking_statistics_tab_text">Статистика</string>
+    <string name="walking_main_tab_text">Tracking</string>
+    <string name="walking_statistics_tab_text">Statistics</string>
 
     <!-- pressure text -->
-    <string name="pressure_main_tab_text">Отслеживание</string>
-    <string name="pressure_statistics_tab_text">Статистика</string>
+    <string name="pressure_main_tab_text">Tracking</string>
+    <string name="pressure_statistics_tab_text">Statistics</string>
 
     <string name="descriptionServiceSteps">Pedometer</string>
     <string name="today_steps">Today steps</string>
     <string name="notification_turn_off">Turn off</string>
+    <string name="descriptionReceiverDrugNotify">Medications notification scheduler</string>
+    <string name="descriptionServiceArchiver">Medication archiver</string>
 
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+
+
+
+    <!-- m_time_card text -->
+    <string name="mtc_text_headline">Take</string>
+    <string name="mtc_new_time_text">New time</string>
+    <string name="mtc_title">Set time and dosage</string>
+    <string name="mtc_enddate">End date:</string>
+    <string name="mtc_startdate">Start date:</string>
+
+    <string name="mtc_set_time">Select Time</string>
+    <string name="mtc_no_warnings">\n No contraindications. \n</string>
+    <string name="mtc_no_description">\n No description.\n </string>
+    <string name="edit_drug_no_internet_description">\n Description could not be loaded.</string>
+    <string name="edit_drug_no_internet_warnings">\n Warnings could not be loaded.</string>
+    <string name="test_descr_and_warnings">Loading...</string>
+    <string name="edit_drug_nointernet">No Internet connection! Can\'t load medication info.</string>
+    <string name="edit_drug_action_update">Update info</string>
+    <string name="edit_drug_notifications">Notifications</string>
+    <string name="edit_drug_notifications_on">Notifications on</string>
+    <string name="edit_drug_notifications_off">Notifications off</string>
+
+    <string name="fitness_walked_time">Walked time</string>
+    <string name="fitness_walked_today">Walked today</string>
+    <string name="fitness_fitness_today">Fitness today</string>
+
+    <string name="feeling_element_text">How are you feeling today?</string>
+
+
+
+    
+    <string-array name="dosage_types">
+        <item>pills</item>
+        <item>cc</item>
+        <item>ml</item>
+        <item>gr</item>
+        <item>mg</item>
+        <item>drops</item>
+        <item>pieces</item>
+        <item>puffs</item>
+        <item>units</item>
+        <item>teaspoon</item>
+        <item>tablespoon</item>
+        <item>patch</item>
+        <item>mcg</item>
+        <item>iu</item>
+        <item>meq</item>
+        <item>carton</item>
+        <item>spray</item>
+    </string-array>
 </resources>
+

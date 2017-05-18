@@ -1,7 +1,8 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">5dp</dimen>
-    <dimen name="activity_vertical_margin">5dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_left_right_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dots_height">30dp</dimen>
     <dimen name="dots_margin_bottom">20dp</dimen>
@@ -10,9 +11,24 @@
     <dimen name="slide_desc">16dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
     <dimen name="box_size">40dp</dimen>
+    <dimen name="smile_size">40dp</dimen>
+    <dimen name="smile_tab_step">15dp</dimen>
 
     <dimen name="tab_max_width">264dp</dimen>
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
+
+    <dimen name="big_card_height">124dp</dimen>
+
+    <dimen name="small_card_height">123dp</dimen>
+    <dimen name="small_card_width">110dp</dimen>
+    <dimen name="small_card_imagesize">70dp</dimen>
+    <dimen name="small_card_textsize">16sp</dimen>
+
+    <dimen name="pill_img_size">60dp</dimen>
+    <dimen name="pill_img_tab">3dp</dimen>
+
+    <dimen name="m_search_item_height">45dp</dimen>
+
 </resources>

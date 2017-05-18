@@ -1,39 +1,43 @@
 package com.vectortwo.healthkeeper.data.db;
 
 /**
- * Created by ilya on 29/03/2017.
+ *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
+ *  for {@link DBContract.User} table. Ensures type-safety.
  */
 public class UserColumns extends DBColumns {
 
-    public void putFirstName(String name) {
+    public UserColumns putFirstName(String name) {
         contentValues.put(DBContract.User.FIRSTNAME, name);
+        return this;
     }
 
-    public void putSecondName(String name) {
-        contentValues.put(DBContract.User.SECONDNAME, name);
-    }
-
-    public void putSex(String sex) {
+    public UserColumns putSex(String sex) {
         contentValues.put(DBContract.User.SEX, sex);
+        return this;
     }
 
-    public void putAge(int age) {
+    public UserColumns putAge(int age) {
         contentValues.put(DBContract.User.AGE, age);
+        return this;
     }
 
-    public void putHeight(int height) {
+    public UserColumns putHeight(float height) {
         contentValues.put(DBContract.User.HEIGHT, height);
+        return this;
     }
 
-    public void putWeight(int weight) {
+    public UserColumns putWeight(int weight) {
         contentValues.put(DBContract.User.WEIGHT, weight);
+        return this;
     }
 
-    public void putCity(String city) {
+    public UserColumns putCity(String city) {
         contentValues.put(DBContract.User.CITY, city);
+        return this;
     }
 
-    public void putBirthday(String birthday) {
-        contentValues.put(DBContract.User.BIRTHDAY, birthday);
+    public UserColumns putCountry(String country) {
+        contentValues.put(DBContract.User.COUNTRY, country);
+        return this;
     }
 }

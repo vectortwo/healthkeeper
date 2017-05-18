@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preference_file_bmisc">com.vectortwo.healthkeeper.PREFERENCE_FILE_MISC_BACKEND</string>
+    <string name="preference_misc_drug_archive_started">com.vectortwo.healthkeeper.PREFERENCE_MISC_DRUG_ARCHIVE_STARTED</string>
+    <string name="preference_misc_first_launch">com.vectortwo.healthkeeper.PREFERENCE_MISC_FIRST_LAUNCH</string>
+</resources>

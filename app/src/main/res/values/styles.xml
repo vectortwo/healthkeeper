@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/buttonColor</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/buttonColor</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -26,6 +26,29 @@
         <item name="android:layout_marginBottom">10dp</item>
         <!--<item name="android:background">@drawable/custom_button2</item>-->
         <item name="android:padding">10dip</item>
+    </style>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/bg_screen4</item>
+    </style>
+
+    <style name="buttonMaterial" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/buttonControlHighlight</item>
+        <item name="colorButtonNormal">@color/buttonColor</item>
+    </style>
+
+    <style name="editTextStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textColorHighlight">@color/textColorHighlight</item>
+    </style>
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/bg_screen3</item>
+        <item name="colorPrimaryDark">@color/bg_screen3</item>
+        <item name="colorAccent">@color/bg_screen3</item>
+
+    </style>
+
+    <style name="SwitchCompatTheme" >
+        <item name="colorControlActivated">@color/backgroundColor</item>
     </style>
 
 

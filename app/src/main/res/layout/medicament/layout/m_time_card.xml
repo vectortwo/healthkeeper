@@ -1,0 +1,68 @@
+<LinearLayout
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:weightSum="1">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            card_view:cardElevation="3dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+
+
+
+            card_view:cardBackgroundColor="@color/buttonColor" android:layout_height="wrap_content"
+            android:layout_weight="0.91">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+            <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/mtc_headline"
+                    android:textSize="18sp"
+                    android:textColor="#FAFAFA"
+                    android:maxLines="1"
+                    android:layout_gravity="center"
+                    android:text="@string/mtc_text_headline"
+                    android:textAllCaps="false"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:textColor="#FAFAFA"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content" android:id="@+id/mtc_type_dosage"
+                    android:textSize="18sp" android:textAllCaps="false"
+                    android:layout_gravity="center" android:layout_marginLeft="5dp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_gravity="center">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:text="6:20 AM"
+                        android:textColor="#FAFAFA"
+                        android:layout_height="wrap_content" android:id="@+id/mtc_time" android:textSize="30sp"
+                         android:fontFamily="sans-serif"
+                        android:gravity="right" android:layout_weight="0.10" android:layout_marginEnd="5dp"/>
+
+
+                />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

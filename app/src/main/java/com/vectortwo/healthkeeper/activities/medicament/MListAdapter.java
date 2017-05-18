@@ -16,11 +16,11 @@ import java.util.List;
  * Created by skaper on 01.04.17.
  */
 public class MListAdapter extends RecyclerView.Adapter<MListAdapter.MyViewHolder> {
-    private Context mContext;
+    private Context contextThis;
     private List<MList> medicamentList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, description, dose, nextTime;
+        private TextView name, description, dose, nextTime;
 
         public MyViewHolder(View view) {
             super(view);
@@ -31,8 +31,8 @@ public class MListAdapter extends RecyclerView.Adapter<MListAdapter.MyViewHolder
         }
     }
 
-    public MListAdapter(Context mContext, List<MList> medicamentList){
-        this.mContext = mContext;
+    public MListAdapter(Context context, List<MList> medicamentList){
+        this.contextThis = context;
         this.medicamentList = medicamentList;
     }
 

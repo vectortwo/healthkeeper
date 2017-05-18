@@ -2,18 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.vectortwo.healthkeeper">
 
+    <uses-feature android:name="android.hardware.sensor.stepcounter"
+                  android:required="false"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
+            android:resizeableActivity="true"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <provider
-                android:name=".data.db.DBContentProvider"
-                android:authorities="com.vectortwo.healthkeeper.HealthProvider">
-        </provider>
 
         <activity android:name=".activities.main.WelcomeActivity">
             <intent-filter>
@@ -25,7 +30,8 @@
         <activity
                 android:name=".activities.main.MainActivity"
                 android:label="@string/title_activity_welcome"
-                android:theme="@style/AppTheme.NoActionBar"/>
+                android:theme="@style/AppTheme"/>
+        <!-- Theme.AppCompat.NoActionBar -->
         <activity
                 android:name=".activities.medicament.MedicamentActivity"
                 android:label="@string/title_activity_medicament"
@@ -82,34 +88,59 @@
                 android:theme="@style/AppTheme">
         </activity>
         <activity
-                android:name=".activities.medicament.MedicamentSearchSActivity"
+                android:name=".activities.medicament.search.MedicamentSearchSActivity"
                 android:label="@string/title_activity_medicament_search_s"
+                android:launchMode="singleTop"
                 android:theme="@style/AppTheme">
+
             <!-- This intent-filter identifies this activity as "searchable" -->
 
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
 
             <!-- This metadata entry provides further configuration details for searches -->
             <!-- that are handled by this activity. -->
-            <meta-data
-                    android:name="android.app.searchable"
-                    android:resource="@xml/searchable"
-            />
+
         </activity>
+
+        <activity android:name=".activities.medicament.edit.EditDrugActivity"
+                  android:windowSoftInputMode="adjustResize"
+        ><!--android:configChanges="orientation|keyboardHidden" -->
+        <!--  android:windowSoftInputMode="adjustResize" -->
+            <intent-filter>
+                <action android:name="com.vectortwo.healthkeeper.intent.ADDDRUG"/>
+                <action android:name="com.vectortwo.healthkeeper.intent.EDITDRUG"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Backend components-->
+        <provider android:name=".data.db.DBContentProvider"
+                  android:exported="false"
+                  android:authorities="com.vectortwo.healthkeeper.HealthProvider">
+        </provider>
 
         <service android:name=".services.PedometerService"
                  android:description="@string/descriptionServiceSteps"/>
 
-        <receiver android:name=".receivers.PedometerBootReceiver"
+        <service android:name=".services.DrugArchiveService"
+                 android:description="@string/descriptionServiceArchiver"/>
+
+        <service android:name=".services.DrugNotifyService"/>
+
+        <service android:name=".services.RestoreDrugNotifyService"/>
+
+        <service android:name=".services.DrugArchiveExpiredService"/>
+
+        <service android:name=".services.RestoreDrugNotifyService"/>
+
+        <receiver android:name=".receivers.BootCompletedReceiver"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".receivers.DrugNotifyReceiver"/>
+
     </application>
 
 </manifest>

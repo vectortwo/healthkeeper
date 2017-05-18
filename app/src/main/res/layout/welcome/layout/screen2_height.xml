@@ -41,6 +41,7 @@
             android:id="@+id/userHeight"
             android:gravity="center"
             android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+
     <ImageView
             android:layout_width="@dimen/img_width_height"
             android:layout_height="@dimen/img_width_height"

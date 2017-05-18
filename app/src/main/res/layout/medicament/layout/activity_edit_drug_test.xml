@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+
+
+        android:layout_height="match_parent">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/editDrug_scrollView">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent" android:weightSum="1">
+
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp"/>
+
+
+            <LinearLayout
+
+                    android:orientation="vertical"
+                    android:id="@+id/editDrug_description_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:gravity="center_horizontal"
+                    android:background="#E8EAF6">
+                <include layout="@layout/edit_drug_descripsion" android:layout_width="match_parent"
+                         android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:id="@+id/view4"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:background="@color/buttonColor"
+                    android:layout_height="match_parent" android:layout_marginTop="0dp"
+                    android:id="@+id/editDrug_startdate_layout">
+                <TextView
+                        android:text="@string/mtc_startdate"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView7"
+                        android:textSize="24sp" android:textColor="@color/backgroundColor" android:fontFamily="sans-serif"/>
+                <TextView
+                        android:text="TextView"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/backgroundColor"
+                        android:layout_height="wrap_content" android:id="@+id/editDrug_startdate"
+                        android:textSize="24sp" android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:id="@+id/view4"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center" android:layout_marginBottom="10dp">
+
+                <Button
+
+                        android:text="@string/sun"
+                        android:id="@+id/ed_sun"
+                        android:background="@drawable/button_day_change_color_anim"
+                        android:textAllCaps="false"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" android:textColor="#EF5350"
+                        android:textSize="14sp" android:layout_weight="1" android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"/>
+                <Button
+                        android:text="@string/mon"
+                        android:background="@drawable/button_day_change_color_anim"
+
+                        android:textAllCaps="false"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" android:id="@+id/ed_mon"
+                        android:textColor="@color/standart_text" android:filterTouchesWhenObscured="false"
+                        android:layout_weight="1" android:layout_marginLeft="2dp" android:layout_marginRight="2dp"/>
+                <Button
+                        android:text="@string/tue"
+                        android:background="@drawable/button_day_change_color_anim"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/ed_tue"
+                        android:textColor="@color/standart_text"
+                        android:layout_weight="1" android:layout_marginLeft="2dp" android:layout_marginRight="2dp"
+                        android:textAllCaps="false"/>
+                <Button
+                        android:text="@string/wed"
+                        android:background="@drawable/button_day_change_color_anim"
+                        android:shadowColor="#A8A8A8"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="2dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" android:id="@+id/ed_wed"
+                        android:textColor="@color/standart_text"
+                        android:layout_weight="1" android:layout_marginRight="2dp"/>
+                <Button
+                        android:text="@string/thu"
+                        android:background="@drawable/button_day_change_color_anim"
+                        android:shadowColor="#A8A8A8"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="2dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" android:id="@+id/ed_thu"
+                        android:textColor="@color/standart_text"
+                        android:layout_weight="1" android:layout_marginRight="2dp"/>
+                <Button
+                        android:text="@string/fri"
+                        android:background="@drawable/button_day_change_color_anim"
+                        android:shadowColor="#A8A8A8"
+                        android:textAllCaps="false"
+                        android:layout_height="40dp" android:id="@+id/ed_fri"
+                        android:textColor="@color/standart_text" android:layout_width="40dp"
+                        android:layout_weight="1" android:layout_marginLeft="2dp" android:layout_marginRight="2dp"/>
+                <Button
+                        android:text="@string/sat"
+                        android:background="@drawable/button_day_change_color_anim"
+                        android:shadowColor="#A8A8A8"
+                        android:textAllCaps="false"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/ed_sat" android:textColor="@color/standart_text"
+                        android:layout_weight="1" android:layout_marginLeft="2dp" android:layout_marginRight="2dp"/>
+
+            </LinearLayout>
+            <ListView
+                    android:layout_width="match_parent"
+                    android:divider="@null"
+                    android:id="@+id/editDrug_timeList"
+                    android:layout_height="wrap_content"/>
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:id="@+id/view4"
+                    android:layout_marginTop="15dp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:background="@color/buttonColor"
+                    android:layout_height="match_parent" android:layout_marginTop="0dp"
+                    android:id="@+id/editDrug_enddate_layout">
+                <TextView
+                        android:text="@string/mtc_enddate"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView7"
+                        android:textSize="24sp" android:textColor="@color/backgroundColor"/>
+                <TextView
+                        android:text="@string/set"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/backgroundColor"
+                        android:layout_height="wrap_content" android:id="@+id/editDrug_enddate"
+                        android:textSize="24sp" android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:id="@+id/view4"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:background="#E8EAF6">
+                <TextView
+                        android:text="warning:"
+                        android:layout_width="match_parent"
+                        android:maxLines="2"
+
+                        android:layout_height="wrap_content" android:id="@+id/textView4"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1" android:textAlignment="center"
+                        android:textColor="#F48FB1" android:textSize="24sp" android:textStyle="normal|bold"
+                        android:textAllCaps="false"/>
+                <include layout="@layout/edit_drug_warnings" />
+
+            </LinearLayout>
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:id="@+id/view5"/>
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/buttonColor">
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="257dp" android:layout_height="wrap_content">
+                    <Switch
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/editDrug_switch1"
+                            android:theme="@style/SwitchCompatTheme"
+                            android:textColor="@color/backgroundColor"
+                            android:text="@string/edit_drug_notifications"
+                            android:textSize="24sp" android:textAlignment="textStart"
+                            android:checked="false"/>
+                </LinearLayout>
+            </FrameLayout>
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/line_for_white"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:id="@+id/view6"
+                    android:layout_marginBottom="6dp"/>
+            <FrameLayout
+                    android:id="@+id/editDrug_pill_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:scrollbars="none"
+                        android:layout_height="wrap_content" android:id="@+id/editDrug_pillScrollView">
+                    <LinearLayout android:layout_width="wrap_content"
+                                  android:layout_height="match_parent"
+                                  android:orientation="horizontal" android:layout_gravity="clip_horizontal"
+                                  android:id="@+id/editDrug_pill_layout2">
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill0"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill1"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill2"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill3"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill4"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill5"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill6"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill7"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"/>
+                        <ImageView
+                                android:clickable="true"
+                                android:background="@drawable/pill_circle"
+                                android:id="@+id/editDrug_pill8"
+                                android:layout_height="@dimen/pill_img_size"
+                                android:layout_width="@dimen/pill_img_size"
+                                android:layout_marginLeft="@dimen/pill_img_tab"
+                                android:layout_marginRight="@dimen/pill_img_tab"/>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </FrameLayout>
+            <Button
+                    android:text="@string/create"
+                    android:theme="@style/buttonMaterial"
+                    android:textColor="#FAFAFA"
+
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/editDrug_ok"
+                    android:layout_marginTop="25dp" android:elevation="0dp" android:layout_alignParentBottom="true"
+            />
+        </LinearLayout>
+    </ScrollView>
+
+    <!--
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/editDrug_description_ok"
+            android:theme="@style/buttonMaterial"
+            android:scaleType="center"
+            android:layout_height="35dp"
+            android:layout_width="35dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@drawable/ic_done"
+            app:fabSize="mini"
+            app:elevation="4dp"
+            app:borderWidth="0dp"
+            app:layout_anchor="@id/editDrug_description_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            app:backgroundTint="@color/buttonColor"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/editDrug_description_no"
+            android:scaleType="center"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@drawable/ic_clear"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+
+            android:backgroundTint="@color/red"
+            app:elevation="4dp"
+            app:borderWidth="0dp"
+            app:layout_anchor="@id/editDrug_description_layout"
+            app:layout_anchorGravity="bottom|left" />
+             -->
+
+</android.support.design.widget.CoordinatorLayout>

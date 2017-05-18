@@ -6,7 +6,6 @@
         android:id="@+id/content_settings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
@@ -18,10 +17,11 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <TextView
-                android:text="TextView"
+            android:layout_height="wrap_content">
+        <Button
+                android:text="Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView2" android:layout_weight="1"/>
+                android:layout_height="wrap_content" android:id="@+id/settings_btn_cleardb" android:layout_weight="1"
+                tools:text="clear db"/>
     </LinearLayout>
 </LinearLayout>

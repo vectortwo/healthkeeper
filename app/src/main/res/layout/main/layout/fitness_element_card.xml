@@ -1,0 +1,116 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:main_element_card="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+            android:id="@+id/fitness_card"
+            main_element_card:cardUseCompatPadding="true"
+            main_element_card:cardElevation="4dp"
+            main_element_card:cardCornerRadius="3dp"
+            android:layout_width="match_parent"
+            android:focusable="true"
+            android:clickable="true"
+            main_element_card:cardBackgroundColor="@color/mcard_backgraund"
+            android:foreground="?android:attr/selectableItemBackground"
+
+            android:layout_height="124dp">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        android:background="@color/buttonColor">
+            <com.vectortwo.healthkeeper.widgets.FitDoughnut
+                    android:id="@+id/fitness_doughnut"
+                    android:layout_height="100dp"
+                    app:fdColorSecondary="@android:color/white"
+                    app:fdColorPrimary="@android:color/holo_orange_light"
+
+                    app:fdColorTextSecondary="@android:color/holo_orange_light"
+                    app:fdColorTextPrimary="@android:color/white"
+
+                    app:fdText="0min"
+                    app:fdTextSize="24"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="100dp" android:layout_marginTop="6dp" android:layout_marginRight="0dp"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <TextView
+                        android:text="@string/fitness_fitness_today"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView11" android:textSize="20sp"
+                        android:textStyle="normal|bold" android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
+                        android:textColor="@android:color/white"/>
+                <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                </FrameLayout>
+                <View
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/line_fitness"
+                        android:layout_width="match_parent" android:layout_height="3dp"/>
+                <GridLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center_horizontal" android:id="@+id/fitness_walked_layout">
+
+                    <TextView
+                            android:text="Burned calories"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/textView8" android:layout_weight="0.76"
+                            android:textSize="18sp" android:layout_row="1" android:layout_column="0"
+                            android:textColor="@android:color/white" android:textStyle="normal|bold"
+                            android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
+                            android:fontFamily="sans-serif"/>
+                    <TextView
+                            android:text="0"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/fitness_calories" android:layout_weight="1"
+                            android:layout_marginLeft="15dp" android:textSize="18sp"
+                            android:textColor="@android:color/white" android:layout_marginTop="10dp"/>
+                    <TextView
+                            android:text="@string/fitness_walked_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/fitness_time_view"
+                            android:textSize="20sp" android:layout_weight="0.31" android:textColor="@android:color/white"
+                            android:textStyle="normal|bold" android:layout_row="1" android:layout_column="0"/>
+                    <TextView
+                            android:text="0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/fitness_walked" android:layout_weight="1"
+                            android:layout_marginLeft="10dp" android:textSize="18sp"
+                            android:textColor="@android:color/white" android:layout_marginTop="10dp" android:layout_row="3"
+                            android:layout_column="2"/>
+                    <TextView
+                            android:text="0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/fitness_time" android:layout_weight="1"
+                            android:layout_marginLeft="10dp" android:textColor="@android:color/white"
+                            android:textSize="18sp" android:layout_row="1" android:layout_column="2"/>
+                    <TextView
+                            android:text="@string/fitness_walked_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/textView12" android:layout_weight="0.76"
+                            android:textSize="20sp" android:layout_row="3" android:layout_column="0"
+                            android:textColor="@android:color/white" android:textStyle="normal|bold"
+                            android:layout_marginTop="10dp"/>
+                </GridLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

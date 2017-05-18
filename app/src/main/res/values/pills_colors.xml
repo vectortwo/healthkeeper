@@ -1,0 +1,50 @@
+<resources>
+
+    <declare-styleable name="Pills_Style">
+        <attr name="pills_circle_color" format="color" />
+        <attr name="pills_color" format="color" />
+
+    </declare-styleable>
+
+    <style name="pills_color_default">
+        <item name="pills_circle_color">#2196F3</item>
+        <item name="pills_color">#2196F3</item>
+    </style>
+
+    <style name="pills_color_red" parent="pills_color_default">
+        <item name="pills_circle_color">#F44336</item>
+        <item name="pills_color">#F44336</item>
+    </style>
+    <style name="pills_color_pink" parent="pills_color_default">
+        <item name="pills_circle_color">#E91E63</item>
+        <item name="pills_color">#E91E63</item>
+    </style>
+    <style name="pills_color_purple" parent="pills_color_default">
+        <item name="pills_circle_color">#9C27B0</item>
+        <item name="pills_color">#9C27B0</item>
+    </style>
+    <style name="pills_color_indigo" parent="pills_color_default">
+        <item name="pills_circle_color">#2196F3</item>
+        <item name="pills_color">#2196F3</item>
+    </style>
+    <style name="pills_color_teal" parent="pills_color_default">
+        <item name="pills_circle_color">#009688</item>
+        <item name="pills_color">#009688</item>
+    </style>
+    <style name="pills_color_green" parent="pills_color_default">
+        <item name="pills_circle_color">#4CAF50</item>
+        <item name="pills_color">#4CAF50</item>
+    </style>
+    <style name="pills_color_orange" parent="pills_color_default">
+        <item name="pills_circle_color">#FF9800</item>
+        <item name="pills_color">#FF9800</item>
+    </style>
+    <style name="pills_color_brown" parent="pills_color_default">
+        <item name="pills_circle_color">#EEEEEE</item>
+        <item name="pills_color">#EEEEEE</item>
+    </style>
+    <style name="pills_color_grey" parent="pills_color_default">
+        <item name="pills_circle_color">#9E9E9E</item>
+        <item name="pills_color">#9E9E9E</item>
+    </style>
+</resources>

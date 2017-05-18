@@ -48,6 +48,10 @@ android {
 }
 
 
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -65,17 +69,21 @@ dependencies {
 
 
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.github.TouchBoarder:weekdays-buttons-bar:v1.0.2'
     //SWIPe
-    //compile 'com.daimajia.easing:library:1.0.0@aar'
-    //compile 'com.daimajia.androidanimations:library:1.1.2@aar'
-    //compile 'com.nineoldandroids:library:2.4.0'
-    // This dude gave a shoutout to you (daimajia) on his github page:
-    //compile 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
-    ////////////////////
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+    compile 'com.android.support:support-v4:20.+'
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 
+
+    //For walking chart view
+    compile 'com.itextpdf:itextg:5.5.10'
+
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
     compile "com.googlecode.json-simple:json-simple:1.1"
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }

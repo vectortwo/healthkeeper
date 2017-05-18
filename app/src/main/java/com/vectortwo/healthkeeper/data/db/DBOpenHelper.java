@@ -4,7 +4,7 @@ import android.content.Context;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 /**
- * Created by ilya on 07/03/2017.
+ * Initializes and maintains a database connection for a database found in /assets/databases
  */
 public class DBOpenHelper extends SQLiteAssetHelper {
 

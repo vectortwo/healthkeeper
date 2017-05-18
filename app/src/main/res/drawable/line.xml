@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape>
+        <shape
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:shape="rectangle">
             <gradient
-                    android:angle="270"
+                    android:angle="0"
                     android:startColor="@color/mcard_backgraund"
-                    android:centerColor="@color/mcard_line"
                     android:endColor="@color/mcard_backgraund"
+                    android:centerColor="@color/mcard_line"
+
                     android:type="linear" />
         </shape>
     </item>

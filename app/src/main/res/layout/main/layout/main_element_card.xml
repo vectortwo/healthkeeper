@@ -1,0 +1,43 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:main_element_card="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+            android:id="@+id/main_card"
+            main_element_card:cardUseCompatPadding="true"
+            main_element_card:cardElevation="4dp"
+            main_element_card:cardCornerRadius="3dp"
+            android:focusable="true"
+            android:clickable="true"
+            main_element_card:cardBackgroundColor="@color/mcard_backgraund"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_height="@dimen/small_card_height" android:layout_width="@dimen/small_card_width">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        android:background="@color/buttonColor">
+            <ImageView
+                    android:id="@+id/main_card_image"
+                    android:background="@drawable/img_medicament"
+                    android:layout_gravity="center" android:layout_marginTop="8dp"
+                    android:layout_width="@dimen/small_card_imagesize" android:layout_height="@dimen/small_card_imagesize"/>
+            <TextView
+                    android:text="@string/medicament"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/main_card_text" android:textAlignment="center"
+                    android:textSize="@dimen/small_card_textsize" android:textAllCaps="false" android:layout_marginTop="6dp"
+                    android:textColor="@android:color/white"/>
+            <TextView
+                    android:text="activity_card"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/card_type"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

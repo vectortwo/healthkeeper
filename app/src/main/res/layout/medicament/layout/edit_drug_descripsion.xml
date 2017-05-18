@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+
+            android:orientation="vertical"
+            android:id="@+id/editDrug_description_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="-2721dp"
+            tools:layout_editor_absoluteX="8dp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp">
+        <EditText
+                android:layout_width="match_parent"
+                android:id="@+id/editDrug_description" android:textSize="18sp"
+                android:scrollbars = "vertical"
+                android:clickable="true"
+                android:background="@android:color/transparent"
+                android:textColorHighlight="@color/textColorHighlight"
+                android:focusableInTouchMode="true"
+                android:animateLayoutChanges="true"
+                android:text="@string/test_descr_and_warnings"
+                android:textAlignment="center" android:textColor="@color/active_text"
+                android:layout_height="60dp"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content" android:id="@+id/editDrug_descriptionBTN_layoyt">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <Button
+                        android:id="@+id/editDrug_description_no"
+                        android:theme="@style/buttonMaterial"
+                        android:src="@drawable/ic_done"
+                        android:visibility="visible"
+                        android:drawableTop="@drawable/ic_clear"
+                        android:paddingTop="3sp"
+
+                        android:background="@drawable/buttom_round_cancel"
+
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content" android:gravity="right">
+                <Button
+                        android:id="@+id/editDrug_description_ok"
+                        android:theme="@style/buttonMaterial"
+                        android:src="@drawable/ic_done"
+                        android:drawableTop="@drawable/ic_done"
+                        android:paddingTop="3sp"
+
+                        android:background="@drawable/buttom_round_ok"
+
+                        android:layout_marginRight="10dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:visibility="visible"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- android:background="@android:color/transparent"-->
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+

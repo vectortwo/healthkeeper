@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.vectortwo.healthkeeper.R;
+import com.vectortwo.healthkeeper.widgets.FitDoughnut;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,10 @@ public class WalkingActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
+
+
     }
 
     private void setupViewPager(ViewPager viewPager) {

@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import com.vectortwo.healthkeeper.activities.PrefManager;
 import com.vectortwo.healthkeeper.data.db.DBContract;
+import com.vectortwo.healthkeeper.data.db.UserColumns;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -29,12 +30,13 @@ public class WelcomeActivity extends AppCompatActivity {
     private int[] layouts;
     private Button btnSkip, btnNext;
     private PrefManager prefManager;
+    private Context contextThis;
 
     NumberPicker np;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        contextThis = this;
 
 
 
@@ -175,29 +177,30 @@ public class WelcomeActivity extends AppCompatActivity {
     private void writeDataToDB(){
         Uri mNewUri;
         String data;
-        ContentValues mNewValues = new ContentValues();
+        UserColumns mNewValues = new UserColumns();
 
         EditText userName = (EditText) viewPager.findViewById(R.id.userName);
         data = userName.getText().toString();
-        mNewValues.put(DBContract.User.FIRSTNAME, data);
+        mNewValues.putFirstName(data);
 
         EditText userHeight = (EditText) viewPager.findViewById(R.id.userHeight);
         data = userHeight.getText().toString();
-        mNewValues.put(DBContract.User.HEIGHT, data);
+        mNewValues.putHeight(Float.parseFloat(data));
 
         EditText userWeight = (EditText) viewPager.findViewById(R.id.userWeight); //TODO переделать в Number Picker
         data = userWeight.getText().toString();
-        mNewValues.put(DBContract.User.WEIGHT, data);
+        mNewValues.putWeight(Integer.parseInt(data));
 
-        EditText userGender = (EditText) viewPager.findViewById(R.id.userGender);
-        data = userGender.getText().toString();
-        mNewValues.put(DBContract.User.SEX, data);
+        Spinner userGender = (Spinner) viewPager.findViewById(R.id.userGender);
+        //data = userGender.getText().toString();
+        //mNewValues.put(DBContract.User.SEX, data);
+        //todo insert sex in db
 
         EditText userAge = (EditText) viewPager.findViewById(R.id.userAge);
         data = userAge.getText().toString();
-        mNewValues.put(DBContract.User.AGE, data);
+        mNewValues.putAge(Integer.parseInt(data));
 
-        mNewUri = getContentResolver().insert(DBContract.User.CONTENT_URI, mNewValues);
+        getContentResolver().insert(DBContract.User.CONTENT_URI, mNewValues.getContentValues());
     }
 
     /**

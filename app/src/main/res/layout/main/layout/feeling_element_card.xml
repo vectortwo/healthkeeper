@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:main_element_card="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+            android:id="@+id/feeling_card"
+            main_element_card:cardUseCompatPadding="true"
+            main_element_card:cardElevation="4dp"
+            main_element_card:cardCornerRadius="3dp"
+            android:layout_width="match_parent"
+            android:focusable="true"
+            android:clickable="true"
+            main_element_card:cardBackgroundColor="@color/buttonColor"
+            android:foreground="?android:attr/selectableItemBackground"
+
+            android:layout_height="@dimen/big_card_height">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+            <TextView
+                    android:text="@string/feeling_element_text"
+                    android:layout_width="wrap_content"
+
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content" android:id="@+id/feeling_text"
+                    android:layout_marginBottom="5dp" android:textSize="16sp" android:textStyle="normal|bold"/>
+            <View
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/line_fitness"
+                    android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginBottom="5dp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal" android:id="@+id/feeling_smile_layout">
+
+                <ImageView
+                        android:layout_width="@dimen/smile_size"
+                        android:id="@+id/feeling_smile_1"
+                        android:layout_height="@dimen/smile_size"
+                        android:background="@drawable/smile_1"
+                        android:layout_gravity="center"/>
+                <ImageView
+                        android:layout_width="@dimen/smile_size"
+                        android:id="@+id/feeling_smile_2"
+                        android:layout_height="@dimen/smile_size"
+                        android:background="@drawable/smile_2"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/smile_tab_step"/>
+                <ImageView
+                        android:layout_width="@dimen/smile_size"
+                        android:id="@+id/feeling_smile_3"
+                        android:layout_height="@dimen/smile_size"
+                        android:background="@drawable/smile_3"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/smile_tab_step"/>
+                <ImageView
+                        android:layout_width="@dimen/smile_size"
+                        android:id="@+id/feeling_smile_4"
+                        android:layout_height="@dimen/smile_size"
+                        android:background="@drawable/smile_4"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/smile_tab_step"/>
+                <ImageView
+                        android:layout_width="@dimen/smile_size"
+                        android:id="@+id/feeling_smile_5"
+                        android:layout_height="@dimen/smile_size"
+                        android:background="@drawable/smile_5"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/smile_tab_step" android:elevation="2dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

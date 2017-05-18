@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" android:orientation="vertical">
+
+    <TextView
+            android:text="@string/mtc_title"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:textColor="@color/active_text"
+            android:layout_height="wrap_content" android:id="@+id/mdtd_title" android:textAlignment="center"
+            android:textSize="24sp" android:layout_marginBottom="3dp"/>
+    <TimePicker
+            android:theme="@style/datepicker"
+            android:layout_width="318dp"
+            android:layout_height="wrap_content" android:id="@+id/mdtd_time"
+    />
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content" android:layout_marginTop="10dp">
+        <ImageView
+                android:clickable="true"
+                android:layout_height="48dp" app:srcCompat="@drawable/ic_remove_black_48px"
+                android:id="@+id/mdtd_minus" android:layout_weight="1" android:layout_gravity="center"
+                android:layout_width="36dp" android:layout_marginRight="10dp"/>
+        <EditText
+                android:layout_gravity="center_horizontal"
+                android:layout_width="72dp"
+                android:layout_height="48dp"
+                android:inputType="numberDecimal|numberSigned"
+                android:ems="10"
+                android:textColor="@color/active_text"
+                android:fontFamily="sans-serif"
+                android:id="@+id/mdtd_value" android:text="1.0" android:textAlignment="center" android:textSize="18sp"/>
+        <ImageView
+                android:clickable="true"
+                android:layout_height="48dp" app:srcCompat="@drawable/ic_add_black_24px"
+                android:id="@+id/mdtd_plus" android:layout_weight="1" android:layout_gravity="center"
+                android:layout_width="36dp" android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="48dp" android:id="@+id/mdtd_dose_typelist" android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp" android:layout_marginBottom="10dp"
+                android:gravity="center"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_weight="3" android:layout_marginTop="8dp">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:layout_weight="2" android:layout_marginRight="8dp">
+            <TextView
+                    android:text="@string/delete"
+                    android:clickable="true"
+                    android:layout_height="36dp" android:id="@+id/mdtd_delete" android:layout_weight="1"
+                    android:textColor="@color/red"
+                    android:textSize="16sp" android:textAlignment="center" android:layout_width="wrap_content"
+                    android:textAllCaps="true" android:textStyle="normal|bold" android:gravity="center"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:layout_weight="0">
+            <TextView
+                    android:text="@string/cancel"
+                    android:clickable="true"
+                    android:layout_width="74dp"
+                    android:layout_height="36dp" android:id="@+id/mdtd_cancel"
+                    android:textSize="16sp" android:textAllCaps="true" android:textColor="@color/active_text"
+                    android:textStyle="normal|bold" android:gravity="center" android:layout_marginRight="8dp"/>
+            <TextView
+                    android:text="@string/ok"
+                    android:clickable="true"
+                    android:layout_height="36dp" android:id="@+id/mdtd_ok" android:layout_weight="1"
+                    android:textColor="@color/active_text"
+                    android:textSize="16sp" android:textAlignment="center" android:layout_width="90dp"
+                    android:textAllCaps="true" android:textStyle="normal|bold"
+                    android:gravity="center" android:layout_marginRight="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

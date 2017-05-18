@@ -3,10 +3,11 @@ package com.vectortwo.healthkeeper.data.db;
 import android.content.ContentValues;
 
 /**
- * Created by ilya on 29/03/2017.
+ *  Base class for managing {@link ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
+ *  for specific table. Ensures type-safety.
  */
 public abstract class DBColumns {
-    ContentValues contentValues;
+    protected ContentValues contentValues;
 
     public DBColumns() {
         contentValues = new ContentValues();

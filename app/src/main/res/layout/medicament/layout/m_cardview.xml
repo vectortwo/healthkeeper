@@ -6,21 +6,23 @@
         android:layout_height="wrap_content">
         <!-- A CardView that contains a TextView -->
         <android.support.v7.widget.CardView
-                android:id="@+id/card_view"
+                android:id="@+id/mcard_card"
                 android:layout_gravity="center"
-                card_view:cardElevation="6dp"
+                card_view:cardElevation="4dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
 
 
 
-                card_view:cardBackgroundColor="@color/mcard_backgraund" android:layout_height="110dp">
+                card_view:cardBackgroundColor="@color/mcard_backgraund" android:layout_height="wrap_content">
 
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
                         <ImageView
                                 android:layout_width="100dp"
                                 card_view:srcCompat="@mipmap/drug"
@@ -32,7 +34,7 @@
                         <LinearLayout
                                 android:orientation="vertical"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content">
                                 <TextView
                                         android:text="MEDICAMENT NAME"
                                         android:layout_marginTop="3dp"
@@ -49,6 +51,7 @@
                                         android:layout_marginLeft="5dp"
                                         android:layout_marginRight="5dp"
                                         android:maxLines="2"
+                                        android:ellipsize="end"
                                         android:scrollbars = "vertical"
                                         android:id="@+id/mcard_description"
                                         android:textAlignment="center"/>
@@ -98,7 +101,7 @@
                                         android:orientation="horizontal"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:weightSum="2">
+                                        android:weightSum="2" android:layout_marginBottom="5dp">
 
                                         <TextView
                                                 android:text="0.25"

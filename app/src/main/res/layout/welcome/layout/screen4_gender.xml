@@ -32,15 +32,11 @@
                 android:textSize="@dimen/slide_desc" />
 
     </LinearLayout>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="0"
-            android:ems="10"
-            android:id="@+id/userGender"
+
+    <Spinner
             android:gravity="center"
-            android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+            android:layout_height="wrap_content" android:id="@+id/userGender"
+            android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_width="150dp"/>
     <ImageView
             android:layout_width="@dimen/img_width_height"
             android:layout_height="@dimen/img_width_height"

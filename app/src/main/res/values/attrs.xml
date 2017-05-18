@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FitDoughnut">
+        <attr name="fdColorPrimary" format="color"/>
+        <attr name="fdColorSecondary" format="color"/>
+
+        <attr name="fdColorTextPrimary" format="color"/>
+        <attr name="fdColorTextSecondary" format="color"/>
+
+        <attr name="fdText" format="string"/>
+        <attr name="fdTextSize" format="float"/>
+    </declare-styleable>
+</resources>

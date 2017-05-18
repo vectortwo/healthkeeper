@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preference_file_bglobal">com.vectortwo.healthkeeper.PREFERENCE_FILE_GLOBAL_BACKEND</string>
+    <string name="preference_global_postpone_time">com.vectortwo.healthkeeper.PREFERENCE_GLOBAL_POSTPONE_TIME</string>
+    <string name="preference_global_postpone_max_count">com.vectortwo.healthkeeper.PREFERENCE_GLOBAL_POSTPONE_MAX_COUNT</string>
+    <string name="preference_global_postpone_drug_expired_delta">com.vectortwo.healthkeeper.PREFERENCE_GLOBAL_DRUG_EXPIRED_DELTA</string>
+</resources>
