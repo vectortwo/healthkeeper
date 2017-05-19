@@ -7,17 +7,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import java.util.Calendar;
+
+import java.util.*;
+
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
+import android.util.Log;
 import com.vectortwo.healthkeeper.data.db.DBContract;
 import com.vectortwo.healthkeeper.data.db.DrugColumns;
+import com.vectortwo.healthkeeper.data.db.IntakeColumns;
+import com.vectortwo.healthkeeper.data.db.IntakeEarlyColumns;
 import com.vectortwo.healthkeeper.notifications.DrugIntakeNotification;
 import com.vectortwo.healthkeeper.receivers.DrugNotifyReceiver;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  *  Drug notification scheduler service.
@@ -39,10 +41,13 @@ public class DrugNotifyService extends IntentService {
     private static final String ACTION_SCHEDULE_NOTIFY = "com.vectortwo.healthkeeper.intent.DRUG_NOTIFY_SCHEDULE_NOTIFY";
 
     public static final String KEY_DRUG_ID = DBContract.Intake.DRUG_ID;
+    public static final String KEY_INTAKE_ID = "intake_id";
     public static final String KEY_POSTPONE_TIME = "postpone_time";
     public static final String KEY_CURRENT_POSTPONE_COUNT = "current_postpone_count";
 
     private AlarmManager alarmManager;
+
+    private int mDrugId;
 
     public DrugNotifyService() {
         super("DrugNotifyService");
@@ -56,24 +61,24 @@ public class DrugNotifyService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int drugID = getDrugID(intent);
+        mDrugId = getDrugID(intent);
 
         switch (intent.getAction()) {
             case ACTION_CANCEL:
-                cancelNotifications(drugID);
+                cancelNotifications();
                 break;
 
             case ACTION_POSTPONE:
-                postponeNotification(intent, drugID);
+                postponeNotification(intent);
                 break;
 
             case ACTION_SCHEDULE:
-                scheduleNotification(drugID);
+                scheduleNotification();
                 break;
 
             case ACTION_SCHEDULE_NOTIFY:
-                scheduleNotification(drugID);
                 showNotification(intent);
+                scheduleNotification();
                 DrugNotifyReceiver.completeWakefulIntent(intent);
                 break;
 
@@ -83,8 +88,8 @@ public class DrugNotifyService extends IntentService {
                 break;
 
             case ACTION_RESCHEDULE:
-                cancelNotifications(drugID);
-                scheduleNotification(drugID);
+                cancelNotifications();
+                scheduleNotification();
                 break;
 
             default:
@@ -93,19 +98,22 @@ public class DrugNotifyService extends IntentService {
         }
     }
 
-    private void postponeNotification(Intent intent, int drugID) {
+    private void postponeNotification(Intent intent) {
         int postponeTime = intent.getIntExtra(KEY_POSTPONE_TIME, -1);
         if (postponeTime < 0) {
             throw new IllegalStateException("Postpone time is missing in intent " + intent.toString());
         }
+        int intakeId = intent.getIntExtra(DrugNotifyService.KEY_INTAKE_ID, -1);
+
         int currentPostponeCount = intent.getIntExtra(KEY_CURRENT_POSTPONE_COUNT, 0);
 
         Intent notifyIntent = new Intent(this, DrugNotifyReceiver.class);
         notifyIntent.setAction(ACTION_NOTIFY);
-        notifyIntent.putExtra(DBContract.Intake.DRUG_ID, drugID);
-        notifyIntent.putExtra(KEY_CURRENT_POSTPONE_COUNT, currentPostponeCount + 1);
+        notifyIntent.putExtra(DBContract.Intake.DRUG_ID, mDrugId)
+                .putExtra(KEY_CURRENT_POSTPONE_COUNT, currentPostponeCount + 1)
+                .putExtra(KEY_INTAKE_ID, intakeId);
 
-        PendingIntent scheduleIntent = PendingIntent.getBroadcast(this, drugID, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent scheduleIntent = PendingIntent.getBroadcast(this, mDrugId, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Calendar scheduleTime = Calendar.getInstance();
         scheduleTime.add(Calendar.MINUTE, postponeTime);
@@ -113,39 +121,37 @@ public class DrugNotifyService extends IntentService {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, scheduleTime.getTimeInMillis(), scheduleIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(drugID);
+        notificationManager.cancel(mDrugId);
     }
 
-    private void scheduleNotification(int drugID) {
+    private void scheduleNotification() {
         Cursor drugCursor = getContentResolver().query(
                 DBContract.Drug.CONTENT_URI,
                 new String[]{DBContract.Drug.START_DATE, DBContract.Drug.END_DATE},
                 BaseColumns._ID + "=?",
-                new String[]{Integer.toString(drugID)},
+                new String[]{Integer.toString(mDrugId)},
                 null);
         Cursor notifyCursor = getContentResolver().query(
                 DBContract.Intake.CONTENT_URI,
                 new String[]{DBContract.Intake._ID, DBContract.Intake.TIME, DBContract.Intake.WEEKDAY},
                 DBContract.Intake.DRUG_ID + "=?",
-                new String[]{Integer.toString(drugID)},
+                new String[]{Integer.toString(mDrugId)},
                 "substr('0' || " + DBContract.Intake.TIME + ", -5, 5)");
 
         drugCursor.moveToFirst();
 
         if (drugCursor.getCount() == 0) {
-            final String msg = "Drug " + drugID + " does not exist in the database!";
+            final String msg = "Drug " + mDrugId + " does not exist in the database!";
             throw new IllegalStateException(msg);
         }
         if (notifyCursor.getCount() == 0) {
-            final String msg = "Notification info for drug " + drugID + " does not exist in the database!";
+            final String msg = "Notification info for drug " + mDrugId + " does not exist in the database!";
             throw new IllegalStateException(msg);
         }
 
         Intent notifyIntent = new Intent(this, DrugNotifyReceiver.class);
         notifyIntent.setAction(ACTION_SCHEDULE_NOTIFY);
-        notifyIntent.putExtra(DBContract.Intake.DRUG_ID, drugID);
-
-        PendingIntent scheduleIntent = PendingIntent.getBroadcast(this, drugID, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        notifyIntent.putExtra(DBContract.Intake.DRUG_ID, mDrugId);
 
         ArrayList<Integer> weekdays = new ArrayList<>();
         ArrayList<String> times = new ArrayList<>();
@@ -164,45 +170,118 @@ public class DrugNotifyService extends IntentService {
         }
         Calendar currentDate = Calendar.getInstance();
 
-        String currentTime = currentDate.get(Calendar.HOUR_OF_DAY) + "-" + currentDate.get(Calendar.MINUTE);
-
         Calendar startDate = DrugColumns.getStartDate(drugCursor);
         Calendar endDate = DrugColumns.getEndDate(drugCursor);
 
-        Calendar scheduleDate = getScheduleDate(currentTime, currentDate, startDate, endDate, weekdays, times);
+        ArrayList<Calendar> alreadyTook = new ArrayList<>();
+        Cursor tookCursor = getContentResolver().query(
+                DBContract.IntakeEarly.CONTENT_URI, null,
+                DBContract.IntakeEarly.DATE + ">= date('now')",
+                null, null);
+
+        if (tookCursor.getCount() > 0) {
+            while (tookCursor.moveToNext()) {
+                Calendar tookDate = IntakeEarlyColumns.getDate(tookCursor);
+                alreadyTook.add(tookDate);
+            }
+        }
+        tookCursor.close();
+
+        Calendar scheduleDate = getScheduleDate(currentDate, startDate, endDate, weekdays, times, alreadyTook);
 
         if (scheduleDate != null) {
+            notifyCursor.moveToPosition(-1);
+            while (notifyCursor.moveToNext()) {
+                int columnTime = notifyCursor.getColumnIndex(DBContract.Intake.TIME);
+                int columnWeekday = notifyCursor.getColumnIndex(DBContract.Intake.WEEKDAY);
+                String time = notifyCursor.getString(columnTime);
+                int weekday = notifyCursor.getInt(columnWeekday);
+
+                String scheduleTime = scheduleDate.get(Calendar.HOUR_OF_DAY) +
+                        "-" + scheduleDate.get(Calendar.MINUTE);
+                if (weekday == scheduleDate.get(Calendar.DAY_OF_WEEK) && time.equals(scheduleTime)) {
+                    int colId = notifyCursor.getColumnIndex(DBContract.Intake._ID);
+                    int intakeId = notifyCursor.getInt(colId);
+                    notifyIntent.putExtra(KEY_INTAKE_ID, intakeId);
+                    break;
+                }
+            }
+            PendingIntent scheduleIntent = PendingIntent.getBroadcast(this, mDrugId, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, scheduleDate.getTimeInMillis(), scheduleIntent);
         }
-
         drugCursor.close();
         notifyCursor.close();
     }
 
     private void showNotification(Intent intent) {
+        int intakeId = intent.getIntExtra(KEY_INTAKE_ID, -1);
+        if (intakeId < 0) {
+            final String msg = "Invalid intakeId in " + intent.toString();
+            throw new IllegalStateException(msg);
+        }
+
+        Cursor drugCursor = getContentResolver().query(
+                DBContract.Drug.CONTENT_URI,
+                new String[]{DBContract.Drug.COLOR, DBContract.Drug.IMAGE_ID, DBContract.Drug.TITLE},
+                BaseColumns._ID + "=?",
+                new String[]{Integer.toString(mDrugId)}, null);
+        Cursor intakeCursor = getContentResolver().query(
+                DBContract.Intake.CONTENT_URI,
+                new String[] {DBContract.Intake.DOSAGE, DBContract.Intake.FORM},
+                BaseColumns._ID + "=?",
+                new String[]{Integer.toString(intakeId)}, null);
+
+        if (drugCursor.getCount() == 0) {
+            final String msg = "Drug " + mDrugId + " does not exist in the database!";
+            throw new IllegalStateException(msg);
+        }
+        if (intakeCursor.getCount() == 0) {
+            final String msg = "Notification info with id " + intakeId + " does not exist in the database!";
+            throw new IllegalStateException(msg);
+        }
+
+        drugCursor.moveToFirst();
+        intakeCursor.moveToFirst();
+
+        float dosage = IntakeColumns.getDosage(intakeCursor);
+        String form = IntakeColumns.getForm(intakeCursor);
+        int colorId = DrugColumns.getColor(drugCursor);
+        int imageId = DrugColumns.getImageId(drugCursor);
+        String drugName = DrugColumns.getTitle(drugCursor);
+
+        intent.putExtra(DrugIntakeNotification.EXTRA_DRUG_NAME, drugName)
+                .putExtra(DrugIntakeNotification.EXTRA_COLORID, colorId)
+                .putExtra(DrugIntakeNotification.EXTRA_IMAGEID, imageId)
+                .putExtra(DrugIntakeNotification.EXTRA_DOSAGE, dosage)
+                .putExtra(DrugIntakeNotification.EXTRA_FORM, form);
+
         DrugIntakeNotification notification = new DrugIntakeNotification(this, intent);
         notification.show();
+
+        drugCursor.close();
+        intakeCursor.close();
     }
 
     private static int getDrugID(Intent intent) {
-        int drugID = intent.getIntExtra(KEY_DRUG_ID, -1);
-        if (drugID < 0) {
-            final String msg = "Invalid drugID in intent " + intent.toString();
+        int mDrugId = intent.getIntExtra(KEY_DRUG_ID, -1);
+        if (mDrugId < 0) {
+            final String msg = "Invalid mDrugId in intent " + intent.toString();
             throw new IllegalArgumentException(msg);
         }
-        return drugID;
+        return mDrugId;
     }
 
-    private void cancelNotifications(int drugID) {
+    private void cancelNotifications() {
         // Cancel scheduled notifications
         Intent notifyIntent = new Intent(this, DrugNotifyReceiver.class);
         notifyIntent.setAction(ACTION_SCHEDULE_NOTIFY);
-        PendingIntent cancelIntent = PendingIntent.getBroadcast(this, drugID, notifyIntent, 0);
+        PendingIntent cancelIntent = PendingIntent.getBroadcast(this, mDrugId, notifyIntent, 0);
         alarmManager.cancel(cancelIntent);
 
         // Cancel postponed notifications
         notifyIntent.setAction(ACTION_NOTIFY);
-        cancelIntent = PendingIntent.getBroadcast(this, drugID, notifyIntent, 0);
+        cancelIntent = PendingIntent.getBroadcast(this, mDrugId, notifyIntent, 0);
         alarmManager.cancel(cancelIntent);
     }
 
@@ -222,13 +301,19 @@ public class DrugNotifyService extends IntentService {
     }
 
     @Nullable
-    private static Calendar getScheduleDate(String currentTime, Calendar currentDate, Calendar startDate, Calendar endDate,
-                                     ArrayList<Integer> weekdays, /*sorted*/ ArrayList<String> times) {
+    public static Calendar getScheduleDate(Calendar currentDate,
+                                           Calendar startDate,
+                                           Calendar endDate,
+                                           ArrayList<Integer> weekdays,
+                                           /*sorted*/ ArrayList<String> times,
+                                           ArrayList<Calendar> alreadyTook) {
         // startDate is in the past
         if (currentDate.compareTo(startDate) > 0)
-            return getScheduleDate(currentTime, currentDate, currentDate, endDate, weekdays, times);
+            return getScheduleDate(currentDate, currentDate, endDate, weekdays, times, alreadyTook);
 
         Calendar res = (Calendar) startDate.clone();
+
+        String currentTime = currentDate.get(Calendar.HOUR_OF_DAY) + "-" + currentDate.get(Calendar.MINUTE);
 
         Collections.sort(weekdays);
 
@@ -250,6 +335,7 @@ public class DrugNotifyService extends IntentService {
         // Check for available times and correct desiredWeekday where there aren't any
         if (desiredWeekday == currentWeekday && currentDate.compareTo(startDate) == 0) {
             desiredTime = null;
+
             for (String time : times) {
                 if (compareTimes(time, currentTime) > 0) {
                     desiredTime = time;
@@ -283,6 +369,19 @@ public class DrugNotifyService extends IntentService {
         res.set(Calendar.HOUR_OF_DAY, Integer.parseInt(desiredTimeComps[0]));
         res.set(Calendar.MINUTE, Integer.parseInt(desiredTimeComps[1]));
 
-        return (res.compareTo(endDate) > 0) ? null : res;
+        if (res.compareTo(endDate) > 0) {
+            return null;
+        }
+
+        for (Calendar took : alreadyTook) {
+            if (res.get(Calendar.YEAR) == took.get(Calendar.YEAR)
+                    && res.get(Calendar.MONTH) == took.get(Calendar.MONTH)
+                    && res.get(Calendar.DAY_OF_MONTH) == took.get(Calendar.DAY_OF_MONTH)
+                    && res.get(Calendar.HOUR_OF_DAY) == took.get(Calendar.HOUR_OF_DAY)
+                    && res.get(Calendar.MINUTE) == took.get(Calendar.MINUTE)) {
+                return getScheduleDate(took, startDate, endDate, weekdays, times, alreadyTook);
+            }
+        }
+        return res;
     }
 }

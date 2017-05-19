@@ -40,11 +40,15 @@ public class DBContentProvider extends ContentProvider {
     private static final int ITEM_INTAKE                = 21;
     private static final int TABLE_WELLBEING            = 22;
     private static final int ITEM_WELLBEING             = 23;
+    private static final int TABLE_INTAKE_STATS         = 24;
+    private static final int ITEM_INTAKE_STATS          = 25;
+    private static final int TABLE_INTAKE_EARLY         = 26;
+    private static final int ITEM_INTAKE_EARLY          = 27;
 
-    private static final int DRUG_SUGGESTIONS           = 24;
+    private static final int DRUG_SUGGESTIONS           = 28;
 
-    private static final int PDF_STEPS                  = 25;
-    private static final int PDF_FLUID                  = 26;
+    private static final int PDF_STEPS                  = 29;
+    private static final int PDF_FLUID                  = 30;
 
     static {
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.User.TABLE_NAME, TABLE_USER);
@@ -82,6 +86,12 @@ public class DBContentProvider extends ContentProvider {
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.WellBeing.TABLE_NAME, TABLE_WELLBEING);
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.WellBeing.TABLE_NAME + "/#", ITEM_WELLBEING);
+
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.IntakeStats.TABLE_NAME, TABLE_INTAKE_STATS);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.IntakeStats.TABLE_NAME + "/#", ITEM_INTAKE_STATS);
+
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.IntakeEarly.TABLE_NAME, TABLE_INTAKE_EARLY);
+        URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.IntakeEarly.TABLE_NAME + "/#", ITEM_INTAKE_EARLY);
 
         URI_MATCHER.addURI(DBContract.AUTHORITY, DBContract.KnownDrugs.TABLE_NAME + "/*", DRUG_SUGGESTIONS);
 
@@ -225,6 +235,24 @@ public class DBContentProvider extends ContentProvider {
                 queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
                 break;
 
+            case TABLE_INTAKE_STATS:
+                queryBuilder.setTables(DBContract.IntakeStats.TABLE_NAME);
+                break;
+
+            case ITEM_INTAKE_STATS:
+                queryBuilder.setTables(DBContract.IntakeStats.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+
+            case TABLE_INTAKE_EARLY:
+                queryBuilder.setTables(DBContract.IntakeEarly.TABLE_NAME);
+                break;
+
+            case ITEM_INTAKE_EARLY:
+                queryBuilder.setTables(DBContract.IntakeEarly.TABLE_NAME);
+                queryBuilder.appendWhere("_ID=" + uri.getLastPathSegment());
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -312,6 +340,18 @@ public class DBContentProvider extends ContentProvider {
             case ITEM_WELLBEING:
                 mime = DBContract.WellBeing.MIME_ITEM_TYPE;
                 break;
+            case TABLE_INTAKE_STATS:
+                mime = DBContract.IntakeStats.MIME_DIR_TYPE;
+                break;
+            case ITEM_INTAKE_STATS:
+                mime = DBContract.IntakeStats.MIME_ITEM_TYPE;
+                break;
+            case TABLE_INTAKE_EARLY:
+                mime = DBContract.IntakeEarly.MIME_DIR_TYPE;
+                break;
+            case ITEM_INTAKE_EARLY:
+                mime = DBContract.IntakeEarly.MIME_ITEM_TYPE;
+                break;
            default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());
         }
@@ -386,6 +426,12 @@ public class DBContentProvider extends ContentProvider {
                 break;
             case TABLE_WELLBEING: case ITEM_WELLBEING:
                 table = DBContract.WellBeing.TABLE_NAME;
+                break;
+            case TABLE_INTAKE_STATS: case ITEM_INTAKE_STATS:
+                table = DBContract.IntakeStats.TABLE_NAME;
+                break;
+            case TABLE_INTAKE_EARLY: case ITEM_INTAKE_EARLY:
+                table = DBContract.IntakeEarly.TABLE_NAME;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri.toString());

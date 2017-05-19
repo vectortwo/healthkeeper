@@ -14,7 +14,6 @@ import com.vectortwo.healthkeeper.data.db.DrugColumns;
  * If overdue, deletes all info about such drug from the database.
  */
 
-// todo: check for presence in MainActivity
 public class DrugArchiveExpiredService extends IntentService {
     private int delta;
 

@@ -1,5 +1,9 @@
 package com.vectortwo.healthkeeper.data.db;
 
+import android.database.Cursor;
+
+import java.util.Calendar;
+
 /**
  *  A helper class for managing {@link android.content.ContentValues} in {@link android.database.sqlite.SQLiteDatabase}
  *  for {@link DBContract.Intake} table. Ensures type-safety.
@@ -18,10 +22,11 @@ public class IntakeColumns extends DBColumns {
 
     /**
      * Time of day this drug should be taken in
-     * @param time corresponds to "Calendar.HOUR_OF_DAY-Calendar.MINUTES"
+     * @param cal Calendar with desired time
      * @return this
      */
-    public IntakeColumns putTime(String time) {
+    public IntakeColumns putTime(Calendar cal) {
+        String time = cal.get(Calendar.HOUR_OF_DAY) + "-" + cal.get(Calendar.MINUTE);
         contentValues.put(DBContract.Intake.TIME, time);
         return this;
     }
@@ -44,5 +49,15 @@ public class IntakeColumns extends DBColumns {
     public IntakeColumns putDrugID(int drugID) {
         contentValues.put(DBContract.Intake.DRUG_ID, drugID);
         return this;
+    }
+
+    public static float getDosage(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Intake.DOSAGE);
+        return c.getFloat(colId);
+    }
+
+    public static String getForm(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Intake.FORM);
+        return c.getString(colId);
     }
 }

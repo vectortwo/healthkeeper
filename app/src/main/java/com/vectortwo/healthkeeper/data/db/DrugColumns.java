@@ -70,6 +70,11 @@ public class DrugColumns extends DBColumns {
         return cal;
     }
 
+    public static String getTitle(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.TITLE);
+        return c.getString(colId);
+    }
+
     public static Calendar getEndDate(Cursor c) {
         int colId = c.getColumnIndexOrThrow(DBContract.Drug.END_DATE);
         String dateRaw = c.getString(colId);
@@ -80,7 +85,28 @@ public class DrugColumns extends DBColumns {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        cal.add(Calendar.DAY_OF_MONTH, 1);
         return cal;
+    }
+
+    public DrugColumns putColor(int color) {
+        contentValues.put(DBContract.Drug.COLOR, color);
+        return this;
+    }
+
+    public DrugColumns putImageId(int imageId) {
+        contentValues.put(DBContract.Drug.IMAGE_ID, imageId);
+        return this;
+    }
+
+    public static int getColor(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.COLOR);
+        return c.getInt(colId);
+    }
+
+    public static int getImageId(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.IMAGE_ID);
+        return c.getInt(colId);
     }
 
     public DrugColumns putDescription(String desc) {

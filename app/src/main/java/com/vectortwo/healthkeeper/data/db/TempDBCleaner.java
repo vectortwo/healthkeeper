@@ -17,8 +17,8 @@ public final class TempDBCleaner {
     private Context cntx;
 
     private final String[] tables = new String[] {
-            "pulse", "known_drugs", "blood_sugar", "blood_pressure", "calorie",
-            "well_being", "weight", "fluid", "sleep", "drug", "intake", "steps", "user"};
+            "pulse", "blood_sugar", "blood_pressure", "calorie",
+            "well_being", "weight", "fluid", "sleep", "drug", "intake", "steps"};
 
     public TempDBCleaner(Context context) {
         this.cntx = context;

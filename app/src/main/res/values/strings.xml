@@ -3,6 +3,8 @@
     <string name="today_steps">Today steps</string>
     <string name="notification_turn_off">Turn off</string>
     <string name="intake_postpone">Remind later</string>
+    <string name="intake_skip">Skip</string>
+    <string name="intake_take">Take</string>
 
     <string name="descriptionServiceSteps">Pedometer</string>
     <string name="descriptionReceiverDrugNotify">Medications notification scheduler</string>

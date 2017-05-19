@@ -132,6 +132,30 @@ public final class DBContract {
         public static final String DATE = "date";
     }
 
+    public static final class IntakeStats implements BaseColumns {
+        static final String TABLE_NAME = "intake_stats";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
+        public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
+
+        public static final String ACTION = "action";
+        public static final String DRUG_ID = "drug_id";
+        public static final String DATE = "date";
+    }
+
+    public static final class IntakeEarly implements BaseColumns {
+        static final String TABLE_NAME = "intake_early";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
+        public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
+
+        public static final String DATE = "date";
+    }
+
     public static final class Drug implements BaseColumns {
         static final String TABLE_NAME = "drug";
 
@@ -153,6 +177,9 @@ public final class DBContract {
 
         public static final String WEEKDAYS = "weekdays";
         public static final String NOTIFY_ME = "notify_me";
+
+        public static final String COLOR = "color";
+        public static final String IMAGE_ID = "image_id";
 
         public static final String TOTAL_AMOUNT = "total_amount";
     }
