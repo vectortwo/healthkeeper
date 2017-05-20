@@ -18,6 +18,11 @@ public class BloodSugarColumns extends DBColumns {
         return this;
     }
 
+    public static int getValue(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.BloodSugar.VALUE);
+        return c.getInt(colId);
+    }
+
     /**
      * Was blood sugar measured after food or before?
      * @param bool 0 - before, 1 - after
@@ -26,6 +31,11 @@ public class BloodSugarColumns extends DBColumns {
     public BloodSugarColumns putAfterFood(@IntRange(from=0, to=1) int bool) {
         contentValues.put(DBContract.BloodSugar.AFTER_FOOD, bool);
         return this;
+    }
+
+    public static int getAfterFood(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.BloodSugar.AFTER_FOOD);
+        return c.getInt(colId);
     }
 
     public BloodSugarColumns putDate(Calendar cal) {

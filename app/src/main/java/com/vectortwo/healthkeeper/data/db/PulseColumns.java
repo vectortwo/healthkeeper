@@ -17,6 +17,10 @@ public class PulseColumns extends DBColumns {
         return this;
     }
 
+    public static int getValue(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Pulse.VALUE);
+        return c.getInt(colId);
+    }
 
     public PulseColumns putDate(Calendar cal) {
         String date = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)

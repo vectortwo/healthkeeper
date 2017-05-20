@@ -17,6 +17,11 @@ public class StepColumns extends DBColumns {
         return this;
     }
 
+    public static int getCount(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Steps.COUNT);
+        return c.getInt(colId);
+    }
+
     /**
      * Indicates a date when the steps were measured
      * @param cal Calendar with desired date
@@ -55,6 +60,11 @@ public class StepColumns extends DBColumns {
         return this;
     }
 
+    public static int getHour(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Steps.HOUR);
+        return c.getInt(colId);
+    }
+
     /**
      * How much time the user has been walking
      * @param minutes time in minutes
@@ -63,5 +73,10 @@ public class StepColumns extends DBColumns {
     public StepColumns putWakingTime(int minutes) {
         contentValues.put(DBContract.Steps.WALKING_TIME, minutes);
         return this;
+    }
+
+    public static int getWalkingTime(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Steps.WALKING_TIME);
+        return c.getInt(colId);
     }
 }

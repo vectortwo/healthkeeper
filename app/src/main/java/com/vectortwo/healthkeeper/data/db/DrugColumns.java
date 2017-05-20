@@ -27,6 +27,11 @@ public class DrugColumns extends DBColumns {
         return this;
     }
 
+    public static int getTimesADay(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.TIMES_A_DAY);
+        return c.getInt(colId);
+    }
+
     /**
      * When the user should start taking the drug (inclusive)?
      * @param cal Calendar with desired date
@@ -114,9 +119,19 @@ public class DrugColumns extends DBColumns {
         return this;
     }
 
+    public static String getDescription(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.DESCRIPTION);
+        return c.getString(colId);
+    }
+
     public DrugColumns putWarnings(String warnings) {
         contentValues.put(DBContract.Drug.WARNINGS, warnings);
         return this;
+    }
+
+    public static String getWarnings(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.WARNINGS);
+        return c.getString(colId);
     }
 
     /**
@@ -127,6 +142,11 @@ public class DrugColumns extends DBColumns {
     public DrugColumns putArchived(@IntRange(from=0, to=1) int archived) {
         contentValues.put(DBContract.Drug.ARCHIVED, archived);
         return this;
+    }
+
+    public static int getArchived(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.ARCHIVED);
+        return c.getInt(colId);
     }
 
     /**
@@ -151,6 +171,11 @@ public class DrugColumns extends DBColumns {
         return this;
     }
 
+    public static int getNotifyMe(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.NOTIFY_ME);
+        return c.getInt(colId);
+    }
+
     /**
      * Total amount of a drug the user intends to take.
      * @param totalAmount
@@ -159,5 +184,10 @@ public class DrugColumns extends DBColumns {
     public DrugColumns putTotalAmount(int totalAmount) {
         contentValues.put(DBContract.Drug.TOTAL_AMOUNT, totalAmount);
         return this;
+    }
+
+    public static int getTotalAmount(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Drug.TOTAL_AMOUNT);
+        return c.getInt(colId);
     }
 }

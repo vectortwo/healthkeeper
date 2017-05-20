@@ -17,6 +17,11 @@ public class WellBeingColumns extends DBColumns {
         return this;
     }
 
+    public static int getValue(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.WellBeing.VALUE);
+        return c.getInt(colId);
+    }
+
     /**
      * A date when well being was estimated
      * @param cal Calendar with desired date

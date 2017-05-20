@@ -22,6 +22,11 @@ public class SleepColumns extends DBColumns {
         return this;
     }
 
+    public static int getSleepTime(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Sleep.SLEEP_TIME);
+        return c.getInt(colId);
+    }
+
     public SleepColumns putStartDate(Calendar cal) {
         String date = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)
                 + "-" + cal.get(Calendar.DAY_OF_MONTH);

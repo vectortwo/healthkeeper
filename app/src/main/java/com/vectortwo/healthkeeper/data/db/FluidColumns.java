@@ -17,6 +17,11 @@ public class FluidColumns extends DBColumns {
         return this;
     }
 
+    public static float getDrank(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.Fluid.DRANK);
+        return c.getFloat(colId);
+    }
+
     /**
      * A date when the fluid intake was measured
      * @param cal Calendar with desired date
