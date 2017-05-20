@@ -116,15 +116,15 @@ public class ScheduleDateViewer extends AsyncTask<Integer, Void, ScheduleDateVie
 
         ArrayList<Calendar> alreadyTook = new ArrayList<>();
         Cursor tookCursor = mContext.getContentResolver().query(
-                DBContract.IntakeEarly.CONTENT_URI, null,
-                DBContract.IntakeEarly.DATE + ">= date('now')",
-                null, null);
+                DBContract.IntakeEarly.CONTENT_URI,
+                new String[] {DBContract.IntakeEarly.DATE},
+                DBContract.IntakeEarly.DRUG_ID + "=? and " +
+                        DBContract.IntakeEarly.DATE + ">= date('now')",
+                new String[] {String.valueOf(drugID)}, null, null);
 
-        if (tookCursor.getCount() > 0) {
-            while (tookCursor.moveToNext()) {
-                Calendar tookDate = IntakeEarlyColumns.getDate(tookCursor);
-                alreadyTook.add(tookDate);
-            }
+        while (tookCursor.moveToNext()) {
+            Calendar tookDate = IntakeEarlyColumns.getDate(tookCursor);
+            alreadyTook.add(tookDate);
         }
         tookCursor.close();
 

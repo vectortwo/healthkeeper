@@ -10,6 +10,13 @@ import java.util.Calendar;
  * Created by ilya on 19/05/2017.
  */
 public class IntakeEarlyColumns extends DBColumns {
+
+    /**
+     * Insert a time of the notification which will be taken/skipped
+     *
+     * @param cal MUST be the time of the scheduled notification which is taken/skipped early
+     * @return
+     */
     public IntakeEarlyColumns putDate(Calendar cal) {
         String date = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)
                 + "-" + cal.get(Calendar.DAY_OF_MONTH);
@@ -23,6 +30,16 @@ public class IntakeEarlyColumns extends DBColumns {
         date += " " + hourStr + ":" + minStr;
         contentValues.put(DBContract.IntakeEarly.DATE, date);
         return this;
+    }
+
+    public IntakeEarlyColumns putDrugId(int drugId) {
+        contentValues.put(DBContract.IntakeEarly.DRUG_ID, drugId);
+        return this;
+    }
+
+    public static int getDrugId(Cursor c) {
+        int colId = c.getColumnIndexOrThrow(DBContract.IntakeEarly.DRUG_ID);
+        return c.getInt(colId);
     }
 
     public static Calendar getDate(Cursor c) {

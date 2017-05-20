@@ -175,15 +175,15 @@ public class DrugNotifyService extends IntentService {
 
         ArrayList<Calendar> alreadyTook = new ArrayList<>();
         Cursor tookCursor = getContentResolver().query(
-                DBContract.IntakeEarly.CONTENT_URI, null,
-                DBContract.IntakeEarly.DATE + ">= date('now')",
-                null, null);
+                DBContract.IntakeEarly.CONTENT_URI,
+                new String[] {DBContract.IntakeEarly.DATE},
+                DBContract.IntakeEarly.DRUG_ID + "=? and " +
+                        DBContract.IntakeEarly.DATE + ">= date('now')",
+                new String[] {String.valueOf(mDrugId)}, null, null);
 
-        if (tookCursor.getCount() > 0) {
-            while (tookCursor.moveToNext()) {
-                Calendar tookDate = IntakeEarlyColumns.getDate(tookCursor);
-                alreadyTook.add(tookDate);
-            }
+        while (tookCursor.moveToNext()) {
+            Calendar tookDate = IntakeEarlyColumns.getDate(tookCursor);
+            alreadyTook.add(tookDate);
         }
         tookCursor.close();
 

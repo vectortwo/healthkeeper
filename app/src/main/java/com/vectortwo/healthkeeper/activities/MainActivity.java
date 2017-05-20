@@ -2,6 +2,7 @@ package com.vectortwo.healthkeeper.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.BaseColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.vectortwo.healthkeeper.*;
 import com.vectortwo.healthkeeper.data.db.DBContract;
+import com.vectortwo.healthkeeper.data.db.DrugColumns;
 import com.vectortwo.healthkeeper.services.DrugNotifyService;
 
 public class MainActivity extends AppCompatActivity {

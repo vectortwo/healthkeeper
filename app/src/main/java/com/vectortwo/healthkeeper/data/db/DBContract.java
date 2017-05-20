@@ -153,6 +153,7 @@ public final class DBContract {
         public static final String MIME_DIR_TYPE = DBContract.MIME_DIR_TYPE + TABLE_NAME;
         public static final String MIME_ITEM_TYPE = DBContract.MIME_ITEM_TYPE + TABLE_NAME;
 
+        public static final String DRUG_ID = "drug_id";
         public static final String DATE = "date";
     }
 
